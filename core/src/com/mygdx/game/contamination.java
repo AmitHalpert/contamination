@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
-public class DojaDuckGame extends Game {
+public class contamination extends Game {
 	public SpriteBatch batch;
 	public BitmapFont font;
 

@@ -24,7 +24,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 class GameScreen implements Screen {
 
-    final DojaDuckGame game;
+    final contamination game;
     Player player;
 
     float deltaTime;
@@ -43,7 +43,7 @@ class GameScreen implements Screen {
     private final int WORLD_HEIGHT = 1080;
 
 
-    GameScreen(final DojaDuckGame game){
+    GameScreen(final contamination game){
         this.game = game;
         // creates a player
         player = new Player(640,300);
