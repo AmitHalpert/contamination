@@ -39,9 +39,8 @@ class GameScreen implements Screen {
 
 
     // world parameters
-    private final int WORLD_WIDTH = 1280;
-    private final int WORLD_HEIGHT = 800;
-
+    private final int WORLD_WIDTH = 1920;
+    private final int WORLD_HEIGHT = 1080;
 
 
     GameScreen(final DojaDuckGame game){
@@ -61,10 +60,7 @@ class GameScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
 
 
-
         //set up the textures
-
-
 
 
     }
@@ -81,6 +77,7 @@ class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         deltaTime = Gdx.graphics.getDeltaTime();
 
+        InputHandling(deltaTime);
         if (isPaused){
             deltaTime = 0;
         }
@@ -93,7 +90,7 @@ class GameScreen implements Screen {
 
     }
 
-    // process user input
+    // function to process user input
     public void InputHandling(float deltaTime){
         player.moveXBy(0);
         if (Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT)) player.moveXBy(200 * deltaTime);
