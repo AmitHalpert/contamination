@@ -1,54 +1,70 @@
 package com.mygdx.game;
 
+import java.lang.Math;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+
 
 class GameScreen implements Screen {
 
+    final DojaDuckGame game;
+
+    float deltaTime;
+    Boolean isPaused;
+
     //Screen
-    private Camera camera;
-    private Viewport viewport;
+    OrthographicCamera camera;
+    Viewport viewport;
 
     //graphics
-    private SpriteBatch batch;
-    private Texture backgroud;
-    private TextureAtlas textureAtlas;
-    private TextureRegion player_1_TextureRegion;
+    ShapeRenderer shapeRenderer;
+
 
     // world parameters
-    private final int WORLD_WIDTH = 54;
-    private final int WORLD_HEIGHT = 35;
-
-    // game objects
-    private Player playerAmogus;
+    private final int WORLD_WIDTH = 1280;
+    private final int WORLD_HEIGHT = 800;
 
 
-    GameScreen(){
 
+    GameScreen(final DojaDuckGame game){
+        this.game = game;
+        deltaTime = 0;
+        isPaused = false;
+
+        // set up the camera and the viewport
         camera = new OrthographicCamera();
+        camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
 
-        //set up the texture atlas
-        textureAtlas = new TextureAtlas();
-        backgroud = new Texture("map.png");
-        textureAtlas = new TextureAtlas("images.atlas");
+        //graphics
+        shapeRenderer = new ShapeRenderer();
 
-        //set up texture objects
-        player_1_TextureRegion = textureAtlas.findRegion("tile091");
 
-        // set up game objects
-        playerAmogus = new Player(2,2,2,WORLD_WIDTH/2,WORLD_HEIGHT/4,player_1_TextureRegion );
 
-        batch = new SpriteBatch();
+        //set up the textures
+
+
+
+
+
+
 
     }
 
@@ -60,25 +76,28 @@ class GameScreen implements Screen {
 
     @Override
     public void render(float deltaTime) {
-        batch.begin();
+        ScreenUtils.clear(0, 0, 1, 0.5f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        deltaTime = Gdx.graphics.getDeltaTime();
 
-        batch.draw(backgroud,0,0,WORLD_WIDTH ,WORLD_HEIGHT);
-
-
-        //player
-        playerAmogus.draw(batch);
-
-        //FX
+        if (isPaused){
+            deltaTime = 0;
+        }
 
 
+            camera.update();
+            game.batch.setProjectionMatrix(camera.combined);
 
-        batch.end();
+
+
+
+
     }
 
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
-        batch.setProjectionMatrix(camera.combined);
+        game.batch.setProjectionMatrix(camera.combined);
     }
 
 
