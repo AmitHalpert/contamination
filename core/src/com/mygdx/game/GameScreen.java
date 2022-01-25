@@ -25,6 +25,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 class GameScreen implements Screen {
 
     final DojaDuckGame game;
+    Player player;
 
     float deltaTime;
     Boolean isPaused;
@@ -45,6 +46,9 @@ class GameScreen implements Screen {
 
     GameScreen(final DojaDuckGame game){
         this.game = game;
+
+        player = new Player(640,300);
+
         deltaTime = 0;
         isPaused = false;
 
@@ -59,9 +63,6 @@ class GameScreen implements Screen {
 
 
         //set up the textures
-
-
-
 
 
 
@@ -90,8 +91,20 @@ class GameScreen implements Screen {
 
 
 
+    }
 
+    // process user input
+    public void InputHandling(){
+        player.moveXBy(0);
+        if (Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT)) player.moveXBy(200 * deltaTime);
+        if (Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)) player.moveXBy(-200 * deltaTime);
+        if (Gdx.input.isKeyPressed(Keys.ENTER)) isPaused = true;
+        if (Gdx.input.isKeyPressed(Keys.BACKSPACE)) isPaused = false;
 
+        if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+            dispose();
+            Gdx.app.exit();
+        }
     }
 
     @Override
@@ -118,6 +131,7 @@ class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        player.dispose();
 
     }
 }
