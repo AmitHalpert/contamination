@@ -77,7 +77,7 @@ class GameScreen implements Screen {
 
     @Override
     public void render(float deltaTime) {
-        ScreenUtils.clear(0, 0, 1, 0.5f);
+        ScreenUtils.clear(0, 0, 0, 0.3f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         deltaTime = Gdx.graphics.getDeltaTime();
 
@@ -94,7 +94,7 @@ class GameScreen implements Screen {
     }
 
     // process user input
-    public void InputHandling(){
+    public void InputHandling(float deltaTime){
         player.moveXBy(0);
         if (Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT)) player.moveXBy(200 * deltaTime);
         if (Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)) player.moveXBy(-200 * deltaTime);
