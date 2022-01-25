@@ -45,10 +45,11 @@ class GameScreen implements Screen {
 
     GameScreen(final DojaDuckGame game){
         this.game = game;
-
+        // creates a player
         player = new Player(640,300);
 
         deltaTime = 0;
+
         isPaused = false;
 
         // set up the camera and the viewport
@@ -58,8 +59,6 @@ class GameScreen implements Screen {
 
         //graphics
         shapeRenderer = new ShapeRenderer();
-
-
 
     }
 
@@ -75,7 +74,10 @@ class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         deltaTime = Gdx.graphics.getDeltaTime();
 
+        //Calls the Input Function
         InputHandling(deltaTime);
+
+        //Checks if the game is paused
         if (isPaused){
             deltaTime = 0;
         }
@@ -87,6 +89,7 @@ class GameScreen implements Screen {
 
         // Draw Stuff
         game.batch.begin();
+
         game.batch.draw(player.render(deltaTime), player.x, player.y,player.width, player.height);
 
 

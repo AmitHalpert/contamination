@@ -6,7 +6,7 @@ import com.badlogic.gdx.Gdx;
 
 public class Player extends GameObject {
 
-
+    // the player states
     public enum playerState{
         Running,
         Jumping,
