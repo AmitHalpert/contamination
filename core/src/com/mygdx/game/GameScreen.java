@@ -74,13 +74,13 @@ class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         deltaTime = Gdx.graphics.getDeltaTime();
 
-        //Calls the Input Function
-        InputHandling(deltaTime);
-
         //Checks if the game is paused
         if (isPaused){
             deltaTime = 0;
         }
+
+        //Calls the Input Function
+        InputHandling(deltaTime);
 
         //updates the camera
         camera.update();
@@ -90,8 +90,8 @@ class GameScreen implements Screen {
         // Draw Stuff
         game.batch.begin();
 
+        //Draw the player
         game.batch.draw(player.render(deltaTime), player.x, player.y,player.width, player.height);
-
 
         game.batch.end();
 

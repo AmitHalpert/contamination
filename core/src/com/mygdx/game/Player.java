@@ -25,7 +25,7 @@ public class Player extends GameObject {
     playerState state;
 
     public Player(float x, float y) {
-        super(48 * 3, 32 * 3);
+        super(50 * 3, 50 * 3);
         fallTime = 1f;
         isAffectedByGravity = false;
         canJump = false;
