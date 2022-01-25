@@ -60,8 +60,6 @@ class GameScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
 
 
-        //set up the textures
-
 
     }
 
@@ -82,11 +80,23 @@ class GameScreen implements Screen {
             deltaTime = 0;
         }
 
+        //updates the camera
+        camera.update();
+        game.batch.setProjectionMatrix(camera.combined);
 
-            camera.update();
-            game.batch.setProjectionMatrix(camera.combined);
+
+        // Draw Stuff
+        game.batch.begin();
+        game.batch.draw(player.render(deltaTime), player.x, player.y,player.width, player.height);
 
 
+        game.batch.end();
+
+        // gets player input and updates the player's position
+        // the player needs to be facing right when calculating its position in order for the overlaps function to work
+        if (player.isFacingLeft) {
+            player.flip();
+        }
 
     }
 

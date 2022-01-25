@@ -9,7 +9,6 @@ public class Player extends GameObject {
 
     public enum playerState{
         Running,
-        Falling,
         Jumping,
         Idle,
     }
@@ -22,7 +21,6 @@ public class Player extends GameObject {
     Texture playerTexture;
     ObjectAnimation player_running_animation;
     ObjectAnimation player_jumping_animation;
-    ObjectAnimation player_falling_animation;
     ObjectAnimation player_idle_animation;
     playerState state;
 
@@ -53,10 +51,6 @@ public class Player extends GameObject {
             state = playerState.Jumping;
         }
 
-        else if (super.getDY() < 0) {
-            fallTime += delta;
-            state = playerState.Falling;
-        }
 
         else if (delta != 0) {
             state = playerState.Idle;
@@ -85,19 +79,11 @@ public class Player extends GameObject {
         switch (state) {
             case Running:
                 outputTexture = player_running_animation.getFrame(delta);
-                player_falling_animation.resetAnimation();
                 player_jumping_animation.resetAnimation();
                 player_idle_animation.resetAnimation();
                 idle_animation_time = 0;
                 break;
 
-            case Falling:
-                outputTexture = player_falling_animation.getFrame(delta);
-                player_running_animation.resetAnimation();
-                player_jumping_animation.resetAnimation();
-                player_idle_animation.resetAnimation();
-                idle_animation_time = 0;
-                break;
 
             case Jumping:
                 if (player_jumping_animation.currentFrame >= player_jumping_animation.frames.size - 2){
@@ -107,7 +93,6 @@ public class Player extends GameObject {
                 else {
                     outputTexture = player_jumping_animation.getFrame(delta);
                 }
-                player_falling_animation.resetAnimation();
                 player_running_animation.resetAnimation();
                 player_idle_animation.resetAnimation();
                 idle_animation_time = 0;
@@ -126,7 +111,6 @@ public class Player extends GameObject {
 
                 player_running_animation.resetAnimation();
                 player_jumping_animation.resetAnimation();
-                player_falling_animation.resetAnimation();
                 idle_animation_time += delta;
                 break;
         }
@@ -142,7 +126,6 @@ public class Player extends GameObject {
     public void dispose(){
         player_running_animation.dispose();
         player_jumping_animation.dispose();
-        player_falling_animation.dispose();
     }
 
 }
