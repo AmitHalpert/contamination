@@ -10,33 +10,18 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class DojaDuckGame extends Game {
-	GameScreen gameScreen;
 	public SpriteBatch batch;
 	public BitmapFont font;
-	private Music BackgroundMusic;
 
 	@Override
 	public void create () {
-		this.setScreen(new GameScreen(this));
-		setScreen(gameScreen);
 		batch = new SpriteBatch();
 		font = new BitmapFont();
-
-
-
-		// load the drop sound effect and the background music
-		BackgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("planet.mp3"));
-		BackgroundMusic.setLooping(true);
-		BackgroundMusic.play();
-		BackgroundMusic.setVolume(0.03f);
+		this.setScreen(new GameScreen(this));
 
 
 	}
 
-	@Override
-	public  void resize(int width, int height){
-		gameScreen.resize(width, height);
-	}
 
 	@Override
 	public void render () {
@@ -48,8 +33,6 @@ public class DojaDuckGame extends Game {
 	public void dispose () {
 		batch.dispose();
 		font.dispose();
-		gameScreen.dispose();
-		BackgroundMusic.dispose();
 	}
 
 
