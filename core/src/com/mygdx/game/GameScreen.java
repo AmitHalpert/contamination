@@ -46,7 +46,7 @@ class GameScreen implements Screen {
     GameScreen(final contamination game){
         this.game = game;
         // creates a player
-        player = new Player(640,300);
+        player = new Player(400,300);
 
         deltaTime = 0;
 
@@ -79,8 +79,7 @@ class GameScreen implements Screen {
             deltaTime = 0;
         }
 
-        //Calls the Input Function
-        InputHandling(deltaTime);
+
 
         //updates the camera
         camera.update();
@@ -103,19 +102,6 @@ class GameScreen implements Screen {
 
     }
 
-    // function to process user input
-    public void InputHandling(float deltaTime){
-        player.moveXBy(0);
-        if (Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT)) player.moveXBy(200 * deltaTime);
-        if (Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)) player.moveXBy(-200 * deltaTime);
-        if (Gdx.input.isKeyPressed(Keys.ENTER)) isPaused = true;
-        if (Gdx.input.isKeyPressed(Keys.BACKSPACE)) isPaused = false;
-
-        if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
-            dispose();
-            Gdx.app.exit();
-        }
-    }
 
     @Override
     public void resize(int width, int height) {

@@ -1,21 +1,31 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Rectangle;
 
 
-public class Player extends GameObject {
+public class Player{
 
     // the player states
     public enum playerState{
         Running,
+        Falling,
         Jumping,
         Idle,
+        HoldingGun,
     }
+
+    int x, y;
+    int width, height;
+    double Xspeed, Yspeed;
+    Rectangle hitBox;
 
     public float fallTime;
     float idle_animation_time;
     Boolean isAffectedByGravity;
+    Boolean isFacingLeft;
     Boolean canJump;
     Texture outputTexture;
     Texture playerTexture;
@@ -24,8 +34,16 @@ public class Player extends GameObject {
     ObjectAnimation player_idle_animation;
     playerState state;
 
-    public Player(float x, float y) {
-        super(50 * 3, 50 * 3);
+    public Player(int x, int y) {
+
+        this.x = x;
+        this.y = y;
+
+        width = 32;
+        height = 32;
+        hitBox = new Rectangle(x, y, width, height);
+
+
         fallTime = 1f;
         isAffectedByGravity = false;
         canJump = false;
@@ -44,25 +62,59 @@ public class Player extends GameObject {
 
     }
 
+    public void PlayerInputHandling(){
+
+        //Horizontal Player input
+        if ( (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && (Gdx.input.isKeyPressed(Input.Keys.LEFT)) || !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) ){
+            Xspeed *= 0.8;
+        }
+        else if( (Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) ) Xspeed--;
+        else if((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(Gdx.input.isKeyPressed(Input.Keys.LEFT))) Xspeed++;
+
+        //Smooths Player Input
+        if(Xspeed > 0 && Xspeed < 0.75) Xspeed = 0;
+        if(Xspeed < 0 && Xspeed > -0.75) Xspeed = 0;
+        if(Xspeed > 7) Xspeed = 7;
+        if(Xspeed < -7 ) Xspeed = -7;
+
+        //vertical input
+        if((Gdx.input.isKeyPressed(Input.Keys.UP))){
+            Yspeed = -6;
+        }
+
+        Yspeed += 0.3;
+
+
+        x += Xspeed;
+        y += Yspeed;
+
+        hitBox.x = x;
+        hitBox.y = y;
+    }
+
+
+
+
     public Texture render(float delta) {
         // checks if the player is moving up or down
-        if (super.getDY() > 0) {
+        if (Yspeed > 0) {
             fallTime += delta;
             state = playerState.Jumping;
         }
 
-
-        else if (delta != 0) {
-            state = playerState.Idle;
+        else if (Yspeed < 0){
+            fallTime += delta;
+            state = playerState.Falling;
         }
 
+
         // checks if the player is moving left or right
-        if (super.getDX() != 0) {
-            if (super.getDY() == 0) {
+        if (Xspeed != 0) {
+            if (Xspeed != 0) {
                 state = playerState.Running;
             }
 
-            if (super.getDX() < 0) {
+            if (Xspeed < 0) {
                 isFacingLeft = true;
             }
 
@@ -116,12 +168,20 @@ public class Player extends GameObject {
         }
 
         // checks if the last movement has been to the left and mirrors the texture
-        if ((super.isFacingLeft && super.width > 0) || (!super.isFacingLeft && super.width < 0)) {
+        if ((isFacingLeft && width > 0) || (!isFacingLeft && width < 0)) {
             flip();
         }
 
         return outputTexture;
     }
+
+    // flips the Player
+    public void flip(){
+        width = (width * -1);
+        x = (x + width * -1);
+    }
+
+
 
     public void dispose(){
         player_running_animation.dispose();
