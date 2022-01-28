@@ -4,6 +4,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+
 
 
 public class Player{
@@ -14,7 +16,7 @@ public class Player{
         Falling,
         Jumping,
         Idle,
-        HoldingGun,
+        HoldingGun
     }
 
     int x, y;
@@ -39,8 +41,8 @@ public class Player{
         this.x = x;
         this.y = y;
 
-        width = 32;
-        height = 32;
+        width = 200;
+        height = 200;
         hitBox = new Rectangle(x, y, width, height);
 
 
@@ -58,11 +60,11 @@ public class Player{
         player_idle_animation = new ObjectAnimation();
         player_idle_animation.loadAnimation("player_idle_", 1);
         playerTexture = new Texture(Gdx.files.internal("player_idle_1.png"));
-
+        outputTexture = playerTexture;
 
     }
 
-    public void PlayerInputHandling(){
+    public void PlayerInputHandling(Array<MapObject> Walls){
 
         //Horizontal Player input
         if ( (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && (Gdx.input.isKeyPressed(Input.Keys.LEFT)) || !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) ){
@@ -79,10 +81,19 @@ public class Player{
 
         //vertical input
         if((Gdx.input.isKeyPressed(Input.Keys.UP))){
-            Yspeed = -6;
+            hitBox.y--;
+            for(MapObject i_walls : Walls){
+                if(i_walls.hitBox.overlaps(hitBox)) Yspeed = 6;
+            }
+            hitBox.y ++;
         }
 
-        Yspeed += 0.3;
+        Yspeed -= 0.5;
+
+        //Horizontal Collision
+
+
+        //Vertical Collision
 
 
         x += Xspeed;
@@ -95,7 +106,11 @@ public class Player{
 
 
 
-    public Texture render(float delta) {
+    public Texture render(float delta, Array<MapObject> Walls) {
+
+        PlayerInputHandling(Walls);
+
+
         // checks if the player is moving up or down
         if (Yspeed > 0) {
             fallTime += delta;
@@ -126,6 +141,8 @@ public class Player{
         else if (delta != 0 && state == playerState.Running) {
             state = playerState.Idle;
         }
+
+
 
         // checks which animation should play according to the state enum
         switch (state) {
@@ -167,19 +184,31 @@ public class Player{
                 break;
         }
 
+
+
         // checks if the last movement has been to the left and mirrors the texture
+        /*
         if ((isFacingLeft && width > 0) || (!isFacingLeft && width < 0)) {
             flip();
+
         }
+        */
+
+
+
 
         return outputTexture;
     }
 
+
+    /*
     // flips the Player
     public void flip(){
         width = (width * -1);
         x = (x + width * -1);
     }
+
+     */
 
 
 

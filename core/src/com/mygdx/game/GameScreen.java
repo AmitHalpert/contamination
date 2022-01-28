@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import java.lang.Math;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -20,11 +21,12 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.utils.Array;
 
 
 class GameScreen implements Screen {
 
-    final contamination game;
+    private final contamination game;
     Player player;
 
     float deltaTime;
@@ -42,14 +44,19 @@ class GameScreen implements Screen {
     private final int WORLD_WIDTH = 1920;
     private final int WORLD_HEIGHT = 1080;
 
+    Array<MapObject> Walls;
 
-    GameScreen(final contamination game){
+    public GameScreen(final contamination game){
         this.game = game;
         // creates a player
-        player = new Player(400,300);
+        player = new Player(700,600);
+
+        // Creates the wall array
+        Walls = new Array<MapObject>();
+        makeWalls();
+
 
         deltaTime = 0;
-
         isPaused = false;
 
         // set up the camera and the viewport
@@ -57,10 +64,18 @@ class GameScreen implements Screen {
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
 
-        //graphics
-        shapeRenderer = new ShapeRenderer();
 
     }
+
+    private void makeWalls(){
+        for(int i = 50; i < 650; i+= 50){
+            Walls.add(new MapObject(i,200,200,200));
+        }
+    }
+
+
+
+
 
 
     @Override
@@ -79,26 +94,17 @@ class GameScreen implements Screen {
             deltaTime = 0;
         }
 
-
-
         //updates the camera
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
-
 
         // Draw Stuff
         game.batch.begin();
 
         //Draw the player
-        game.batch.draw(player.render(deltaTime), player.x, player.y,player.width, player.height);
+        game.batch.draw(player.render(deltaTime, Walls), player.x, player.y,player.width, player.height);
 
         game.batch.end();
-
-        // gets player input and updates the player's position
-        // the player needs to be facing right when calculating its position in order for the overlaps function to work
-        if (player.isFacingLeft) {
-            player.flip();
-        }
 
     }
 
