@@ -4,14 +4,14 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class MapObject {
 
-    int x;
-    int y;
+    float x;
+    float y;
     int width;
     int height;
 
     Rectangle hitBox;
 
-    public MapObject(int x, int y, int width, int height){
+    public MapObject(float x, float y, int width, int height){
         this.x = x;
         this.y = y;
         this.width = width;

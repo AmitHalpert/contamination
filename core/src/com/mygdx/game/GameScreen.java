@@ -37,7 +37,7 @@ class GameScreen implements Screen {
     Viewport viewport;
 
     //graphics
-    ShapeRenderer shapeRenderer;
+    private Texture background;
 
 
     // world parameters
@@ -52,10 +52,6 @@ class GameScreen implements Screen {
         // creates a player
         player = new Player(700,600);
 
-        // Creates the wall array for the map
-        Walls = new Array<MapObject>();
-        makeWalls();
-
         // initialize parameters
         deltaTime = 0;
         isPaused = false;
@@ -64,12 +60,19 @@ class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
+
+        // Map graphics
+        background = new Texture("map.png");
+
+        // Creates the wall array for the map
+        Walls = new Array<MapObject>();
+        makeWalls();
     }
 
-    // Creates the maps ground
+    // Creates the maps ground for collision
     private void makeWalls(){
         for(int i = 50; i < 650; i+= 50){
-            Walls.add(new MapObject(i,200,200,200));
+            Walls.add(new MapObject(i,-110,1300,203));
         }
     }
 
@@ -96,8 +99,10 @@ class GameScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
-        // Draw Stuff
+        // BEGIN TO DRAW:
         game.batch.begin();
+
+        game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
 
         //Draw the player
         game.batch.draw(player.render(deltaTime, Walls), player.x, player.y,player.width, player.height);

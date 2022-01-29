@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+
+import javax.xml.xpath.XPath;
 import java.lang.*;
 
 
@@ -20,16 +22,15 @@ public class Player{
         HoldingGun
     }
 
-    int x, y;
+    float x;
+    float y;
     int width, height;
     double Xspeed, Yspeed;
     Rectangle hitBox;
 
     public float fallTime;
     float idle_animation_time;
-    Boolean isAffectedByGravity;
     Boolean isFacingLeft;
-    Boolean canJump;
     Texture outputTexture;
     Texture playerTexture;
     ObjectAnimation player_running_animation;
@@ -37,7 +38,7 @@ public class Player{
     ObjectAnimation player_idle_animation;
     playerState state;
 
-    public Player(int x, int y) {
+    public Player(float x, float y) {
 
         this.x = x;
         this.y = y;
@@ -48,8 +49,6 @@ public class Player{
 
 
         fallTime = 1f;
-        isAffectedByGravity = false;
-        canJump = false;
         state = playerState.Idle;
         idle_animation_time = 0;
 
@@ -66,6 +65,8 @@ public class Player{
     }
 
     public void PlayerInputHandling(Array<MapObject> Walls){
+
+
         //Horizontal Player input
         if ( (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && (Gdx.input.isKeyPressed(Input.Keys.LEFT)) || !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) ){
             Xspeed *= 0.8;
@@ -81,42 +82,33 @@ public class Player{
 
         //vertical input
         if((Gdx.input.isKeyPressed(Input.Keys.UP))){
-            hitBox.y--;
-            for(MapObject i_walls : Walls){
-                if(i_walls.hitBox.overlaps(hitBox)) Yspeed = 6;
+            hitBox.y++;
+            if(IsPlayerOnGround() == true){
+                Yspeed += 10;
             }
-            hitBox.y ++;
+            hitBox.y--;
         }
-        Yspeed -= 0.5;
+        Yspeed -= 0.3;
 
         //Horizontal Collision
         hitBox.x += Xspeed;
-        for(MapObject i_wall : Walls){
-            if(hitBox.overlaps(i_wall.hitBox)){
-            hitBox.x -= Xspeed;
-            while(!i_wall.hitBox.overlaps(hitBox)) hitBox.x += Math.signum(Xspeed);
-            hitBox.x -= Math.signum(Xspeed);
-            Xspeed = 0;
-            x = (int) hitBox.x;
+        for(MapObject i_wall : Walls) {
+            if (hitBox.overlaps(i_wall.hitBox)) {
+                Xspeed -= Xspeed;
             }
 
         }
+
 
         //Vertical Collision
         hitBox.y += Yspeed;
         for(MapObject i_wall : Walls){
             if(hitBox.overlaps(i_wall.hitBox)){
-                hitBox.y -= Yspeed;
-                while(!i_wall.hitBox.overlaps(hitBox)) hitBox.y += Math.signum(Xspeed);
-                hitBox.y -= Math.signum(Yspeed);
-                Yspeed = 0;
-                y = (int) hitBox.y;
+                Yspeed -= Yspeed;
             }
-
         }
 
         //Updates Position of the player
-
         x += Xspeed;
         y += Yspeed;
 
@@ -127,8 +119,11 @@ public class Player{
 
 
 
+
+
     public Texture render(float delta, Array<MapObject> Walls) {
 
+        IsPlayerOnGround();
         PlayerInputHandling(Walls);
 
 
@@ -230,6 +225,15 @@ public class Player{
     }
 
      */
+
+    public boolean IsPlayerOnGround(){
+        if(Yspeed == -Yspeed){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 
 
