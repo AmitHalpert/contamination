@@ -48,14 +48,15 @@ class GameScreen implements Screen {
 
     public GameScreen(final contamination game){
         this.game = game;
+
         // creates a player
         player = new Player(700,600);
 
-        // Creates the wall array
+        // Creates the wall array for the map
         Walls = new Array<MapObject>();
         makeWalls();
 
-
+        // initialize parameters
         deltaTime = 0;
         isPaused = false;
 
@@ -63,17 +64,14 @@ class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
-
-
     }
 
+    // Creates the maps ground
     private void makeWalls(){
         for(int i = 50; i < 650; i+= 50){
             Walls.add(new MapObject(i,200,200,200));
         }
     }
-
-
 
 
 

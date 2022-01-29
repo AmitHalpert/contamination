@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import java.lang.*;
 
 
 
@@ -65,7 +66,6 @@ public class Player{
     }
 
     public void PlayerInputHandling(Array<MapObject> Walls){
-
         //Horizontal Player input
         if ( (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && (Gdx.input.isKeyPressed(Input.Keys.LEFT)) || !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) ){
             Xspeed *= 0.8;
@@ -87,14 +87,35 @@ public class Player{
             }
             hitBox.y ++;
         }
-
         Yspeed -= 0.5;
 
         //Horizontal Collision
+        hitBox.x += Xspeed;
+        for(MapObject i_wall : Walls){
+            if(hitBox.overlaps(i_wall.hitBox)){
+            hitBox.x -= Xspeed;
+            while(!i_wall.hitBox.overlaps(hitBox)) hitBox.x += Math.signum(Xspeed);
+            hitBox.x -= Math.signum(Xspeed);
+            Xspeed = 0;
+            x = (int) hitBox.x;
+            }
 
+        }
 
         //Vertical Collision
+        hitBox.y += Yspeed;
+        for(MapObject i_wall : Walls){
+            if(hitBox.overlaps(i_wall.hitBox)){
+                hitBox.y -= Yspeed;
+                while(!i_wall.hitBox.overlaps(hitBox)) hitBox.y += Math.signum(Xspeed);
+                hitBox.y -= Math.signum(Yspeed);
+                Yspeed = 0;
+                y = (int) hitBox.y;
+            }
 
+        }
+
+        //Updates Position of the player
 
         x += Xspeed;
         y += Yspeed;
