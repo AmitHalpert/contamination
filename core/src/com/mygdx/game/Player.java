@@ -74,8 +74,8 @@ public class Player{
         //Smooths Player Input
         if(Xspeed > 0 && Xspeed < 0.75) Xspeed = 0;
         if(Xspeed < 0 && Xspeed > -0.75) Xspeed = 0;
-        if(Xspeed > 7) Xspeed = 7;
-        if(Xspeed < -7 ) Xspeed = -7;
+        if(Xspeed > 9) Xspeed = 9;
+        if(Xspeed < -9 ) Xspeed = -9;
 
         //vertical input
         if((Gdx.input.isKeyPressed(Input.Keys.UP))){
@@ -136,7 +136,7 @@ public class Player{
 
         // checks if the player is moving left or right
         if (Xspeed != 0) {
-            if (Xspeed != 0) {
+            if (Xspeed != 0 && Yspeed == 0) {
                 state = playerState.Running;
             }
 
