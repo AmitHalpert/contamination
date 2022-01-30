@@ -105,7 +105,7 @@ class GameScreen implements Screen {
         game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
 
         //Draw the player
-        game.batch.draw(player.render(deltaTime, Walls), player.x, player.y,player.width, player.height);
+        game.batch.draw(player.render(deltaTime, Walls),  player.x,  player.y, player.width,  player.height);
 
         game.batch.end();
 

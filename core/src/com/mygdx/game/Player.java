@@ -5,10 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-
-import javax.xml.xpath.XPath;
 import java.lang.*;
-
 
 
 public class Player{
@@ -84,11 +81,11 @@ public class Player{
         if((Gdx.input.isKeyPressed(Input.Keys.UP))){
             hitBox.y++;
             if(IsPlayerOnGround() == true){
-                Yspeed += 10;
+                Yspeed += 14;
             }
             hitBox.y--;
         }
-        Yspeed -= 0.3;
+        Yspeed -= 0.6;
 
         //Horizontal Collision
         hitBox.x += Xspeed;
@@ -119,8 +116,6 @@ public class Player{
 
 
 
-
-
     public Texture render(float delta, Array<MapObject> Walls) {
 
         IsPlayerOnGround();
@@ -145,7 +140,7 @@ public class Player{
                 state = playerState.Running;
             }
 
-            if (Xspeed < 0) {
+            if (Xspeed == -Xspeed) {
                 isFacingLeft = true;
             }
 
@@ -154,7 +149,7 @@ public class Player{
             }
         }
 
-        else if (delta != 0 && state == playerState.Running) {
+        else if (Xspeed == 0 && Yspeed == 0) {
             state = playerState.Idle;
         }
 
@@ -200,32 +195,28 @@ public class Player{
                 break;
         }
 
-
-
-        // checks if the last movement has been to the left and mirrors the texture
+        // Need to be fixed
         /*
-        if ((isFacingLeft && width > 0) || (!isFacingLeft && width < 0)) {
+
+        if (isFacingLeft) {
             flip();
-
         }
-        */
+
+         */
 
 
-
-
+        // Returns the animation
         return outputTexture;
     }
 
 
-    /*
+
     // flips the Player
     public void flip(){
         width = (width * -1);
-        x = (x + width * -1);
     }
 
-     */
-
+    //Check if Player on ground for jumping
     public boolean IsPlayerOnGround(){
         if(Yspeed == -Yspeed){
             return true;
