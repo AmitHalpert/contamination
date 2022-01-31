@@ -19,7 +19,6 @@ public class contamination extends Game {
 		font = new BitmapFont();
 		this.setScreen(new GameScreen(this));
 
-
 	}
 
 

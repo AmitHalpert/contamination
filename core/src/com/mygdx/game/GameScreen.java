@@ -29,6 +29,7 @@ class GameScreen implements Screen {
     private final contamination game;
     Player player;
 
+    // Main menu features
     float deltaTime;
     Boolean isPaused;
 
@@ -39,11 +40,11 @@ class GameScreen implements Screen {
     //graphics
     private Texture background;
 
-
     // world parameters
     private final int WORLD_WIDTH = 1920;
     private final int WORLD_HEIGHT = 1080;
 
+    //World objects
     Array<MapObject> Walls;
 
     public GameScreen(final contamination game){
@@ -64,9 +65,40 @@ class GameScreen implements Screen {
         // Map graphics
         background = new Texture("map.png");
 
-        // Creates the wall array for the map
+        // Creates the wall array for the map and calls makeWalls function
         Walls = new Array<MapObject>();
         makeWalls();
+    }
+
+    @Override
+    public void show() {
+    }
+
+    @Override
+    public void render(float deltaTime) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        deltaTime = Gdx.graphics.getDeltaTime();
+
+        //Game
+        MainMenu();
+
+
+        //updates the camera
+        camera.update();
+        game.batch.setProjectionMatrix(camera.combined);
+
+
+
+        // BEGIN TO DRAW:
+        game.batch.begin();
+
+        game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
+
+        //Draw the player and gives all the input player class needs
+        game.batch.draw(player.render(deltaTime, Walls),  player.x,  player.y, player.width,  player.height);
+
+
+        game.batch.end();
     }
 
     // Creates the maps ground for collision
@@ -76,39 +108,16 @@ class GameScreen implements Screen {
         }
     }
 
-
-
-
-    @Override
-    public void show() {
-
-    }
-
-    @Override
-    public void render(float deltaTime) {
-        ScreenUtils.clear(0, 0, 0, 0.3f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        deltaTime = Gdx.graphics.getDeltaTime();
+    public void MainMenu(){
+        if (Gdx.input.isKeyPressed(Keys.ESCAPE)){
+            dispose();
+            Gdx.app.exit();
+        }
 
         //Checks if the game is paused
         if (isPaused){
             deltaTime = 0;
         }
-
-        //updates the camera
-        camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
-
-        // BEGIN TO DRAW:
-        game.batch.begin();
-
-        game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
-
-        //Draw the player
-        game.batch.draw(player.render(deltaTime, Walls),  player.x,  player.y, player.width,  player.height);
-
-        game.batch.end();
-
     }
 
 
@@ -136,6 +145,7 @@ class GameScreen implements Screen {
     @Override
     public void dispose() {
         player.dispose();
+        background.dispose();
 
     }
 }
