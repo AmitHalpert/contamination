@@ -16,18 +16,21 @@ public class Player {
         Falling,
         Jumping,
         Idle,
-        HoldingGun
+        HoldingGun,
+        shooting,
+        dead
     }
 
+    // Player parameters
     float x;
     float y;
     int width, height;
     double Xspeed, Yspeed;
     Rectangle hitBox;
-
-    public float fallTime;
-    float idle_animation_time;
     Boolean isFacingLeft;
+
+    // Animation parameters
+    float idle_animation_time;
     Texture outputTexture;
     Texture playerTexture;
     ObjectAnimation player_running_animation;
@@ -45,7 +48,6 @@ public class Player {
         hitBox = new Rectangle(x, y, width, height);
 
 
-        fallTime = 1f;
         state = playerState.Idle;
         idle_animation_time = 0;
 
@@ -61,13 +63,13 @@ public class Player {
 
     }
 
-
+    // Like the main for the player class
     public Texture render(float delta, Array<MapObject> Walls) {
 
         //Determine witch (playerState) state the player will be.
         GetPlayerState();
 
-        // BEEP BOOP
+        // keyboard input N Player movement
         PlayerInputHandling();
 
         // Checks if player is on the ground for jumping...
@@ -122,7 +124,10 @@ public class Player {
         return outputTexture;
     }
 
-    // Decides what state the player will be
+    //###
+    // The player functions
+    //###
+
     public void GetPlayerState() {
 
         // checks if the player is moving up or down
@@ -149,6 +154,7 @@ public class Player {
         }
 
     }
+
 
     public void PlayerInputHandling() {
 
@@ -179,6 +185,7 @@ public class Player {
 
     }
 
+
     public void collisionDetection(Array<MapObject> Walls) {
 
         //Horizontal Collision
@@ -200,7 +207,7 @@ public class Player {
 
    }
 
-    //Check if the Player is on the ground
+
     public boolean IsPlayerOnGround(){
         if(Yspeed == -Yspeed){
             return true;
@@ -209,6 +216,7 @@ public class Player {
             return false;
         }
     }
+
 
     public void updatePlayerPos(){
         //Updates X AND Y Position of the player

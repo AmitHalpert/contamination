@@ -31,21 +31,20 @@ class GameScreen implements Screen {
 
     // Main menu features
     float deltaTime;
-    Boolean isPaused;
 
     //Screen
     OrthographicCamera camera;
     Viewport viewport;
 
     //graphics
-    private Texture background;
+    private final Texture background;
 
     // world parameters
     private final int WORLD_WIDTH = 1920;
     private final int WORLD_HEIGHT = 1080;
 
     //World objects
-    Array<MapObject> Walls;
+    Array<MapObject> Platforms;
 
     public GameScreen(final contamination game){
         this.game = game;
@@ -55,7 +54,6 @@ class GameScreen implements Screen {
 
         // initialize parameters
         deltaTime = 0;
-        isPaused = false;
 
         // set up the camera and the viewport
         camera = new OrthographicCamera();
@@ -66,8 +64,8 @@ class GameScreen implements Screen {
         background = new Texture("map.png");
 
         // Creates the wall array for the map and calls makeWalls function
-        Walls = new Array<MapObject>();
-        makeWalls();
+        Platforms = new Array<MapObject>();
+        createGround();
     }
 
     @Override
@@ -95,16 +93,16 @@ class GameScreen implements Screen {
         game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
 
         //Draw the player and gives all the input player class needs
-        game.batch.draw(player.render(deltaTime, Walls),  player.x,  player.y, player.width,  player.height);
+        game.batch.draw(player.render(deltaTime, Platforms),  player.x,  player.y, player.width,  player.height);
 
 
         game.batch.end();
     }
 
     // Creates the maps ground for collision
-    private void makeWalls(){
+    private void createGround(){
         for(int i = 50; i < 650; i+= 50){
-            Walls.add(new MapObject(i,-110,1300,203));
+            Platforms.add(new MapObject(i,-110,1300,203));
         }
     }
 
@@ -112,11 +110,6 @@ class GameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Keys.ESCAPE)){
             dispose();
             Gdx.app.exit();
-        }
-
-        //Checks if the game is paused
-        if (isPaused){
-            deltaTime = 0;
         }
     }
 
