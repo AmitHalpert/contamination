@@ -66,6 +66,7 @@ class GameScreen implements Screen {
         // Creates the wall array for the map and calls makeWalls function
         Platforms = new Array<MapObject>();
         createGround();
+        createMapBounds();
     }
 
     @Override
@@ -77,32 +78,45 @@ class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         deltaTime = Gdx.graphics.getDeltaTime();
 
-        //Game
+        //The Game's Main menu
         MainMenu();
-
 
         //updates the camera
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
-
-
         // BEGIN TO DRAW:
         game.batch.begin();
 
+        //Draw map
         game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
-
         //Draw the player and gives all the input player class needs
         game.batch.draw(player.render(deltaTime, Platforms),  player.x,  player.y, player.width,  player.height);
 
 
         game.batch.end();
+
     }
 
-    // Creates the maps ground for collision
+    // Creates the maps ground
     private void createGround(){
         for(int i = 50; i < 650; i+= 50){
             Platforms.add(new MapObject(i,-110,1300,203));
+        }
+    }
+
+    private void createMapBounds(){
+        // create left world border
+        for(int i = 50; i < 650; i+= 50){
+            Platforms.add(new MapObject(-700,i,640,600));
+        }
+        // create right world border
+        for(int i = 50; i < 650; i+= 50){
+            Platforms.add(new MapObject(1989,i,500,600));
+        }
+
+        for(int i = 50; i < 650; i+= 50){
+            Platforms.add(new MapObject(i,1200,1300,203));
         }
     }
 

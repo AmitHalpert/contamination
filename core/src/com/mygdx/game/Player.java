@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import java.lang.*;
@@ -38,13 +39,13 @@ public class Player {
     ObjectAnimation player_idle_animation;
     playerState state;
 
-    public Player(float x, float y) {
+    public Player(float x, float y){
 
         this.x = x;
         this.y = y;
 
-        width = 200;
-        height = 200;
+        width = 170;
+        height = 170;
         hitBox = new Rectangle(x, y, width, height);
 
 
@@ -61,25 +62,36 @@ public class Player {
         playerTexture = new Texture(Gdx.files.internal("player_idle_1.png"));
         outputTexture = playerTexture;
 
+
     }
+
+
 
     // Like the main for the player class
     public Texture render(float delta, Array<MapObject> Walls) {
 
+
+
         //Determine witch (playerState) state the player will be.
         GetPlayerState();
+
 
         // keyboard input N Player movement
         PlayerInputHandling();
 
+
         // Checks if player is on the ground for jumping...
         IsPlayerOnGround();
+
 
         // Detects if the player touches A MapObject and changes speeds
         collisionDetection(Walls);
 
-        // Change the player X AND Y
+
+
+        // Changes the player X AND Y
         updatePlayerPos();
+
 
 
 
@@ -120,14 +132,18 @@ public class Player {
         }
 
 
-        // Returns the (state) animation
+        // Returns the (Player state) animation
         return outputTexture;
     }
+
+
 
     //###
     // The player functions
     //###
 
+
+    //Determine witch (playerState) state the player will be.
     public void GetPlayerState() {
 
         // checks if the player is moving up or down
@@ -137,25 +153,27 @@ public class Player {
             state = playerState.Falling;
         }
 
-
         // checks if the player is moving left or right
         if (Xspeed != 0) {
             if (Xspeed != 0 && Yspeed == 0) {
                 state = playerState.Running;
             }
 
-            if (Xspeed == -Xspeed) {
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 isFacingLeft = true;
-            } else {
+            }
+            else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 isFacingLeft = false;
             }
-        } else if (Xspeed == 0 && Yspeed == 0) {
+
+        }
+        else if (Xspeed == 0 && Yspeed == 0) {
             state = playerState.Idle;
         }
 
     }
 
-
+    // keyboard input N Player movement
     public void PlayerInputHandling() {
 
         //Horizontal Player input
@@ -185,7 +203,7 @@ public class Player {
 
     }
 
-
+    // Detects if the player touches A MapObject and changes speeds
     public void collisionDetection(Array<MapObject> Walls) {
 
         //Horizontal Collision
@@ -207,7 +225,7 @@ public class Player {
 
    }
 
-
+    // Checks if player is on the ground for jumping...
     public boolean IsPlayerOnGround(){
         if(Yspeed == -Yspeed){
             return true;
@@ -217,7 +235,7 @@ public class Player {
         }
     }
 
-
+    // Change the player X AND Y
     public void updatePlayerPos(){
         //Updates X AND Y Position of the player
         x += Xspeed;
@@ -226,6 +244,7 @@ public class Player {
         hitBox.x = x;
         hitBox.y = y;
     }
+
 
 
 
