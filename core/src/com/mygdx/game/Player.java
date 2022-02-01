@@ -27,6 +27,7 @@ public class Player {
     float y;
     int width, height;
     double Xspeed, Yspeed;
+    double DX,DY;
     Rectangle hitBox;
     Boolean isFacingLeft;
 
@@ -48,7 +49,7 @@ public class Player {
         height = 170;
         hitBox = new Rectangle(x, y, width, height);
 
-
+        isFacingLeft = false;
         state = playerState.Idle;
         idle_animation_time = 0;
 
@@ -71,27 +72,20 @@ public class Player {
     public Texture render(float delta, Array<MapObject> Walls) {
 
 
-
         //Determine witch (playerState) state the player will be.
-        GetPlayerState();
-
+        GetPlayerState(delta);
 
         // keyboard input N Player movement
         PlayerInputHandling();
 
-
         // Checks if player is on the ground for jumping...
         IsPlayerOnGround();
-
 
         // Detects if the player touches A MapObject and changes speeds
         collisionDetection(Walls);
 
-
-
         // Changes the player X AND Y
         updatePlayerPos();
-
 
 
 
@@ -132,6 +126,12 @@ public class Player {
         }
 
 
+        if(isFacingLeft && width > 0 || !isFacingLeft && width < 0){
+            width = (width * -1);
+            this.x = this.x + this.width * -1;
+        }
+
+
         // Returns the (Player state) animation
         return outputTexture;
     }
@@ -144,7 +144,7 @@ public class Player {
 
 
     //Determine witch (playerState) state the player will be.
-    public void GetPlayerState() {
+    public void GetPlayerState(float delta) {
 
         // checks if the player is moving up or down
         if (Yspeed > 0) {
@@ -159,12 +159,14 @@ public class Player {
                 state = playerState.Running;
             }
 
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            if (Xspeed < 0) {
                 isFacingLeft = true;
             }
-            else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+
+            else {
                 isFacingLeft = false;
             }
+
 
         }
         else if (Xspeed == 0 && Yspeed == 0) {
@@ -179,8 +181,13 @@ public class Player {
         //Horizontal Player input
         if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && (Gdx.input.isKeyPressed(Input.Keys.LEFT)) || !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
             Xspeed *= 0.8;
-        } else if ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT))) Xspeed--;
-        else if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(Gdx.input.isKeyPressed(Input.Keys.LEFT))) Xspeed++;
+        }
+        else if ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
+            Xspeed--;
+        }
+        else if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
+            Xspeed++;
+        }
 
 
         //Smooths Player Movement
@@ -195,10 +202,12 @@ public class Player {
             hitBox.y++;
             if (IsPlayerOnGround() == true) {
                 Yspeed += 14;
+                DY += 14;
             }
             hitBox.y--;
         }
         Yspeed -= 0.6;
+        DY -= 0.6;
 
 
     }
@@ -240,6 +249,7 @@ public class Player {
         //Updates X AND Y Position of the player
         x += Xspeed;
         y += Yspeed;
+
 
         hitBox.x = x;
         hitBox.y = y;
