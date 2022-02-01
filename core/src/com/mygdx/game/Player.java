@@ -27,9 +27,9 @@ public class Player {
     float y;
     int width, height;
     double Xspeed, Yspeed;
-    double DX,DY;
     Rectangle hitBox;
-    Boolean isFacingLeft;
+    boolean isFacingLeft;
+    boolean Collision;
 
     // Animation parameters
     float idle_animation_time;
@@ -51,6 +51,7 @@ public class Player {
 
         isFacingLeft = false;
         state = playerState.Idle;
+        Collision = false;
         idle_animation_time = 0;
 
         //set up the player animations
@@ -124,11 +125,11 @@ public class Player {
                 idle_animation_time += delta;
                 break;
         }
-
-
+        // Flips player width
         if(isFacingLeft && width > 0 || !isFacingLeft && width < 0){
-            width = (width * -1);
+            this.width = (this.width * -1);
             this.x = this.x + this.width * -1;
+            this.hitBox.width = this.hitBox.width * -1;
         }
 
 
@@ -159,14 +160,6 @@ public class Player {
                 state = playerState.Running;
             }
 
-            if (Xspeed < 0) {
-                isFacingLeft = true;
-            }
-
-            else {
-                isFacingLeft = false;
-            }
-
 
         }
         else if (Xspeed == 0 && Yspeed == 0) {
@@ -184,9 +177,11 @@ public class Player {
         }
         else if ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
             Xspeed--;
+            isFacingLeft = true;
         }
         else if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
             Xspeed++;
+            isFacingLeft = false;
         }
 
 
@@ -202,13 +197,11 @@ public class Player {
             hitBox.y++;
             if (IsPlayerOnGround() == true) {
                 Yspeed += 14;
-                DY += 14;
+
             }
             hitBox.y--;
         }
         Yspeed -= 0.6;
-        DY -= 0.6;
-
 
     }
 
@@ -220,6 +213,10 @@ public class Player {
         for (MapObject i_wall : Walls) {
             if (hitBox.overlaps(i_wall.hitBox)) {
                 Xspeed -= Xspeed;
+                Collision = true;
+            }
+            else {
+                Collision = false;
             }
 
         }
@@ -229,6 +226,10 @@ public class Player {
         for (MapObject i_wall : Walls) {
             if (hitBox.overlaps(i_wall.hitBox)) {
                 Yspeed -= Yspeed;
+                Collision = true;
+            }
+            else {
+                Collision = false;
             }
         }
 
