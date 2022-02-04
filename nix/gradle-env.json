@@ -1,0 +1,1572 @@
+{
+  "": {
+    "name": "contamination",
+    "version": "1.0",
+    "path": "",
+    "gradle": {
+      "version": "6.7.1",
+      "type": "bin",
+      "url": "https://services.gradle.org/distributions/gradle-6.7.1-bin.zip",
+      "sha256": "3239b5ed86c3838a37d983ac100573f64c1f3fd8e1eb6c89fa5f9529b5ec091d",
+      "nativeVersion": "0.22-milestone-9"
+    },
+    "dependencies": {
+      "settings": [],
+      "plugin": [],
+      "buildscript": [],
+      "project": [
+        {
+          "id": {
+            "group": "com.badlogicgames.ashley",
+            "name": "ashley",
+            "version": "1.7.4",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "ashley-1.7.4.jar",
+          "path": "com/badlogicgames/ashley/ashley/1.7.4",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/ashley/ashley/1.7.4/ashley-1.7.4.jar",
+            "https://plugins.gradle.org/m2/com/badlogicgames/ashley/ashley/1.7.4/ashley-1.7.4.jar",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/ashley/ashley/1.7.4/ashley-1.7.4.jar"
+          ],
+          "sha256": "ad662cd8f86083083d253154cf6b3c8aa6d5c3266a01db730bbc153f381dec06"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.ashley",
+            "name": "ashley",
+            "version": "1.7.4",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "ashley-1.7.4.pom",
+          "path": "com/badlogicgames/ashley/ashley/1.7.4",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/ashley/ashley/1.7.4/ashley-1.7.4.pom",
+            "https://plugins.gradle.org/m2/com/badlogicgames/ashley/ashley/1.7.4/ashley-1.7.4.pom",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/ashley/ashley/1.7.4/ashley-1.7.4.pom"
+          ],
+          "sha256": "0856372bf9abcf31b99c4272bdd2954a4fd5351126668123536057ca99c86eb9"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.box2dlights",
+            "name": "box2dlights",
+            "version": "1.5",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "box2dlights-1.5.jar",
+          "path": "com/badlogicgames/box2dlights/box2dlights/1.5",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/box2dlights/box2dlights/1.5/box2dlights-1.5.jar",
+            "https://plugins.gradle.org/m2/com/badlogicgames/box2dlights/box2dlights/1.5/box2dlights-1.5.jar",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/box2dlights/box2dlights/1.5/box2dlights-1.5.jar"
+          ],
+          "sha256": "175a8dae2143651485600333ac3c3fbd2d6ee531e30afb78d36c96f2294b5e17"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.box2dlights",
+            "name": "box2dlights",
+            "version": "1.5",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "box2dlights-1.5.pom",
+          "path": "com/badlogicgames/box2dlights/box2dlights/1.5",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/box2dlights/box2dlights/1.5/box2dlights-1.5.pom",
+            "https://plugins.gradle.org/m2/com/badlogicgames/box2dlights/box2dlights/1.5/box2dlights-1.5.pom",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/box2dlights/box2dlights/1.5/box2dlights-1.5.pom"
+          ],
+          "sha256": "13b7fd3805959af5ede34d8cf9f504ad2851ee8226876116f3dba0017103972b"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx",
+            "version": "1.10.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "gdx-1.10.0.jar",
+          "path": "com/badlogicgames/gdx/gdx/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx/1.10.0/gdx-1.10.0.jar",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx/1.10.0/gdx-1.10.0.jar",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx/1.10.0/gdx-1.10.0.jar"
+          ],
+          "sha256": "ffb49b06711e34b1a175df17311b0f3ae0e85bf46c569a137ec00d291bb2cae1"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx",
+            "version": "1.10.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "gdx-1.10.0.pom",
+          "path": "com/badlogicgames/gdx/gdx/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx/1.10.0/gdx-1.10.0.pom",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx/1.10.0/gdx-1.10.0.pom",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx/1.10.0/gdx-1.10.0.pom"
+          ],
+          "sha256": "be1ca1b4fa25095d779c0c4276930a0deffae3e958b2786ec9c66dc7f2f137d6"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-ai",
+            "version": "1.8.2",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "gdx-ai-1.8.2.jar",
+          "path": "com/badlogicgames/gdx/gdx-ai/1.8.2",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-ai/1.8.2/gdx-ai-1.8.2.jar",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-ai/1.8.2/gdx-ai-1.8.2.jar",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-ai/1.8.2/gdx-ai-1.8.2.jar"
+          ],
+          "sha256": "0e43d64800978896b20a9082aaa4696dc24bb68fc5553f8ebd33ce026aabc737"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-ai",
+            "version": "1.8.2",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "gdx-ai-1.8.2.pom",
+          "path": "com/badlogicgames/gdx/gdx-ai/1.8.2",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-ai/1.8.2/gdx-ai-1.8.2.pom",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-ai/1.8.2/gdx-ai-1.8.2.pom",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-ai/1.8.2/gdx-ai-1.8.2.pom"
+          ],
+          "sha256": "4130222fb1986fa26aa8f7ddfcea32879d336fdd9b1b754e62e79a87033b6b69"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-box2d",
+            "version": "1.10.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "gdx-box2d-1.10.0.jar",
+          "path": "com/badlogicgames/gdx/gdx-box2d/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-box2d/1.10.0/gdx-box2d-1.10.0.jar",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-box2d/1.10.0/gdx-box2d-1.10.0.jar",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-box2d/1.10.0/gdx-box2d-1.10.0.jar"
+          ],
+          "sha256": "ba93a086f68947253074c6514138108ccea8d63c83af28c70310ae29f7185a09"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-box2d",
+            "version": "1.10.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "gdx-box2d-1.10.0.pom",
+          "path": "com/badlogicgames/gdx/gdx-box2d/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-box2d/1.10.0/gdx-box2d-1.10.0.pom",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-box2d/1.10.0/gdx-box2d-1.10.0.pom",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-box2d/1.10.0/gdx-box2d-1.10.0.pom"
+          ],
+          "sha256": "9a69d4a32acabaedaaafcb89a828d2b5a42f7b090ec1d2775991e49b7ef62e62"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-box2d-parent",
+            "version": "1.10.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "gdx-box2d-parent-1.10.0.pom",
+          "path": "com/badlogicgames/gdx/gdx-box2d-parent/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-box2d-parent/1.10.0/gdx-box2d-parent-1.10.0.pom",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-box2d-parent/1.10.0/gdx-box2d-parent-1.10.0.pom",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-box2d-parent/1.10.0/gdx-box2d-parent-1.10.0.pom"
+          ],
+          "sha256": "f1c6871b8d21a550a8c6c08aaa35d83086fbdd307c89b5776a14f7ca7937c05d"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-parent",
+            "version": "1.10.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "gdx-parent-1.10.0.pom",
+          "path": "com/badlogicgames/gdx/gdx-parent/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-parent/1.10.0/gdx-parent-1.10.0.pom",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-parent/1.10.0/gdx-parent-1.10.0.pom",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-parent/1.10.0/gdx-parent-1.10.0.pom"
+          ],
+          "sha256": "01801d9b70de8f2da70c32218abf37a8e8892e94016bf2d43b3ab9bf33153380"
+        },
+        {
+          "id": {
+            "group": "org.sonatype.oss",
+            "name": "oss-parent",
+            "version": "5",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "oss-parent-5.pom",
+          "path": "org/sonatype/oss/oss-parent/5",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/sonatype/oss/oss-parent/5/oss-parent-5.pom",
+            "https://plugins.gradle.org/m2/org/sonatype/oss/oss-parent/5/oss-parent-5.pom",
+            "https://oss.sonatype.org/content/repositories/releases/org/sonatype/oss/oss-parent/5/oss-parent-5.pom"
+          ],
+          "sha256": "1678d4120a585d8a630131aeec4c524d928398583b7eab616ee7d5a87f520d3d"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-backend-headless",
+            "version": "1.10.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "gdx-backend-headless-1.10.0.jar",
+          "path": "com/badlogicgames/gdx/gdx-backend-headless/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-backend-headless/1.10.0/gdx-backend-headless-1.10.0.jar",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-backend-headless/1.10.0/gdx-backend-headless-1.10.0.jar",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-backend-headless/1.10.0/gdx-backend-headless-1.10.0.jar"
+          ],
+          "sha256": "7c91eac7c36484c4093c6f8e38f7a9f7b3bbea8c89e33979f6aa593a50bce2b3"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-backend-headless",
+            "version": "1.10.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "gdx-backend-headless-1.10.0.pom",
+          "path": "com/badlogicgames/gdx/gdx-backend-headless/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-backend-headless/1.10.0/gdx-backend-headless-1.10.0.pom",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-backend-headless/1.10.0/gdx-backend-headless-1.10.0.pom",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-backend-headless/1.10.0/gdx-backend-headless-1.10.0.pom"
+          ],
+          "sha256": "0af8e522e07a2071b34eecb606662a25ac12f7ca8fab201c7718e7c7d291c74b"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-backend-lwjgl",
+            "version": "1.10.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "gdx-backend-lwjgl-1.10.0.jar",
+          "path": "com/badlogicgames/gdx/gdx-backend-lwjgl/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-backend-lwjgl/1.10.0/gdx-backend-lwjgl-1.10.0.jar",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-backend-lwjgl/1.10.0/gdx-backend-lwjgl-1.10.0.jar",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-backend-lwjgl/1.10.0/gdx-backend-lwjgl-1.10.0.jar"
+          ],
+          "sha256": "38d619a6eefb4593ab57164c5fd10a135fc374a1b0970e5c5e208c7389400d40"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-backend-lwjgl",
+            "version": "1.10.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "gdx-backend-lwjgl-1.10.0.pom",
+          "path": "com/badlogicgames/gdx/gdx-backend-lwjgl/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-backend-lwjgl/1.10.0/gdx-backend-lwjgl-1.10.0.pom",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-backend-lwjgl/1.10.0/gdx-backend-lwjgl-1.10.0.pom",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-backend-lwjgl/1.10.0/gdx-backend-lwjgl-1.10.0.pom"
+          ],
+          "sha256": "cc97c5e61e5cbda3aa85e5f66b43f189e16542b510cb17c7413eb85ba1dcb822"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-backend-lwjgl3",
+            "version": "1.10.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "gdx-backend-lwjgl3-1.10.0.jar",
+          "path": "com/badlogicgames/gdx/gdx-backend-lwjgl3/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-backend-lwjgl3/1.10.0/gdx-backend-lwjgl3-1.10.0.jar",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-backend-lwjgl3/1.10.0/gdx-backend-lwjgl3-1.10.0.jar",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-backend-lwjgl3/1.10.0/gdx-backend-lwjgl3-1.10.0.jar"
+          ],
+          "sha256": "77efb275eaa00790d60d37e37e83b2c2ba21b1073ef47588a0dcad944db040f0"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-backend-lwjgl3",
+            "version": "1.10.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "gdx-backend-lwjgl3-1.10.0.pom",
+          "path": "com/badlogicgames/gdx/gdx-backend-lwjgl3/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-backend-lwjgl3/1.10.0/gdx-backend-lwjgl3-1.10.0.pom",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-backend-lwjgl3/1.10.0/gdx-backend-lwjgl3-1.10.0.pom",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-backend-lwjgl3/1.10.0/gdx-backend-lwjgl3-1.10.0.pom"
+          ],
+          "sha256": "b8cc5e5ad7977a89ed01092b9305631da3268a0df7fa73ad441fa9fbdf0c311d"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-box2d-platform",
+            "version": "1.10.0",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-desktop"
+          },
+          "name": "gdx-box2d-platform-1.10.0-natives-desktop.jar",
+          "path": "com/badlogicgames/gdx/gdx-box2d-platform/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-box2d-platform/1.10.0/gdx-box2d-platform-1.10.0-natives-desktop.jar",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-box2d-platform/1.10.0/gdx-box2d-platform-1.10.0-natives-desktop.jar",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-box2d-platform/1.10.0/gdx-box2d-platform-1.10.0-natives-desktop.jar"
+          ],
+          "sha256": "b241f4a6fb58c6c013bf9880776e52bb6a0ec2de32af00aeb994665b207f56c4"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-box2d-platform",
+            "version": "1.10.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "gdx-box2d-platform-1.10.0.pom",
+          "path": "com/badlogicgames/gdx/gdx-box2d-platform/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-box2d-platform/1.10.0/gdx-box2d-platform-1.10.0.pom",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-box2d-platform/1.10.0/gdx-box2d-platform-1.10.0.pom",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-box2d-platform/1.10.0/gdx-box2d-platform-1.10.0.pom"
+          ],
+          "sha256": "95520c03ff0053329ad4b5a07469618ffb8dc163780e89facab6733d305ed23d"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-freetype",
+            "version": "1.10.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "gdx-freetype-1.10.0.jar",
+          "path": "com/badlogicgames/gdx/gdx-freetype/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-freetype/1.10.0/gdx-freetype-1.10.0.jar",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-freetype/1.10.0/gdx-freetype-1.10.0.jar",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-freetype/1.10.0/gdx-freetype-1.10.0.jar"
+          ],
+          "sha256": "ff0f7312c06357abec066d49296b8f6554b40fa1cc3e56b9c20895741696a125"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-freetype",
+            "version": "1.10.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "gdx-freetype-1.10.0.pom",
+          "path": "com/badlogicgames/gdx/gdx-freetype/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-freetype/1.10.0/gdx-freetype-1.10.0.pom",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-freetype/1.10.0/gdx-freetype-1.10.0.pom",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-freetype/1.10.0/gdx-freetype-1.10.0.pom"
+          ],
+          "sha256": "53c1b0bf8881409bf9b7aadfe4d06164451b7c28417ca8491028c48f7e94b475"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-platform",
+            "version": "1.10.0",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-desktop"
+          },
+          "name": "gdx-platform-1.10.0-natives-desktop.jar",
+          "path": "com/badlogicgames/gdx/gdx-platform/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-platform/1.10.0/gdx-platform-1.10.0-natives-desktop.jar",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-platform/1.10.0/gdx-platform-1.10.0-natives-desktop.jar",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-platform/1.10.0/gdx-platform-1.10.0-natives-desktop.jar"
+          ],
+          "sha256": "094bc892bf94212ce674bb5a3beb14c98530c1ff6f69cd4e438b93a6f5566ac9"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-platform",
+            "version": "1.10.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "gdx-platform-1.10.0.pom",
+          "path": "com/badlogicgames/gdx/gdx-platform/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-platform/1.10.0/gdx-platform-1.10.0.pom",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-platform/1.10.0/gdx-platform-1.10.0.pom",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-platform/1.10.0/gdx-platform-1.10.0.pom"
+          ],
+          "sha256": "de3007794090aab3f8de3f8450c4fc6da36bddc76797d13ef2bf91b224333d0c"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-tools",
+            "version": "1.10.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "gdx-tools-1.10.0.jar",
+          "path": "com/badlogicgames/gdx/gdx-tools/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-tools/1.10.0/gdx-tools-1.10.0.jar",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-tools/1.10.0/gdx-tools-1.10.0.jar",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-tools/1.10.0/gdx-tools-1.10.0.jar"
+          ],
+          "sha256": "c6f53499f78d5eebb3e23e90ec06ddf950d28702db6e48b6d34e77ea7277eca5"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.gdx",
+            "name": "gdx-tools",
+            "version": "1.10.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "gdx-tools-1.10.0.pom",
+          "path": "com/badlogicgames/gdx/gdx-tools/1.10.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/gdx/gdx-tools/1.10.0/gdx-tools-1.10.0.pom",
+            "https://plugins.gradle.org/m2/com/badlogicgames/gdx/gdx-tools/1.10.0/gdx-tools-1.10.0.pom",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/gdx/gdx-tools/1.10.0/gdx-tools-1.10.0.pom"
+          ],
+          "sha256": "3a8eb53fd2d7c2293b7338bd7db20053532c9fbf69be23b3e5145e97fd1adfb8"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.jlayer",
+            "name": "jlayer",
+            "version": "1.0.1-gdx",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "jlayer-1.0.1-gdx.jar",
+          "path": "com/badlogicgames/jlayer/jlayer/1.0.1-gdx",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/jlayer/jlayer/1.0.1-gdx/jlayer-1.0.1-gdx.jar",
+            "https://plugins.gradle.org/m2/com/badlogicgames/jlayer/jlayer/1.0.1-gdx/jlayer-1.0.1-gdx.jar",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/jlayer/jlayer/1.0.1-gdx/jlayer-1.0.1-gdx.jar"
+          ],
+          "sha256": "aabcdedc2e3fa41c4e138870523d743337f189931080630ba1a2285538cd00fb"
+        },
+        {
+          "id": {
+            "group": "com.badlogicgames.jlayer",
+            "name": "jlayer",
+            "version": "1.0.1-gdx",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "jlayer-1.0.1-gdx.pom",
+          "path": "com/badlogicgames/jlayer/jlayer/1.0.1-gdx",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/com/badlogicgames/jlayer/jlayer/1.0.1-gdx/jlayer-1.0.1-gdx.pom",
+            "https://plugins.gradle.org/m2/com/badlogicgames/jlayer/jlayer/1.0.1-gdx/jlayer-1.0.1-gdx.pom",
+            "https://oss.sonatype.org/content/repositories/releases/com/badlogicgames/jlayer/jlayer/1.0.1-gdx/jlayer-1.0.1-gdx.pom"
+          ],
+          "sha256": "9c60917b6267388bc5796a520ecc0f17c79dda154650cd0541d4c4138821bf49"
+        },
+        {
+          "id": {
+            "group": "net.java.jinput",
+            "name": "jinput",
+            "version": "2.0.5",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "jinput-2.0.5.jar",
+          "path": "net/java/jinput/jinput/2.0.5",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/net/java/jinput/jinput/2.0.5/jinput-2.0.5.jar",
+            "https://plugins.gradle.org/m2/net/java/jinput/jinput/2.0.5/jinput-2.0.5.jar",
+            "https://oss.sonatype.org/content/repositories/releases/net/java/jinput/jinput/2.0.5/jinput-2.0.5.jar"
+          ],
+          "sha256": "79b5a4f5829e1a49a415711f7fb8eb5b9ad22defa72929fda2da96ec30d3f018"
+        },
+        {
+          "id": {
+            "group": "net.java.jinput",
+            "name": "jinput",
+            "version": "2.0.5",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "jinput-2.0.5.pom",
+          "path": "net/java/jinput/jinput/2.0.5",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/net/java/jinput/jinput/2.0.5/jinput-2.0.5.pom",
+            "https://plugins.gradle.org/m2/net/java/jinput/jinput/2.0.5/jinput-2.0.5.pom",
+            "https://oss.sonatype.org/content/repositories/releases/net/java/jinput/jinput/2.0.5/jinput-2.0.5.pom"
+          ],
+          "sha256": "3199d547c1275e806e0c7be19e90dcb00d9561ec3b31fb2e780e12d7d8785810"
+        },
+        {
+          "id": {
+            "group": "net.java.jinput",
+            "name": "jinput-platform",
+            "version": "2.0.5",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux"
+          },
+          "name": "jinput-platform-2.0.5-natives-linux.jar",
+          "path": "net/java/jinput/jinput-platform/2.0.5",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5-natives-linux.jar",
+            "https://plugins.gradle.org/m2/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5-natives-linux.jar",
+            "https://oss.sonatype.org/content/repositories/releases/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5-natives-linux.jar"
+          ],
+          "sha256": "1ab4d194277816b6105253d224c8c69f1b6d720690efe7c85f3ce884f0ea273d"
+        },
+        {
+          "id": {
+            "group": "net.java.jinput",
+            "name": "jinput-platform",
+            "version": "2.0.5",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-osx"
+          },
+          "name": "jinput-platform-2.0.5-natives-osx.jar",
+          "path": "net/java/jinput/jinput-platform/2.0.5",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5-natives-osx.jar",
+            "https://plugins.gradle.org/m2/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5-natives-osx.jar",
+            "https://oss.sonatype.org/content/repositories/releases/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5-natives-osx.jar"
+          ],
+          "sha256": "171024b00f9a743b92388b48733dc30fd3f6d3a7da4f66f9821531fbcf1aa074"
+        },
+        {
+          "id": {
+            "group": "net.java.jinput",
+            "name": "jinput-platform",
+            "version": "2.0.5",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-windows"
+          },
+          "name": "jinput-platform-2.0.5-natives-windows.jar",
+          "path": "net/java/jinput/jinput-platform/2.0.5",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5-natives-windows.jar",
+            "https://plugins.gradle.org/m2/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5-natives-windows.jar",
+            "https://oss.sonatype.org/content/repositories/releases/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5-natives-windows.jar"
+          ],
+          "sha256": "24afbd5e1fab17da57d16a4d3f19d53f36155ef46a9976484201a4bb9722287f"
+        },
+        {
+          "id": {
+            "group": "net.java.jinput",
+            "name": "jinput-platform",
+            "version": "2.0.5",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "jinput-platform-2.0.5.pom",
+          "path": "net/java/jinput/jinput-platform/2.0.5",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5.pom",
+            "https://plugins.gradle.org/m2/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5.pom",
+            "https://oss.sonatype.org/content/repositories/releases/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5.pom"
+          ],
+          "sha256": "ba27597365ae85a836c1f51819903668b4a1a7490e39e530633cc8a7b40b5500"
+        },
+        {
+          "id": {
+            "group": "net.java.jutils",
+            "name": "jutils",
+            "version": "1.0.0",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "jutils-1.0.0.jar",
+          "path": "net/java/jutils/jutils/1.0.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/net/java/jutils/jutils/1.0.0/jutils-1.0.0.jar",
+            "https://plugins.gradle.org/m2/net/java/jutils/jutils/1.0.0/jutils-1.0.0.jar",
+            "https://oss.sonatype.org/content/repositories/releases/net/java/jutils/jutils/1.0.0/jutils-1.0.0.jar"
+          ],
+          "sha256": "c3334ff39cf0ab3b54925619101054c90098b7c733b1e7834c7b75e4c41e84a5"
+        },
+        {
+          "id": {
+            "group": "net.java.jutils",
+            "name": "jutils",
+            "version": "1.0.0",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "jutils-1.0.0.pom",
+          "path": "net/java/jutils/jutils/1.0.0",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/net/java/jutils/jutils/1.0.0/jutils-1.0.0.pom",
+            "https://plugins.gradle.org/m2/net/java/jutils/jutils/1.0.0/jutils-1.0.0.pom",
+            "https://oss.sonatype.org/content/repositories/releases/net/java/jutils/jutils/1.0.0/jutils-1.0.0.pom"
+          ],
+          "sha256": "af09ead4eb241473e7ec4d152a91a722ea09a717a202e20e4b385eac3217b7d6"
+        },
+        {
+          "id": {
+            "group": "org.jcraft",
+            "name": "jorbis",
+            "version": "0.0.17",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "jorbis-0.0.17.jar",
+          "path": "org/jcraft/jorbis/0.0.17",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/jcraft/jorbis/0.0.17/jorbis-0.0.17.jar",
+            "https://plugins.gradle.org/m2/org/jcraft/jorbis/0.0.17/jorbis-0.0.17.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/jcraft/jorbis/0.0.17/jorbis-0.0.17.jar"
+          ],
+          "sha256": "e067f29a3701426b67ed973036949c6e58ca5bb53eef7240b2e71e286d252a9e"
+        },
+        {
+          "id": {
+            "group": "org.jcraft",
+            "name": "jorbis",
+            "version": "0.0.17",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "jorbis-0.0.17.pom",
+          "path": "org/jcraft/jorbis/0.0.17",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/jcraft/jorbis/0.0.17/jorbis-0.0.17.pom",
+            "https://plugins.gradle.org/m2/org/jcraft/jorbis/0.0.17/jorbis-0.0.17.pom",
+            "https://oss.sonatype.org/content/repositories/releases/org/jcraft/jorbis/0.0.17/jorbis-0.0.17.pom"
+          ],
+          "sha256": "18de3b0d932af99832db4d832f683507fbdd5a0b0c24dd680e84ce6f57182e24"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "lwjgl-3.2.3.jar",
+          "path": "org/lwjgl/lwjgl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3.jar"
+          ],
+          "sha256": "f9928c3b4b540643a1bbd59286d3c7175e470849261a0c29a81389f52265ad8b"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux"
+          },
+          "name": "lwjgl-3.2.3-natives-linux.jar",
+          "path": "org/lwjgl/lwjgl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-linux.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-linux.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-linux.jar"
+          ],
+          "sha256": "002810129fc6ac4cdfcdf190e18a643a5021b6300f489c1026bbc5d00140ca2e"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux-arm32"
+          },
+          "name": "lwjgl-3.2.3-natives-linux-arm32.jar",
+          "path": "org/lwjgl/lwjgl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-linux-arm32.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-linux-arm32.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-linux-arm32.jar"
+          ],
+          "sha256": "46b639ca2ceea2597b67cc9e004833d0e82711df76ab5e52cde9c64f019d44d6"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux-arm64"
+          },
+          "name": "lwjgl-3.2.3-natives-linux-arm64.jar",
+          "path": "org/lwjgl/lwjgl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-linux-arm64.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-linux-arm64.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-linux-arm64.jar"
+          ],
+          "sha256": "3db6b395fbb689cb18bd27ad20055f4bc695ee93591d71d1ea45f31281c6f003"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-macos"
+          },
+          "name": "lwjgl-3.2.3-natives-macos.jar",
+          "path": "org/lwjgl/lwjgl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-macos.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-macos.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-macos.jar"
+          ],
+          "sha256": "5c520c465a84034b8bc23e1d7ecd621bb99c437cd254ea46b53197448d1b8128"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-windows"
+          },
+          "name": "lwjgl-3.2.3-natives-windows.jar",
+          "path": "org/lwjgl/lwjgl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-windows.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-windows.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-windows.jar"
+          ],
+          "sha256": "bdf519b9aa90f799954113a15dfa84b273ee4781876b3ecdebf192ce4f88a26c"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-windows-x86"
+          },
+          "name": "lwjgl-3.2.3-natives-windows-x86.jar",
+          "path": "org/lwjgl/lwjgl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-windows-x86.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-windows-x86.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3-natives-windows-x86.jar"
+          ],
+          "sha256": "4eb76ecf8f2dbc9cd3fa27b1a4bf9784ea91c4afc38691074613d5bf7a34dc8f"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl",
+            "version": "3.2.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "lwjgl-3.2.3.pom",
+          "path": "org/lwjgl/lwjgl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3.pom",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3.pom",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/3.2.3/lwjgl-3.2.3.pom"
+          ],
+          "sha256": "20bd8476bc87837230318d6b9af62e37570bdaa22a12a240c3022cd24fadfd6d"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-glfw",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "lwjgl-glfw-3.2.3.jar",
+          "path": "org/lwjgl/lwjgl-glfw/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3.jar"
+          ],
+          "sha256": "ef279cdaeede4ca344e756a56f85a85cbd039f7931011975672dc1b900b59c8f"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-glfw",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux"
+          },
+          "name": "lwjgl-glfw-3.2.3-natives-linux.jar",
+          "path": "org/lwjgl/lwjgl-glfw/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-linux.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-linux.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-linux.jar"
+          ],
+          "sha256": "63df461de7677e1658d1370ae70501a86c7a42ff47f6692928d4d5bcd1e6c589"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-glfw",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux-arm32"
+          },
+          "name": "lwjgl-glfw-3.2.3-natives-linux-arm32.jar",
+          "path": "org/lwjgl/lwjgl-glfw/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-linux-arm32.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-linux-arm32.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-linux-arm32.jar"
+          ],
+          "sha256": "13da535643d1e11be931c74a0c36b985da0826e1767244aed78d08771c126b73"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-glfw",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux-arm64"
+          },
+          "name": "lwjgl-glfw-3.2.3-natives-linux-arm64.jar",
+          "path": "org/lwjgl/lwjgl-glfw/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-linux-arm64.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-linux-arm64.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-linux-arm64.jar"
+          ],
+          "sha256": "e48917eef4178506f6d266c4528c12faf961b379f237f7779614cf5dcf51d233"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-glfw",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-macos"
+          },
+          "name": "lwjgl-glfw-3.2.3-natives-macos.jar",
+          "path": "org/lwjgl/lwjgl-glfw/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-macos.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-macos.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-macos.jar"
+          ],
+          "sha256": "64e6483833bc94da7f39cf71ef9968ffbff3484f054be333f02737e1e31489d0"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-glfw",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-windows"
+          },
+          "name": "lwjgl-glfw-3.2.3-natives-windows.jar",
+          "path": "org/lwjgl/lwjgl-glfw/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-windows.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-windows.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-windows.jar"
+          ],
+          "sha256": "19272dde1c9e966646b666b2aa6b595ebf598fe7519cdb4ab06c1b33d8e06bac"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-glfw",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-windows-x86"
+          },
+          "name": "lwjgl-glfw-3.2.3-natives-windows-x86.jar",
+          "path": "org/lwjgl/lwjgl-glfw/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-windows-x86.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-windows-x86.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3-natives-windows-x86.jar"
+          ],
+          "sha256": "b6f6be8c2da5972be9e35cf396beec4675e8b9d9183c15475c46fc9672a04d4e"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-glfw",
+            "version": "3.2.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "lwjgl-glfw-3.2.3.pom",
+          "path": "org/lwjgl/lwjgl-glfw/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3.pom",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3.pom",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-glfw/3.2.3/lwjgl-glfw-3.2.3.pom"
+          ],
+          "sha256": "0d8daa33fd13e0a04db7e1fedbdf68962196931ff6d18e2089937daf9171ef2e"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-jemalloc",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "lwjgl-jemalloc-3.2.3.jar",
+          "path": "org/lwjgl/lwjgl-jemalloc/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3.jar"
+          ],
+          "sha256": "6f790dbe775eb56be638e9d97b355313c0caf374f13545996670756a15cbfe6f"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-jemalloc",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux"
+          },
+          "name": "lwjgl-jemalloc-3.2.3-natives-linux.jar",
+          "path": "org/lwjgl/lwjgl-jemalloc/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-linux.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-linux.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-linux.jar"
+          ],
+          "sha256": "9044fe5131d78cdeb74bb7b3c9b3a1b155fa7530e3b4c2b91cb302eeb4c29d2d"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-jemalloc",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux-arm32"
+          },
+          "name": "lwjgl-jemalloc-3.2.3-natives-linux-arm32.jar",
+          "path": "org/lwjgl/lwjgl-jemalloc/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-linux-arm32.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-linux-arm32.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-linux-arm32.jar"
+          ],
+          "sha256": "500bafa901f8e9b73d95ea76f117d2b6e7fd7dced88e2a884a00ab21ff4d96a2"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-jemalloc",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux-arm64"
+          },
+          "name": "lwjgl-jemalloc-3.2.3-natives-linux-arm64.jar",
+          "path": "org/lwjgl/lwjgl-jemalloc/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-linux-arm64.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-linux-arm64.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-linux-arm64.jar"
+          ],
+          "sha256": "80f0adcdfbac0b78907b1a72c2ed80d415b6b865afadddaa4c10374729b2b3df"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-jemalloc",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-macos"
+          },
+          "name": "lwjgl-jemalloc-3.2.3-natives-macos.jar",
+          "path": "org/lwjgl/lwjgl-jemalloc/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-macos.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-macos.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-macos.jar"
+          ],
+          "sha256": "6ffed24e059b091760754d6b0ab5ae59490d04c209f84b84a571f1cbd652e441"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-jemalloc",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-windows"
+          },
+          "name": "lwjgl-jemalloc-3.2.3-natives-windows.jar",
+          "path": "org/lwjgl/lwjgl-jemalloc/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-windows.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-windows.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-windows.jar"
+          ],
+          "sha256": "cbd4174e5cad2a40d126932b03d8d396b9b32484135d5e3f2a8a1f34aa4b2224"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-jemalloc",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-windows-x86"
+          },
+          "name": "lwjgl-jemalloc-3.2.3-natives-windows-x86.jar",
+          "path": "org/lwjgl/lwjgl-jemalloc/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-windows-x86.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-windows-x86.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3-natives-windows-x86.jar"
+          ],
+          "sha256": "cbf42dafa5158b369b7bc534d73604c3955075b448f723004ff3fb1e901de10a"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-jemalloc",
+            "version": "3.2.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "lwjgl-jemalloc-3.2.3.pom",
+          "path": "org/lwjgl/lwjgl-jemalloc/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3.pom",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3.pom",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-jemalloc/3.2.3/lwjgl-jemalloc-3.2.3.pom"
+          ],
+          "sha256": "ae5e3396cafc695dc155180d7081a4905025614941cddf08cf99655ef1b4d9b2"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-openal",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "lwjgl-openal-3.2.3.jar",
+          "path": "org/lwjgl/lwjgl-openal/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3.jar"
+          ],
+          "sha256": "9b1bfdf60a3fe7ba6c48976411d311575fb2b7a7e7457e5589d1588719820fb0"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-openal",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux"
+          },
+          "name": "lwjgl-openal-3.2.3-natives-linux.jar",
+          "path": "org/lwjgl/lwjgl-openal/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-linux.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-linux.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-linux.jar"
+          ],
+          "sha256": "eddd3ee917c590ed20fc9b2c5463b73d123b2e1502c2f94d6f7354ece553ed77"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-openal",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux-arm32"
+          },
+          "name": "lwjgl-openal-3.2.3-natives-linux-arm32.jar",
+          "path": "org/lwjgl/lwjgl-openal/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-linux-arm32.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-linux-arm32.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-linux-arm32.jar"
+          ],
+          "sha256": "a19c97b91f45054c7eec3ad5896cffaa121e90f0f88f71fc5f7968e5a2f91e7b"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-openal",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux-arm64"
+          },
+          "name": "lwjgl-openal-3.2.3-natives-linux-arm64.jar",
+          "path": "org/lwjgl/lwjgl-openal/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-linux-arm64.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-linux-arm64.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-linux-arm64.jar"
+          ],
+          "sha256": "617e1738b66cc5912a984dac86e083567b8f5070800c5420b065b6164d1fcaf6"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-openal",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-macos"
+          },
+          "name": "lwjgl-openal-3.2.3-natives-macos.jar",
+          "path": "org/lwjgl/lwjgl-openal/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-macos.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-macos.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-macos.jar"
+          ],
+          "sha256": "d6d08232cbef330de594be9c4199a9634ab5bec6a05135d0b76d3282747fc92d"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-openal",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-windows"
+          },
+          "name": "lwjgl-openal-3.2.3-natives-windows.jar",
+          "path": "org/lwjgl/lwjgl-openal/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-windows.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-windows.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-windows.jar"
+          ],
+          "sha256": "3de3e29fc383a484e37e9218adecca6fa12a354655ddbbb8cbeaf2b8c4f6140e"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-openal",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-windows-x86"
+          },
+          "name": "lwjgl-openal-3.2.3-natives-windows-x86.jar",
+          "path": "org/lwjgl/lwjgl-openal/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-windows-x86.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-windows-x86.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3-natives-windows-x86.jar"
+          ],
+          "sha256": "998eb3e8856dc271c234be650a1fd4aeaaff088165d90f5212051148e0ed1f1c"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-openal",
+            "version": "3.2.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "lwjgl-openal-3.2.3.pom",
+          "path": "org/lwjgl/lwjgl-openal/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3.pom",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3.pom",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-openal/3.2.3/lwjgl-openal-3.2.3.pom"
+          ],
+          "sha256": "13d3be4ad892929e9213bf2b1d490c6eb63724b8de850eb3ae7b5a2a37661bef"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-opengl",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "lwjgl-opengl-3.2.3.jar",
+          "path": "org/lwjgl/lwjgl-opengl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3.jar"
+          ],
+          "sha256": "10bcc37506e01d1477d65f1fcf0aa672c95eb785265b28b7f321c8381093eda2"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-opengl",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux"
+          },
+          "name": "lwjgl-opengl-3.2.3-natives-linux.jar",
+          "path": "org/lwjgl/lwjgl-opengl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-linux.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-linux.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-linux.jar"
+          ],
+          "sha256": "466e8bae1818c4c584771ee093c8a735e26f56fb25a81dde5675160aaa2fa045"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-opengl",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux-arm32"
+          },
+          "name": "lwjgl-opengl-3.2.3-natives-linux-arm32.jar",
+          "path": "org/lwjgl/lwjgl-opengl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-linux-arm32.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-linux-arm32.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-linux-arm32.jar"
+          ],
+          "sha256": "16c2d51f3bd447817385c753072c78608b2b302a6c640496d561fddfe775640c"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-opengl",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux-arm64"
+          },
+          "name": "lwjgl-opengl-3.2.3-natives-linux-arm64.jar",
+          "path": "org/lwjgl/lwjgl-opengl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-linux-arm64.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-linux-arm64.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-linux-arm64.jar"
+          ],
+          "sha256": "d8e3188d44cfbf8937dff09cb8f0a553f8701f0eb7e664a3cca70b70616d54ec"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-opengl",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-macos"
+          },
+          "name": "lwjgl-opengl-3.2.3-natives-macos.jar",
+          "path": "org/lwjgl/lwjgl-opengl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-macos.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-macos.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-macos.jar"
+          ],
+          "sha256": "e4b4d0cd9138d52271c1d5c18e43c9ac5d36d1a727c47e5ee4031cb45ce730ca"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-opengl",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-windows"
+          },
+          "name": "lwjgl-opengl-3.2.3-natives-windows.jar",
+          "path": "org/lwjgl/lwjgl-opengl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-windows.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-windows.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-windows.jar"
+          ],
+          "sha256": "c08e3de31632163ac5f746fa945f1924142e08520bd9c81b7dd1b5dbd1b0b8bb"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-opengl",
+            "version": "3.2.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-windows-x86"
+          },
+          "name": "lwjgl-opengl-3.2.3-natives-windows-x86.jar",
+          "path": "org/lwjgl/lwjgl-opengl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-windows-x86.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-windows-x86.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3-natives-windows-x86.jar"
+          ],
+          "sha256": "3cecc51d671df76bb60cc9aef7984cf44540a0a7358b86eb017cbb80d8f71b7b"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl",
+            "name": "lwjgl-opengl",
+            "version": "3.2.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "lwjgl-opengl-3.2.3.pom",
+          "path": "org/lwjgl/lwjgl-opengl/3.2.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3.pom",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3.pom",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl-opengl/3.2.3/lwjgl-opengl-3.2.3.pom"
+          ],
+          "sha256": "850fa35c937d0cf7e3b3154a5b5ba39031561750a29e8d1aa01369864d302cb0"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl.lwjgl",
+            "name": "lwjgl",
+            "version": "2.9.3",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "lwjgl-2.9.3.jar",
+          "path": "org/lwjgl/lwjgl/lwjgl/2.9.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/lwjgl/2.9.3/lwjgl-2.9.3.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/lwjgl/2.9.3/lwjgl-2.9.3.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/lwjgl/2.9.3/lwjgl-2.9.3.jar"
+          ],
+          "sha256": "527d509f60132e5b2653c7fc0f8cf299d6f698f4a8013342bef47705dc57ed3f"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl.lwjgl",
+            "name": "lwjgl",
+            "version": "2.9.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "lwjgl-2.9.3.pom",
+          "path": "org/lwjgl/lwjgl/lwjgl/2.9.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/lwjgl/2.9.3/lwjgl-2.9.3.pom",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/lwjgl/2.9.3/lwjgl-2.9.3.pom",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/lwjgl/2.9.3/lwjgl-2.9.3.pom"
+          ],
+          "sha256": "1bbd08ab681d9801219206b178b93953224239b307d0999fce68e9e93b841c27"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl.lwjgl",
+            "name": "lwjgl-platform",
+            "version": "2.9.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-linux"
+          },
+          "name": "lwjgl-platform-2.9.3-natives-linux.jar",
+          "path": "org/lwjgl/lwjgl/lwjgl-platform/2.9.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3-natives-linux.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3-natives-linux.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3-natives-linux.jar"
+          ],
+          "sha256": "bde1c15125d668f4a1a2be996c8e4cc1b299748803fe8fe9cd367d4dfa4c052a"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl.lwjgl",
+            "name": "lwjgl-platform",
+            "version": "2.9.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-osx"
+          },
+          "name": "lwjgl-platform-2.9.3-natives-osx.jar",
+          "path": "org/lwjgl/lwjgl/lwjgl-platform/2.9.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3-natives-osx.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3-natives-osx.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3-natives-osx.jar"
+          ],
+          "sha256": "a7e07294da3eb6f6747c2edd4cc43f8936a0aa1b8c6be5652e8bec62045619ec"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl.lwjgl",
+            "name": "lwjgl-platform",
+            "version": "2.9.3",
+            "type": "jar",
+            "extension": "jar",
+            "classifier": "natives-windows"
+          },
+          "name": "lwjgl-platform-2.9.3-natives-windows.jar",
+          "path": "org/lwjgl/lwjgl/lwjgl-platform/2.9.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3-natives-windows.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3-natives-windows.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3-natives-windows.jar"
+          ],
+          "sha256": "7d4dd95bee064d91e1110918b0a7f63a5294e2fd9a48833a13d37d68c9c06d23"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl.lwjgl",
+            "name": "lwjgl-platform",
+            "version": "2.9.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "lwjgl-platform-2.9.3.pom",
+          "path": "org/lwjgl/lwjgl/lwjgl-platform/2.9.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3.pom",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3.pom",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3.pom"
+          ],
+          "sha256": "9c31cc8fc60d182a931379a594a441b2bdd8de2b7e2377558063ba0917d21f44"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl.lwjgl",
+            "name": "lwjgl_util",
+            "version": "2.9.3",
+            "type": "jar",
+            "extension": "jar"
+          },
+          "name": "lwjgl_util-2.9.3.jar",
+          "path": "org/lwjgl/lwjgl/lwjgl_util/2.9.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/lwjgl_util/2.9.3/lwjgl_util-2.9.3.jar",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/lwjgl_util/2.9.3/lwjgl_util-2.9.3.jar",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/lwjgl_util/2.9.3/lwjgl_util-2.9.3.jar"
+          ],
+          "sha256": "6f4a261384e1688a3359420efce5275c8693b822a8c6eaa1e20d5cc126a51571"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl.lwjgl",
+            "name": "lwjgl_util",
+            "version": "2.9.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "lwjgl_util-2.9.3.pom",
+          "path": "org/lwjgl/lwjgl/lwjgl_util/2.9.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/lwjgl_util/2.9.3/lwjgl_util-2.9.3.pom",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/lwjgl_util/2.9.3/lwjgl_util-2.9.3.pom",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/lwjgl_util/2.9.3/lwjgl_util-2.9.3.pom"
+          ],
+          "sha256": "91b49481aa0004e97fae4c2b1cc070b4ac720114071f60b36b84cbd614ab44f9"
+        },
+        {
+          "id": {
+            "group": "org.lwjgl.lwjgl",
+            "name": "parent",
+            "version": "2.9.3",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "parent-2.9.3.pom",
+          "path": "org/lwjgl/lwjgl/parent/2.9.3",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/lwjgl/lwjgl/parent/2.9.3/parent-2.9.3.pom",
+            "https://plugins.gradle.org/m2/org/lwjgl/lwjgl/parent/2.9.3/parent-2.9.3.pom",
+            "https://oss.sonatype.org/content/repositories/releases/org/lwjgl/lwjgl/parent/2.9.3/parent-2.9.3.pom"
+          ],
+          "sha256": "54844db15e40daa180382c2a89dca2d124df022cc867e2e4c5ac787ea7da5450"
+        },
+        {
+          "id": {
+            "group": "org.sonatype.oss",
+            "name": "oss-parent",
+            "version": "7",
+            "type": "pom",
+            "extension": "pom"
+          },
+          "name": "oss-parent-7.pom",
+          "path": "org/sonatype/oss/oss-parent/7",
+          "urls": [
+            "https://repo.maven.apache.org/maven2/org/sonatype/oss/oss-parent/7/oss-parent-7.pom",
+            "https://plugins.gradle.org/m2/org/sonatype/oss/oss-parent/7/oss-parent-7.pom",
+            "https://oss.sonatype.org/content/repositories/releases/org/sonatype/oss/oss-parent/7/oss-parent-7.pom"
+          ],
+          "sha256": "b51f8867c92b6a722499557fc3a1fdea77bdf9ef574722fe90ce436a29559454"
+        }
+      ]
+    }
+  }
+}
