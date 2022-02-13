@@ -30,6 +30,7 @@ public class Player {
     Rectangle hitBox;
     boolean isFacingLeft;
     boolean Collision;
+    boolean IsPlayerOnGround;
 
     // Animation parameters
     float idle_animation_time;
@@ -56,8 +57,8 @@ public class Player {
         isFacingLeft = false;
         state = playerState.Idle;
         Collision = false;
+        IsPlayerOnGround = false;
         idle_animation_time = 0;
-
         //set up the player animations
         player_running_animation = new ObjectAnimation();
         player_running_animation.loadAnimation("player_running_", 4);
@@ -85,7 +86,6 @@ public class Player {
 
 
 
-    // Like the main for the player class
     public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder) {
 
 
@@ -95,9 +95,6 @@ public class Player {
         // keyboard input N Player movement
         PlayerInputHandling();
 
-        // Checks if player is on the ground for jumping...
-        IsPlayerOnGround();
-
         // Detects if the player touches A MapObject and changes speeds
         collisionDetection(Ground,WorldBorder);
 
@@ -105,8 +102,7 @@ public class Player {
         updatePlayerPos();
 
 
-
-        // checks which animation should play according to the state enum
+        // checks which animation should play according to the Player's state
         switch (state) {
             case Running:
                 if(isFacingLeft){
@@ -235,14 +231,14 @@ public class Player {
         //Smooths Player Movement
         if (Xspeed > 0 && Xspeed < 0.80) Xspeed = 0;
         if (Xspeed < 0 && Xspeed > -0.80) Xspeed = 0;
-        if (Xspeed > 15) Xspeed = 15;
-        if (Xspeed < -15) Xspeed = -15;
+        if (Xspeed > 12) Xspeed = 12;
+        if (Xspeed < -12) Xspeed = -12;
 
 
         //vertical input
         if ((Gdx.input.isKeyPressed(Input.Keys.UP))) {
             hitBox.y++;
-            if (IsPlayerOnGround() == true) {
+            if (IsPlayerOnGround == true) {
                 Yspeed += 14;
 
             }
@@ -255,7 +251,7 @@ public class Player {
     // Detects if the player touches A MapObject and changes speeds
     public void collisionDetection(Array<MapObject> Ground,Array<MapObject> WorldBorder ) {
 
-        //Horizontal Collision
+        //bounds Collision
         hitBox.x += Xspeed;
         for (MapObject borders: WorldBorder) {
             if (hitBox.overlaps(borders.hitBox)) {
@@ -268,28 +264,20 @@ public class Player {
 
         }
 
-        //Vertical Collision
+        //Ground Collision
         hitBox.y += Yspeed;
         for (MapObject grounds : Ground) {
             if (hitBox.overlaps(grounds.hitBox)) {
                 Yspeed -= Yspeed;
                 Collision = true;
+                IsPlayerOnGround = true;
             }
             else {
+                IsPlayerOnGround = false;
                 Collision = false;
             }
         }
 
-    }
-
-    // Checks if player is on the ground for jumping...
-    public boolean IsPlayerOnGround(){
-        if(Yspeed == -Yspeed){
-            return true;
-        }
-        else {
-            return false;
-        }
     }
 
     // Change the player X AND Y
@@ -302,7 +290,6 @@ public class Player {
         hitBox.x = x;
         hitBox.y = y;
     }
-
 
 
 

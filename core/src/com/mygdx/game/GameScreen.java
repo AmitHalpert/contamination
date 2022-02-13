@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -41,6 +42,7 @@ class GameScreen implements Screen {
 
         // creates a player
         player = new Player(700,600);
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
@@ -48,11 +50,11 @@ class GameScreen implements Screen {
         // initialize parameters
         deltaTime = 0;
 
-        // set up the camera and the viewport
 
 
         // Map graphics
         background = new Texture("map.png");
+
 
         // Creates the wall array for the map and calls makeWalls function
         ground = new Array<MapObject>();
@@ -100,7 +102,7 @@ class GameScreen implements Screen {
         WorldBorder.add(new MapObject(-650,200,580,3000));
 
         // create right world border
-        WorldBorder.add(new MapObject(1989,300,500,800));
+        WorldBorder.add(new MapObject(1989,200,500,800));
 
         // create upper world border
         WorldBorder.add(new MapObject(-550,1200,3000,200));

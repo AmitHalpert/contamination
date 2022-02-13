@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
-public class bullet extends Rectangle {
+public class Bullet {
 
 
     static final double Xspeed = 20, Yspeed = 20;
@@ -20,7 +20,7 @@ public class bullet extends Rectangle {
     ObjectAnimation bullet_animation;
 
 
-    public bullet (float x, float y){
+    public Bullet(float x, float y) {
 
         this.x = x;
         this.y = y;
@@ -31,12 +31,13 @@ public class bullet extends Rectangle {
         hitBox = new Rectangle(x, y, width, height);
 
         bullet_animation = new ObjectAnimation();
-        bullet_animation.loadAnimation("bullet_",4);
+        bullet_animation.loadAnimation("bullet_", 4);
         bullet = new Texture(Gdx.files.internal("bullet_1"));
 
         outputTexture = bullet;
     }
-    public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder){
+
+    public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder) {
 
         // updates bullets position;
         x += Xspeed;
@@ -66,10 +67,7 @@ public class bullet extends Rectangle {
         outputTexture = bullet_animation.getFrame(delta);
 
 
-
-
         return outputTexture;
     }
-
 
 }
