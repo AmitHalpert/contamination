@@ -93,12 +93,12 @@ class GameScreen implements Screen {
     }
 
     private void CreateMapBorders(){
+
         // create left world border
-        for(int i = 50; i < 650; i+= 50){
-            Platforms.add(new MapObject(-550,i,650,600));
-        }
+        Platforms.add(new MapObject(-650,200,580,3000));
+
         // create right world border
-        Platforms.add(new MapObject(1989,i,500,600));
+        Platforms.add(new MapObject(1989,300,500,600));
 
         // create upper world border
         Platforms.add(new MapObject(-550,1200,3000,200));

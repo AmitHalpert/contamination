@@ -38,16 +38,19 @@ public class Player {
     ObjectAnimation player_running_animation;
     ObjectAnimation player_jumping_animation;
     ObjectAnimation player_idle_animation;
+    //left Animation
+    ObjectAnimation flipped_player_running_animation;
+    ObjectAnimation flipped_player_jumping_animation;
+    ObjectAnimation flipped_player_idle_animation;
     playerState state;
 
     public Player(float x, float y){
 
         this.x = x;
         this.y = y;
-        // Size of the player
+
         width = 170;
         height = 170;
-        // Create hitbox for player
         hitBox = new Rectangle(x, y, width, height);
 
         isFacingLeft = false;
@@ -58,14 +61,26 @@ public class Player {
         //set up the player animations
         player_running_animation = new ObjectAnimation();
         player_running_animation.loadAnimation("player_running_", 4);
+
         player_jumping_animation = new ObjectAnimation();
         player_jumping_animation.loadAnimation("player_jumping_", 2);
+
         player_idle_animation = new ObjectAnimation();
         player_idle_animation.loadAnimation("player_idle_", 1);
+
         playerTexture = new Texture(Gdx.files.internal("player_idle_1.png"));
+
+        //left player animations
+        flipped_player_running_animation = new ObjectAnimation();
+        flipped_player_running_animation.loadAnimation("fliped_player_running_",4);
+
+        flipped_player_jumping_animation = new ObjectAnimation();
+        flipped_player_jumping_animation.loadAnimation("fliped_player_jumping_", 2);
+
+        flipped_player_idle_animation = new ObjectAnimation();
+        flipped_player_idle_animation.loadAnimation("fliped_player_idle_", 1);
+
         outputTexture = playerTexture;
-
-
     }
 
 
@@ -94,7 +109,18 @@ public class Player {
         // checks which animation should play according to the state enum
         switch (state) {
             case Running:
-                outputTexture = player_running_animation.getFrame(delta);
+                if(isFacingLeft){
+                    outputTexture = flipped_player_running_animation.getFrame(delta);
+
+                    player_jumping_animation.resetAnimation();
+                    player_idle_animation.resetAnimation();
+
+                    flipped_player_jumping_animation.resetAnimation();
+                    flipped_player_idle_animation.resetAnimation();
+                    idle_animation_time = 0;
+                }
+                else
+                    outputTexture = player_running_animation.getFrame(delta);
                 player_jumping_animation.resetAnimation();
                 player_idle_animation.resetAnimation();
                 idle_animation_time = 0;
@@ -102,6 +128,21 @@ public class Player {
 
 
             case Jumping:
+
+                if(isFacingLeft){
+
+                    outputTexture = flipped_player_jumping_animation.getFrame(delta);
+
+                    // reset normal animation
+                    player_running_animation.resetAnimation();
+                    player_idle_animation.resetAnimation();
+                    // reset flipped animation
+                    flipped_player_running_animation.resetAnimation();
+                    flipped_player_idle_animation.resetAnimation();
+                    idle_animation_time = 0;
+                }
+                else
+
                 if (player_jumping_animation.currentFrame >= player_jumping_animation.frames.size - 2) {
                     outputTexture = player_jumping_animation.frames.get(player_jumping_animation.currentFrame);
                 } else {
@@ -113,6 +154,18 @@ public class Player {
                 break;
 
             case Idle:
+
+                if(isFacingLeft){
+                    outputTexture = flipped_player_idle_animation.getFrame(delta);
+
+                    flipped_player_running_animation.resetAnimation();
+                    flipped_player_jumping_animation.resetAnimation();
+
+                    player_running_animation.resetAnimation();
+                    player_jumping_animation.resetAnimation();
+                }
+                else
+
                 if (idle_animation_time > 2f) {
                     outputTexture = player_idle_animation.getFrame(delta);
 
@@ -126,13 +179,6 @@ public class Player {
                 idle_animation_time += delta;
                 break;
         }
-        // Flips player width
-        if(isFacingLeft && width > 0 || !isFacingLeft && width < 0){
-            this.width = (this.width * -1);
-            this.x = this.x + this.width * -1;
-            this.hitBox.width = this.hitBox.width * -1;
-        }
-
 
         // Returns the (Player state) animation
         return outputTexture;
@@ -187,14 +233,14 @@ public class Player {
 
 
         //Smooths Player Movement
-        if (Xspeed > 0 && Xspeed < 0.75) Xspeed = 0;
-        if (Xspeed < 0 && Xspeed > -0.75) Xspeed = 0;
-        if (Xspeed > 9) Xspeed = 9;
-        if (Xspeed < -9) Xspeed = -9;
+        if (Xspeed > 0 && Xspeed < 0.80) Xspeed = 0;
+        if (Xspeed < 0 && Xspeed > -0.80) Xspeed = 0;
+        if (Xspeed > 11) Xspeed = 11;
+        if (Xspeed < -11) Xspeed = -11;
 
 
         //vertical input
-        if ((Gdx.input.isKeyPressed(Input.Keys.UP)) ) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.UP))) {
             hitBox.y++;
             if (IsPlayerOnGround() == true) {
                 Yspeed += 14;
@@ -234,7 +280,7 @@ public class Player {
             }
         }
 
-   }
+    }
 
     // Checks if player is on the ground for jumping...
     public boolean IsPlayerOnGround(){
