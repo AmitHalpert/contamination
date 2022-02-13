@@ -1,28 +1,15 @@
 package com.mygdx.game;
 
-import java.awt.*;
-import java.lang.Math;
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.utils.Array;
 
 
 class GameScreen implements Screen {
@@ -49,18 +36,19 @@ class GameScreen implements Screen {
     Array<MapObject> Platforms;
 
     public GameScreen(final contamination game){
-        this.game = game;
+        this.game =  game;
 
         // creates a player
         player = new Player(700,600);
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
+        viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
 
         // initialize parameters
         deltaTime = 0;
 
         // set up the camera and the viewport
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
-        viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
+
 
         // Map graphics
         background = new Texture("map.png");
@@ -68,7 +56,7 @@ class GameScreen implements Screen {
         // Creates the wall array for the map and calls makeWalls function
         Platforms = new Array<MapObject>();
         createGround();
-        createMapBounds();
+        CreateMapBorders();
     }
 
     @Override
@@ -101,24 +89,19 @@ class GameScreen implements Screen {
 
     // Creates the maps ground
     private void createGround(){
-        for(int i = -500 ; i < 650; i+= 50){
-            Platforms.add(new MapObject(i,-110,2000,203));
-        }
+        Platforms.add(new MapObject(-550,-110,3000,203));
     }
 
-    private void createMapBounds(){
+    private void CreateMapBorders(){
         // create left world border
         for(int i = 50; i < 650; i+= 50){
-            Platforms.add(new MapObject(-550,i,640,600));
+            Platforms.add(new MapObject(-550,i,650,600));
         }
         // create right world border
-        for(int i = 50; i < 650; i+= 50){
-            Platforms.add(new MapObject(1989,i,500,600));
-        }
+        Platforms.add(new MapObject(1989,i,500,600));
+
         // create upper world border
-        for(int i = 50; i < 650; i+= 50){
-            Platforms.add(new MapObject(i,1200,1300,203));
-        }
+        Platforms.add(new MapObject(-550,1200,3000,200));
     }
 
     public void MainMenu(){

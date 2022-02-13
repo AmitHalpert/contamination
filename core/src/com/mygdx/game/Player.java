@@ -44,9 +44,10 @@ public class Player {
 
         this.x = x;
         this.y = y;
-
+        // Size of the player
         width = 170;
         height = 170;
+        // Create hitbox for player
         hitBox = new Rectangle(x, y, width, height);
 
         isFacingLeft = false;
@@ -193,7 +194,7 @@ public class Player {
 
 
         //vertical input
-        if ((Gdx.input.isKeyPressed(Input.Keys.UP))) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.UP)) ) {
             hitBox.y++;
             if (IsPlayerOnGround() == true) {
                 Yspeed += 14;
