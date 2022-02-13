@@ -235,8 +235,8 @@ public class Player {
         //Smooths Player Movement
         if (Xspeed > 0 && Xspeed < 0.80) Xspeed = 0;
         if (Xspeed < 0 && Xspeed > -0.80) Xspeed = 0;
-        if (Xspeed > 11) Xspeed = 11;
-        if (Xspeed < -11) Xspeed = -11;
+        if (Xspeed > 15) Xspeed = 15;
+        if (Xspeed < -15) Xspeed = -15;
 
 
         //vertical input

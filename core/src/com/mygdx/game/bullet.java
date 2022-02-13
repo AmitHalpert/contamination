@@ -36,7 +36,7 @@ public class bullet extends Rectangle {
 
         outputTexture = bullet;
     }
-    public Texture render(float delta, Array<MapObject> Walls){
+    public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder){
 
         // updates bullets position;
         x += Xspeed;
@@ -48,9 +48,15 @@ public class bullet extends Rectangle {
         hitBox.x += Xspeed;
         hitBox.y += Yspeed;
 
-        for (MapObject i_wall : Walls) {
+        for (MapObject Grounds : Ground) {
+            if (hitBox.overlaps(Grounds.hitBox)) {
+                bullet_animation.dispose();
+                bullet.dispose();
+            }
+        }
 
-            if (hitBox.overlaps(i_wall.hitBox)) {
+        for (MapObject Borders : WorldBorder) {
+            if (hitBox.overlaps(Borders.hitBox)) {
                 bullet_animation.dispose();
                 bullet.dispose();
             }
