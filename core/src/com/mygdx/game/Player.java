@@ -86,7 +86,7 @@ public class Player {
 
 
     // Like the main for the player class
-    public Texture render(float delta, Array<MapObject> Walls) {
+    public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder) {
 
 
         //Determine witch (playerState) state the player will be.
@@ -99,7 +99,7 @@ public class Player {
         IsPlayerOnGround();
 
         // Detects if the player touches A MapObject and changes speeds
-        collisionDetection(Walls);
+        collisionDetection(Ground,WorldBorder);
 
         // Changes the player X AND Y
         updatePlayerPos();
@@ -253,12 +253,12 @@ public class Player {
     }
 
     // Detects if the player touches A MapObject and changes speeds
-    public void collisionDetection(Array<MapObject> Walls) {
+    public void collisionDetection(Array<MapObject> Ground,Array<MapObject> WorldBorder ) {
 
         //Horizontal Collision
         hitBox.x += Xspeed;
-        for (MapObject i_wall : Walls) {
-            if (hitBox.overlaps(i_wall.hitBox)) {
+        for (MapObject borders: WorldBorder) {
+            if (hitBox.overlaps(borders.hitBox)) {
                 Xspeed -= Xspeed;
                 Collision = true;
             }
@@ -270,8 +270,8 @@ public class Player {
 
         //Vertical Collision
         hitBox.y += Yspeed;
-        for (MapObject i_wall : Walls) {
-            if (hitBox.overlaps(i_wall.hitBox)) {
+        for (MapObject grounds : Ground) {
+            if (hitBox.overlaps(grounds.hitBox)) {
                 Yspeed -= Yspeed;
                 Collision = true;
             }

@@ -33,7 +33,8 @@ class GameScreen implements Screen {
     private final int WORLD_HEIGHT = 1080;
 
     //World objects
-    Array<MapObject> Platforms;
+    Array<MapObject> ground;
+    Array<MapObject> WorldBorder;
 
     public GameScreen(final contamination game){
         this.game =  game;
@@ -54,7 +55,8 @@ class GameScreen implements Screen {
         background = new Texture("map.png");
 
         // Creates the wall array for the map and calls makeWalls function
-        Platforms = new Array<MapObject>();
+        ground = new Array<MapObject>();
+        WorldBorder = new Array<MapObject>();
         createGround();
         CreateMapBorders();
     }
@@ -81,7 +83,7 @@ class GameScreen implements Screen {
         //Draw map
         game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
         //Draw the player and gives all the input player class needs
-        game.batch.draw(player.render(deltaTime, Platforms),  player.x,  player.y, player.width,  player.height);
+        game.batch.draw(player.render(deltaTime, ground,WorldBorder),  player.x,  player.y, player.width,  player.height);
 
         game.batch.end();
 
@@ -89,19 +91,19 @@ class GameScreen implements Screen {
 
     // Creates the maps ground
     private void createGround(){
-        Platforms.add(new MapObject(-550,-110,3000,203));
+        ground.add(new MapObject(-550,-110,3000,203));
     }
 
     private void CreateMapBorders(){
 
         // create left world border
-        Platforms.add(new MapObject(-650,200,580,3000));
+        WorldBorder.add(new MapObject(-650,200,580,3000));
 
         // create right world border
-        Platforms.add(new MapObject(1989,300,500,800));
+        WorldBorder.add(new MapObject(1989,300,500,800));
 
         // create upper world border
-        Platforms.add(new MapObject(-550,1200,3000,200));
+        WorldBorder.add(new MapObject(-550,1200,3000,200));
     }
 
     public void MainMenu(){
