@@ -309,6 +309,10 @@ public class Player {
     public void dispose(){
         player_running_animation.dispose();
         player_jumping_animation.dispose();
+        player_idle_animation.dispose();
+        flipped_player_running_animation.dispose();
+        flipped_player_jumping_animation.dispose();
+        flipped_player_idle_animation.dispose();
     }
 
 }
