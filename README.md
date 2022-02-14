@@ -4,6 +4,7 @@
 This is a Java-based game that uses [LibGDX](https://libgdx.com) as its game framework.
 
 ## Build and runtime dependencies
+- **important** update to the latest graphics driver
 - Gradle (From the package manager or the one provided in this repository)
 - JDK 8-15
 
