@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import java.lang.*;
+import java.util.LinkedList;
 
 
 public class Player {
@@ -14,35 +15,48 @@ public class Player {
     // the player states
     public enum playerState {
         Running,
-        Falling,
         Jumping,
         Idle,
-        HoldingGun,
-        shooting,
         dead
     }
 
     // Player parameters
-    float x;
-    float y;
+    float x, y;
     int width, height;
     double Xspeed, Yspeed;
     Rectangle hitBox;
-    boolean isFacingLeft;
+    static boolean isFacingLeft;
     boolean Collision;
     boolean IsPlayerOnGround;
+    boolean isPlayerHoldingGun;
+    boolean isPlayerShooting;
+    static Array<Bullet> bullets;
 
     // Animation parameters
     float idle_animation_time;
     Texture outputTexture;
     Texture playerTexture;
+
+    // create ObjectAnimation for every type of animation
     ObjectAnimation player_running_animation;
     ObjectAnimation player_jumping_animation;
     ObjectAnimation player_idle_animation;
+    // player with gun animations
+    ObjectAnimation player_running_gun_animation;
+    ObjectAnimation player_jumping_gun_animation;
+    ObjectAnimation player_idle_gun_animation;
+
     //left Animation
     ObjectAnimation flipped_player_running_animation;
     ObjectAnimation flipped_player_jumping_animation;
     ObjectAnimation flipped_player_idle_animation;
+    // left player with gun animations
+    ObjectAnimation flipped_player_running_gun_animation;
+    ObjectAnimation flipped_player_idle_gun_animation;
+    ObjectAnimation flipped_player_jumping_gun_animation;
+
+
+
     playerState state;
 
     public Player(float x, float y){
@@ -54,32 +68,53 @@ public class Player {
         height = 170;
         hitBox = new Rectangle(x, y, width, height);
 
+        bullets = new Array<>();
+
+        // initialize player's settings
         isFacingLeft = false;
-        state = playerState.Idle;
+        isPlayerHoldingGun = true;
         Collision = false;
         IsPlayerOnGround = false;
+        isPlayerShooting = false;
+        state = playerState.Idle;
         idle_animation_time = 0;
-        //set up the player animations
+
+
+        // set up the player animations
+
+        // player right animations
         player_running_animation = new ObjectAnimation();
         player_running_animation.loadAnimation("player_running_", 4);
-
         player_jumping_animation = new ObjectAnimation();
         player_jumping_animation.loadAnimation("player_jumping_", 2);
-
         player_idle_animation = new ObjectAnimation();
         player_idle_animation.loadAnimation("player_idle_", 1);
-
         playerTexture = new Texture(Gdx.files.internal("player_idle_1.png"));
 
-        //left player animations
+        // player with a gun right animations
+        player_running_gun_animation = new ObjectAnimation();
+        player_running_gun_animation.loadAnimation("player_running_with_gun_",4);
+        player_jumping_gun_animation = new ObjectAnimation();
+        player_jumping_gun_animation.loadAnimation("player_running_with_gun_",1);
+        player_idle_gun_animation = new ObjectAnimation();
+        player_idle_gun_animation.loadAnimation("player_idle_gun_",1);
+
+        // player left animations
         flipped_player_running_animation = new ObjectAnimation();
         flipped_player_running_animation.loadAnimation("fliped_player_running_",4);
-
         flipped_player_jumping_animation = new ObjectAnimation();
         flipped_player_jumping_animation.loadAnimation("fliped_player_jumping_", 2);
-
         flipped_player_idle_animation = new ObjectAnimation();
         flipped_player_idle_animation.loadAnimation("fliped_player_idle_", 1);
+        // player with a gun left animations
+        flipped_player_running_gun_animation = new ObjectAnimation();
+        flipped_player_running_gun_animation.loadAnimation("flipped_player_running_with_gun_",4);
+        flipped_player_jumping_gun_animation = new ObjectAnimation();
+        flipped_player_jumping_gun_animation.loadAnimation("flipped_player_running_with_gun_",1);
+        flipped_player_idle_gun_animation = new ObjectAnimation();
+        flipped_player_idle_gun_animation.loadAnimation("flipped_player_idle_gun_",1);
+
+
 
         outputTexture = playerTexture;
     }
@@ -105,34 +140,74 @@ public class Player {
         // checks which animation should play according to the Player's state
         switch (state) {
             case Running:
+                // gun running animation
+                if(isPlayerHoldingGun && !isFacingLeft){
+                    outputTexture = player_running_gun_animation.getFrame(delta);
+
+                    player_running_animation.resetAnimation();
+                    player_jumping_animation.resetAnimation();
+                    player_idle_animation.resetAnimation();
+                    flipped_player_jumping_animation.resetAnimation();
+                    flipped_player_idle_animation.resetAnimation();
+                    flipped_player_running_animation.resetAnimation();
+                }
+                else if (isPlayerHoldingGun){
+                    outputTexture = flipped_player_running_gun_animation.getFrame(delta);
+
+                    player_running_gun_animation.resetAnimation();
+                    player_running_animation.resetAnimation();
+                    player_jumping_animation.resetAnimation();
+                    player_idle_animation.resetAnimation();
+                    flipped_player_jumping_animation.resetAnimation();
+                    flipped_player_idle_animation.resetAnimation();
+                }
+                else
+
                 if(isFacingLeft){
                     outputTexture = flipped_player_running_animation.getFrame(delta);
 
                     player_jumping_animation.resetAnimation();
                     player_idle_animation.resetAnimation();
-
                     flipped_player_jumping_animation.resetAnimation();
                     flipped_player_idle_animation.resetAnimation();
                     idle_animation_time = 0;
                 }
                 else
                     outputTexture = player_running_animation.getFrame(delta);
-                player_jumping_animation.resetAnimation();
-                player_idle_animation.resetAnimation();
-                idle_animation_time = 0;
+                    player_jumping_animation.resetAnimation();
+                    player_idle_animation.resetAnimation();
+                    idle_animation_time = 0;
                 break;
 
 
             case Jumping:
 
+                if(isPlayerHoldingGun && !isFacingLeft){
+                    outputTexture = player_jumping_gun_animation.getFrame(delta);
+
+                    player_running_animation.resetAnimation();
+                    player_idle_animation.resetAnimation();
+                    flipped_player_running_animation.resetAnimation();
+                    flipped_player_idle_animation.resetAnimation();
+                }
+                else if (isPlayerHoldingGun){
+                    outputTexture = flipped_player_jumping_gun_animation.getFrame(delta);
+
+                    player_running_gun_animation.resetAnimation();
+                    player_running_animation.resetAnimation();
+                    player_jumping_animation.resetAnimation();
+                    player_idle_animation.resetAnimation();
+                    flipped_player_jumping_animation.resetAnimation();
+                    flipped_player_idle_animation.resetAnimation();
+                }
+                else
+
                 if(isFacingLeft){
 
                     outputTexture = flipped_player_jumping_animation.getFrame(delta);
 
-                    // reset normal animation
                     player_running_animation.resetAnimation();
                     player_idle_animation.resetAnimation();
-                    // reset flipped animation
                     flipped_player_running_animation.resetAnimation();
                     flipped_player_idle_animation.resetAnimation();
                     idle_animation_time = 0;
@@ -150,6 +225,29 @@ public class Player {
                 break;
 
             case Idle:
+
+                if(isPlayerHoldingGun && !isFacingLeft){
+
+                    outputTexture = player_idle_gun_animation.getFrame(delta);
+
+                    player_running_animation.resetAnimation();
+                    player_jumping_animation.resetAnimation();
+                    player_idle_animation.resetAnimation();
+                    flipped_player_jumping_animation.resetAnimation();
+                    flipped_player_idle_animation.resetAnimation();
+                    flipped_player_running_animation.resetAnimation();
+                }
+                else if (isPlayerHoldingGun){
+                    outputTexture = flipped_player_idle_gun_animation.getFrame(delta);
+
+                    player_running_gun_animation.resetAnimation();
+                    player_running_animation.resetAnimation();
+                    player_jumping_animation.resetAnimation();
+                    player_idle_animation.resetAnimation();
+                    flipped_player_jumping_animation.resetAnimation();
+                    flipped_player_idle_animation.resetAnimation();
+                }
+                else
 
                 if(isFacingLeft){
                     outputTexture = flipped_player_idle_animation.getFrame(delta);
@@ -193,8 +291,6 @@ public class Player {
         // checks if the player is moving up or down
         if (Yspeed > 0) {
             state = playerState.Jumping;
-        } else if (Yspeed < 0) {
-            state = playerState.Falling;
         }
 
         // checks if the player is moving left or right
@@ -213,6 +309,10 @@ public class Player {
 
     // keyboard input N Player movement
     public void PlayerInputHandling() {
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.N)){
+            ShootBullets();
+        }
 
         //Horizontal Player input
         if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && (Gdx.input.isKeyPressed(Input.Keys.LEFT)) || !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
@@ -248,7 +348,7 @@ public class Player {
 
     }
 
-    // Detects if the player touches A MapObject and changes speeds
+    // Detects if the player touches A MapObject
     public void collisionDetection(Array<MapObject> Ground,Array<MapObject> WorldBorder ) {
 
         //bounds Collision
@@ -291,15 +391,30 @@ public class Player {
         hitBox.y = y;
     }
 
+    public void ShootBullets() {
+        Bullet bullet = new Bullet(x, y - 41);
+        bullets.add(bullet);
+    }
 
+    public static Array getBullets(){
+        return bullets;
+    }
 
     public void dispose(){
         player_running_animation.dispose();
         player_jumping_animation.dispose();
         player_idle_animation.dispose();
+        player_idle_gun_animation.dispose();
+        player_jumping_gun_animation.dispose();
+        player_running_gun_animation.dispose();
+
+        flipped_player_running_gun_animation.dispose();
+        flipped_player_jumping_gun_animation.dispose();
+        flipped_player_idle_gun_animation.dispose();
         flipped_player_running_animation.dispose();
         flipped_player_jumping_animation.dispose();
         flipped_player_idle_animation.dispose();
+
     }
 
 }

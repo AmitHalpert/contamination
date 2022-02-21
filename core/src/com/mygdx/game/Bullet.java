@@ -1,73 +1,80 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
-public class Bullet {
-
-
-    static final double Xspeed = 20, Yspeed = 20;
+public class Bullet{
 
     // bullet parameters
-    float x;
-    float y;
+    double DirectionSpeed;
+    double Xspeed;
+    float x, y;
     int width, height;
+    boolean isVisible;
     Rectangle hitBox;
-    Texture bullet;
     Texture outputTexture;
     ObjectAnimation bullet_animation;
+
 
 
     public Bullet(float x, float y) {
 
         this.x = x;
         this.y = y;
+        width = 70;
+        height = 70;
 
-        width = 100;
-        height = 100;
+        BulletDirection();
+
 
         hitBox = new Rectangle(x, y, width, height);
 
         bullet_animation = new ObjectAnimation();
         bullet_animation.loadAnimation("bullet_", 4);
-        bullet = new Texture(Gdx.files.internal("bullet_1"));
 
-        outputTexture = bullet;
     }
 
-    public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder) {
+    public Texture update(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder) {
+
+
+        Xspeed += DirectionSpeed;
+        if (Xspeed > 0 && Xspeed < 10) Xspeed = 0;
+        if (Xspeed < 0 && Xspeed > -10) Xspeed = 0;
+        if (Xspeed > 40) Xspeed = 40;
+        if (Xspeed < -40) Xspeed = -40;
+
 
         // updates bullets position;
         x += Xspeed;
-        y += Yspeed;
-
         hitBox.x = x;
         hitBox.y = y;
-
-        hitBox.x += Xspeed;
-        hitBox.y += Yspeed;
-
-        for (MapObject Grounds : Ground) {
-            if (hitBox.overlaps(Grounds.hitBox)) {
-                bullet_animation.dispose();
-                bullet.dispose();
-            }
-        }
-
-        for (MapObject Borders : WorldBorder) {
-            if (hitBox.overlaps(Borders.hitBox)) {
-                bullet_animation.dispose();
-                bullet.dispose();
-            }
-        }
 
 
         outputTexture = bullet_animation.getFrame(delta);
 
+        for (MapObject Borders : WorldBorder) {
+            Array bullets = Player.getBullets();
+            for (int w = 0; w < bullets.size; w++) {
+                Bullet b = (Bullet) bullets.get(w);
+                if (((Bullet) bullets.get(w)).hitBox.overlaps(Borders.hitBox)) {
+                    bullets.removeIndex(w);
+                }
+            }
+        }
 
         return outputTexture;
+    }
+
+    public void BulletDirection(){
+        if(Player.isFacingLeft){
+            DirectionSpeed = -40;
+        }
+        else{
+            DirectionSpeed = 40;
+        }
     }
 
 }

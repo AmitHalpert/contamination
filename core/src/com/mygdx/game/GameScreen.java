@@ -40,6 +40,15 @@ class GameScreen implements Screen {
     public GameScreen(final contamination game){
         this.game =  game;
 
+        // Map graphics
+        background = new Texture("map.png");
+
+        // Creates the wall array for the map and calls makeWalls function
+        ground = new Array<MapObject>();
+        WorldBorder = new Array<MapObject>();
+        createGround();
+        CreateMapBorders();
+
         // creates a player
         player = new Player(700,600);
 
@@ -50,17 +59,6 @@ class GameScreen implements Screen {
         // initialize parameters
         deltaTime = 0;
 
-
-
-        // Map graphics
-        background = new Texture("map.png");
-
-
-        // Creates the wall array for the map and calls makeWalls function
-        ground = new Array<MapObject>();
-        WorldBorder = new Array<MapObject>();
-        createGround();
-        CreateMapBorders();
     }
 
     @Override
@@ -86,6 +84,7 @@ class GameScreen implements Screen {
         game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
         //Draw the player and gives all the input player class needs
         game.batch.draw(player.render(deltaTime, ground,WorldBorder),  player.x,  player.y, player.width,  player.height);
+        DrawBullets();
 
         game.batch.end();
 
@@ -102,7 +101,7 @@ class GameScreen implements Screen {
         WorldBorder.add(new MapObject(-650,200,580,3000));
 
         // create right world border
-        WorldBorder.add(new MapObject(1989,200,500,800));
+        WorldBorder.add(new MapObject(1989,200,500,1200));
 
         // create upper world border
         WorldBorder.add(new MapObject(-550,1200,3000,200));
@@ -113,6 +112,15 @@ class GameScreen implements Screen {
             dispose();
             Gdx.app.exit();
         }
+    }
+
+    public void DrawBullets(){
+        Array bullets = Player.getBullets();
+        for (int w = 0; w < bullets.size; w++){
+            Bullet b = (Bullet) bullets.get(w);
+            game.batch.draw(b.update(deltaTime,ground,WorldBorder),b.x,b.y,140,140);
+        }
+
     }
 
 
