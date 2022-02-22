@@ -5,14 +5,10 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
-import java.util.LinkedList;
 
 
 class GameScreen implements Screen {
@@ -28,7 +24,6 @@ class GameScreen implements Screen {
     Viewport viewport;
 
     //graphics
-    ShapeRenderer shapeRenderer;
     private final Texture background;
 
     // world parameters
@@ -52,7 +47,7 @@ class GameScreen implements Screen {
         CreateMapBorders();
 
         // creates a player
-        player = new Player(700,600);
+        player = new Player(1750,300);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
@@ -120,13 +115,13 @@ class GameScreen implements Screen {
         // environment bounds
 
         //left rock
-        WorldBorder.add(new MapObject(-435,-39,580,360));
+        WorldBorder.add(new MapObject(-435,-39,580,369));
 
         // middle rock
-        WorldBorder.add(new MapObject(1065,-35,74,325));
+        WorldBorder.add(new MapObject(1065,-35,74,329));
 
         // right rock
-        WorldBorder.add(new MapObject(1495,-35,74,325));
+        WorldBorder.add(new MapObject(1495,-35,74,329));
 
 
         // WORLD BOUNDS
@@ -150,12 +145,12 @@ class GameScreen implements Screen {
     }
 
     public void DrawBullets(){
-        LinkedList bullets = Player.getBullets();
-
-        for (int w = 0; w < bullets.size(); w++){
+        Array<Bullet> bullets = Player.getBullets();
+        for (int w = 0; w < bullets.size; w++){
             Bullet b = (Bullet) bullets.get(w);
-            game.batch.draw(b.update(deltaTime,ground,WorldBorder),b.x,b.y,140,140);
+            game.batch.draw(b.update(deltaTime,ground,WorldBorder),b.x,b.y,120,120);
         }
+
     }
 
 
