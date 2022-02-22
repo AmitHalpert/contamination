@@ -43,12 +43,12 @@ class GameScreen implements Screen {
         this.game =  game;
 
         // Map graphics
-        background = new Texture("map.png");
+        background = new Texture("genesis.png");
 
         // Creates the wall array for the map and calls makeWalls function
         ground = new Array<MapObject>();
         WorldBorder = new Array<MapObject>();
-        createGround();
+        createGrounds();
         CreateMapBorders();
 
         // creates a player
@@ -84,8 +84,10 @@ class GameScreen implements Screen {
 
         //Draw map
         game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
-        //Draw the player and gives all the input player class needs
+        //Draw the player
         game.batch.draw(player.render(deltaTime, ground,WorldBorder),  player.x,  player.y, player.width,  player.height);
+
+
         DrawBullets();
 
         game.batch.end();
@@ -93,11 +95,17 @@ class GameScreen implements Screen {
     }
 
     // Creates the maps ground
-    private void createGround(){
-        ground.add(new MapObject(-550,-110,3000,203));
+    private void createGrounds(){
+
+        // right platform
+        ground.add(new MapObject(920,-39,1200,224));
+        // left platform
+        ground.add(new MapObject(50,-39,455,224));
     }
 
     private void CreateMapBorders(){
+
+
 
         // create left world border
         WorldBorder.add(new MapObject(-650,200,580,3000));
@@ -107,6 +115,7 @@ class GameScreen implements Screen {
 
         // create upper world border
         WorldBorder.add(new MapObject(-550,1200,3000,200));
+
     }
 
     public void MainMenu(){

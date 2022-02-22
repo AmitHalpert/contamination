@@ -338,7 +338,7 @@ public class Player {
         //vertical input
         if ((Gdx.input.isKeyPressed(Input.Keys.UP))) {
             hitBox.y++;
-            if (IsPlayerOnGround == true) {
+            if (IsPlayerOnGround || Yspeed == -Yspeed) {
                 Yspeed += 14;
 
             }
