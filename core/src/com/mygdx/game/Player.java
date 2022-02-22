@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -37,6 +38,9 @@ public class Player {
     Texture outputTexture;
     Texture playerTexture;
 
+    // music and SFX
+    private Sound gunshot;
+
     // create ObjectAnimation for every type of animation
     ObjectAnimation player_running_animation;
     ObjectAnimation player_jumping_animation;
@@ -69,6 +73,7 @@ public class Player {
         hitBox = new Rectangle(x, y, width, height);
 
         bullets = new Array<>();
+        gunshot = Gdx.audio.newSound(Gdx.files.internal("gun1.wav"));
 
         // initialize player's settings
         isFacingLeft = false;
@@ -311,6 +316,8 @@ public class Player {
     public void PlayerInputHandling() {
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.N)){
+
+            gunshot.play(0.1f);
             ShootBullets();
         }
 
@@ -401,6 +408,7 @@ public class Player {
     }
 
     public void dispose(){
+        gunshot.dispose();
         player_running_animation.dispose();
         player_jumping_animation.dispose();
         player_idle_animation.dispose();

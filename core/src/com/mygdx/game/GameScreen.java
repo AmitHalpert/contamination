@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
@@ -18,6 +19,9 @@ class GameScreen implements Screen {
 
     // Main menu features
     float deltaTime;
+
+    // SFX and music
+    Music GameAmbience;
 
     //Screen
     OrthographicCamera camera;
@@ -36,6 +40,13 @@ class GameScreen implements Screen {
 
     public GameScreen(final contamination game){
         this.game =  game;
+
+
+        // sounds
+        GameAmbience = Gdx.audio.newMusic(Gdx.files.internal("GameAmbience.mp3"));
+        GameAmbience.setLooping(true);
+        GameAmbience.setVolume(0.3f);
+        GameAmbience.play();
 
         // Map graphics
         background = new Texture("genesis.png");
@@ -68,7 +79,7 @@ class GameScreen implements Screen {
         deltaTime = Gdx.graphics.getDeltaTime();
 
         //The Game's Main menu
-        MainMenu();
+        HUD();
 
         //updates the camera
         camera.update();
@@ -137,7 +148,7 @@ class GameScreen implements Screen {
 
     }
 
-    public void MainMenu(){
+    public void HUD(){
         if (Gdx.input.isKeyPressed(Keys.ESCAPE)){
             dispose();
             Gdx.app.exit();
