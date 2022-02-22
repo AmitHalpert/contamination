@@ -27,8 +27,8 @@ class GameScreen implements Screen {
     private final Texture background;
 
     // world parameters
-    private final int WORLD_WIDTH = 1920;
-    private final int WORLD_HEIGHT = 1080;
+    static final int WORLD_WIDTH = 1920;
+    static final int WORLD_HEIGHT = 1080;
 
     //World objects
     Array<MapObject> ground;

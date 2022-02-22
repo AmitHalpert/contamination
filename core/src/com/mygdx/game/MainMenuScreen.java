@@ -12,15 +12,19 @@ public class MainMenuScreen implements Screen {
 
     Texture playButton;
     Texture playButtonPressed;
-    Texture exitButtonActive;
     Texture exitButton;
-    Texture creditsB;
+    Texture exitButtonPressed;
+    Texture creditsButton;
+    Texture creditsButtonPressed;
 
     public MainMenuScreen(contamination game){
         this.game = game;
         playButton = new Texture("playB.png");
+        playButtonPressed = new Texture("playBP.png");
         exitButton = new Texture("exitB.png");
-        creditsB = new Texture("creditsB.png");
+        exitButtonPressed = new Texture("exitBP.png");
+        creditsButton = new Texture("creditsB.png");
+        creditsButtonPressed = new Texture("credisBP.png");
     }
 
     @Override
@@ -42,9 +46,24 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
 
 
-        game.batch.draw(playButton,850,150,100,100);
-        game.batch.draw(exitButton,700,150,100,100);
-        game.batch.draw(creditsB,1000,150,100,100);
+        if(Gdx.input.getX() < 910 + 100-50 && Gdx.input.getX() > 910 -50 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 150 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 150){
+            game.batch.draw(playButtonPressed,850+15,150,100,100);
+        } else{
+            game.batch.draw(playButton,850+15,150,100,100);
+        }
+
+        if(Gdx.input.getX() < 765 + 100-50 && Gdx.input.getX() > 800 - 80 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 150 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 150){
+            game.batch.draw(exitButtonPressed,700+15,150,100,100);
+        } else{
+            game.batch.draw(exitButton,700+15,150,100,100);
+        }
+
+        if(Gdx.input.getX() < 1060 + 100-50 && Gdx.input.getX() > 1099 - 80 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 150 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 150){
+            game.batch.draw(creditsButtonPressed,1000+15,150,100,100);
+        } else{
+            game.batch.draw(creditsButton,1000+15,150,100,100);
+        }
+
 
         game.batch.end();
     }
@@ -71,6 +90,12 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
+        playButton.dispose();
+        playButtonPressed.dispose();
+        exitButton.dispose();
+        exitButtonPressed.dispose();
+        creditsButton.dispose();
+        creditsButtonPressed.dispose();
 
     }
 }
