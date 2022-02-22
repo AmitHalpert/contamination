@@ -38,22 +38,27 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0,0,0,1);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
-            dispose();
-            Gdx.app.exit();
-        }
 
         game.batch.begin();
 
 
         if(Gdx.input.getX() < 910 + 100-50 && Gdx.input.getX() > 910 -50 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 150 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 150){
             game.batch.draw(playButtonPressed,850+15,150,100,100);
+            if(Gdx.input.isTouched()){
+                this.dispose();
+                game.setScreen(new GameScreen(game));
+            }
         } else{
             game.batch.draw(playButton,850+15,150,100,100);
         }
 
         if(Gdx.input.getX() < 765 + 100-50 && Gdx.input.getX() > 800 - 80 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 150 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 150){
             game.batch.draw(exitButtonPressed,700+15,150,100,100);
+            if(Gdx.input.isTouched()){
+                dispose();
+                Gdx.app.exit();
+            }
+
         } else{
             game.batch.draw(exitButton,700+15,150,100,100);
         }

@@ -13,9 +13,6 @@ public class contamination extends Game {
 	public SpriteBatch batch;
 	public BitmapFont font;
 
-	private Texture MenuBackground;
-	private Texture Playbutton;
-
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
