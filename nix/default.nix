@@ -2,6 +2,7 @@
 , callPackage
 , makeWrapper
 , jdk11
+, libpulseaudio
 }:
 
 let
@@ -23,9 +24,9 @@ buildGradle rec {
     mkdir -p $out/{lib,bin}
     cp desktop/build/libs/desktop-${version}.jar $out/lib/${pname}.jar
 
-
     makeWrapper ${jdk11}/bin/java $out/bin/${pname} \
-      --add-flags "-jar $out/lib/${pname}.jar"
+    --add-flags "-jar $out/lib/${pname}.jar" \
+    --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libpulseaudio ]}
   '';
 
   meta = with lib; {
