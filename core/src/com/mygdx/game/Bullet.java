@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.LinkedList;
+
 public class Bullet{
 
     // bullet parameters
@@ -24,8 +26,8 @@ public class Bullet{
 
         this.x = x;
         this.y = y;
-        width = 70;
-        height = 70;
+        width = 200;
+        height = 200;
 
         BulletDirection();
 
@@ -56,11 +58,11 @@ public class Bullet{
         outputTexture = bullet_animation.getFrame(delta);
 
         for (MapObject Borders : WorldBorder) {
-            Array bullets = Player.getBullets();
-            for (int w = 0; w < bullets.size; w++) {
+            LinkedList bullets = Player.getBullets();
+            for (int w = 0; w < bullets.size(); w++) {
                 Bullet b = (Bullet) bullets.get(w);
                 if (((Bullet) bullets.get(w)).hitBox.overlaps(Borders.hitBox)) {
-                    bullets.removeIndex(w);
+                    bullets.remove(w);
                 }
             }
         }

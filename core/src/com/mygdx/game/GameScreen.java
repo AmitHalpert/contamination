@@ -12,6 +12,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import java.util.LinkedList;
+
 
 class GameScreen implements Screen {
 
@@ -115,12 +117,12 @@ class GameScreen implements Screen {
     }
 
     public void DrawBullets(){
-        Array bullets = Player.getBullets();
-        for (int w = 0; w < bullets.size; w++){
+        LinkedList bullets = Player.getBullets();
+
+        for (int w = 0; w < bullets.size(); w++){
             Bullet b = (Bullet) bullets.get(w);
             game.batch.draw(b.update(deltaTime,ground,WorldBorder),b.x,b.y,140,140);
         }
-
     }
 
 

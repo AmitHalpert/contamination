@@ -30,7 +30,7 @@ public class Player {
     boolean IsPlayerOnGround;
     boolean isPlayerHoldingGun;
     boolean isPlayerShooting;
-    static Array<Bullet> bullets;
+    static LinkedList<Bullet> bullets;
 
     // Animation parameters
     float idle_animation_time;
@@ -68,7 +68,7 @@ public class Player {
         height = 170;
         hitBox = new Rectangle(x, y, width, height);
 
-        bullets = new Array<>();
+        bullets = new LinkedList<>();
 
         // initialize player's settings
         isFacingLeft = false;
@@ -396,7 +396,7 @@ public class Player {
         bullets.add(bullet);
     }
 
-    public static Array getBullets(){
+    public static LinkedList getBullets(){
         return bullets;
     }
 
