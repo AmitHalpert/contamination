@@ -97,15 +97,39 @@ class GameScreen implements Screen {
     // Creates the maps ground
     private void createGrounds(){
 
-        // right platform
+        // environment Grounds
+
+        //left rock
+        ground.add(new MapObject(50,10,85,330));
+
+        // middle rock
+        ground.add(new MapObject(1067,-12,70,320));
+
+        // right rock
+        ground.add(new MapObject(1495,-12,70,320));
+
+        // right Ground
         ground.add(new MapObject(920,-39,1200,224));
-        // left platform
+        // left Ground
         ground.add(new MapObject(50,-39,455,224));
     }
 
     private void CreateMapBorders(){
 
 
+        // environment bounds
+
+        //left rock
+        WorldBorder.add(new MapObject(-435,-39,580,360));
+
+        // middle rock
+        WorldBorder.add(new MapObject(1065,-35,74,325));
+
+        // right rock
+        WorldBorder.add(new MapObject(1495,-35,74,325));
+
+
+        // WORLD BOUNDS
 
         // create left world border
         WorldBorder.add(new MapObject(-650,200,580,3000));

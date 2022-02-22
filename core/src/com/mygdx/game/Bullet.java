@@ -26,8 +26,8 @@ public class Bullet{
 
         this.x = x;
         this.y = y;
-        width = 200;
-        height = 200;
+        width = 20;
+        height = 20;
 
         BulletDirection();
 
