@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -19,6 +20,10 @@ class GameScreen implements Screen {
 
     // Main menu features
     float deltaTime;
+    boolean onepress;
+    static boolean isPaused;
+    static boolean IsScreenMainMenu;
+
 
     // SFX and music
     Music GameAmbience;
@@ -28,7 +33,8 @@ class GameScreen implements Screen {
     Viewport viewport;
 
     //graphics
-    private final Texture background;
+    Texture background;
+    Texture guiMenu;
 
     // world parameters
     static final int WORLD_WIDTH = 1920;
@@ -41,6 +47,11 @@ class GameScreen implements Screen {
     public GameScreen(final contamination game){
         this.game =  game;
 
+        onepress = false;
+        isPaused = false;
+        IsScreenMainMenu = false;
+
+        guiMenu = new Texture("menugui.png");
 
         // sounds
         GameAmbience = Gdx.audio.newMusic(Gdx.files.internal("GameAmbience.mp3"));
@@ -71,6 +82,7 @@ class GameScreen implements Screen {
 
     @Override
     public void show() {
+
     }
 
     @Override
@@ -78,8 +90,11 @@ class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         deltaTime = Gdx.graphics.getDeltaTime();
 
-        //The Game's Main menu
-        HUD();
+        // pauses the game
+        if (isPaused){
+            deltaTime = 0;
+        }
+
 
         //updates the camera
         camera.update();
@@ -87,17 +102,16 @@ class GameScreen implements Screen {
 
         // BEGIN TO DRAW:
         game.batch.begin();
-
         //Draw map
         game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
         //Draw the player
         game.batch.draw(player.render(deltaTime, ground,WorldBorder),  player.x,  player.y, player.width,  player.height);
 
-
         DrawBullets();
+        GUI();
+
 
         game.batch.end();
-
     }
 
     // Creates the maps ground
@@ -148,12 +162,43 @@ class GameScreen implements Screen {
 
     }
 
-    public void HUD(){
-        if (Gdx.input.isKeyPressed(Keys.ESCAPE)){
-            dispose();
-            Gdx.app.exit();
+    public void GUI(){
+
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) && !onepress) {
+           onepress = true;
+        }
+        else if(Gdx.input.isKeyJustPressed(Keys.ESCAPE) && onepress){
+            onepress = false;
+            isPaused = false;
+        }
+
+
+        if(onepress){
+            isPaused = true;
+            game.batch.draw(guiMenu,MainMenuScreen.yCenter/2 + 500,MainMenuScreen.yCenter/2,400,400);
+            //exit button
+            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 290 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 290){
+                if(Gdx.input.isTouched()){
+                    dispose();
+                    Gdx.app.exit();
+                }
+            }
+            // resume button
+            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 500 + 100  && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 530){
+                if(Gdx.input.isTouched()){
+                    isPaused = false;
+                    onepress = false;
+                }
+            }
+            // main menu button
+            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 400 + 100  && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 400+40){
+                if(Gdx.input.isTouched()){
+                IsScreenMainMenu = true;
+                }
+            }
         }
     }
+
 
     public void DrawBullets(){
         Array<Bullet> bullets = Player.getBullets();
@@ -188,6 +233,7 @@ class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        guiMenu.dispose();
         player.dispose();
         background.dispose();
 

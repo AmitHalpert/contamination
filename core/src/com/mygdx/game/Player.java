@@ -139,7 +139,11 @@ public class Player {
         collisionDetection(Ground,WorldBorder);
 
         // Changes the player X AND Y
-        updatePlayerPos();
+
+        if(!GameScreen.isPaused){
+            updatePlayerPos();
+        }
+
 
 
         // checks which animation should play according to the Player's state
@@ -315,21 +319,21 @@ public class Player {
     // keyboard input N Player movement
     public void PlayerInputHandling() {
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.N)){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.N) && !GameScreen.isPaused){
 
             gunshot.play(0.1f);
             ShootBullets();
         }
 
         //Horizontal Player input
-        if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && (Gdx.input.isKeyPressed(Input.Keys.LEFT)) || !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && (Gdx.input.isKeyPressed(Input.Keys.LEFT)) || !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !GameScreen.isPaused) {
             Xspeed *= 0.8;
         }
-        else if ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT))) {
+        else if ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !GameScreen.isPaused) {
             Xspeed--;
             isFacingLeft = true;
         }
-        else if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(Gdx.input.isKeyPressed(Input.Keys.LEFT))) {
+        else if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !GameScreen.isPaused) {
             Xspeed++;
             isFacingLeft = false;
         }
@@ -343,7 +347,7 @@ public class Player {
 
 
         //vertical input
-        if ((Gdx.input.isKeyPressed(Input.Keys.UP))) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.UP)) && !GameScreen.isPaused) {
             hitBox.y++;
             if (IsPlayerOnGround || Yspeed == -Yspeed) {
                 Yspeed += 14;

@@ -13,6 +13,8 @@ public class contamination extends Game {
 	public SpriteBatch batch;
 	public BitmapFont font;
 
+
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -28,7 +30,6 @@ public class contamination extends Game {
 	@Override
 	public void render () {
 		super.render();
-
 	}
 
 	@Override

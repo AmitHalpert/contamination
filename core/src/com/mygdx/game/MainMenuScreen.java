@@ -11,6 +11,8 @@ public class MainMenuScreen implements Screen {
 
     contamination game;
 
+
+
     static final int xCenter = GameScreen.WORLD_WIDTH / 2;
     static final int yCenter = GameScreen.WORLD_HEIGHT / 2;
 
@@ -58,18 +60,18 @@ public class MainMenuScreen implements Screen {
 
         game.batch.begin();
 
-
+        // play button
         if(Gdx.input.getX() < xCenter+100 && Gdx.input.getX() > xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 400 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 400){
             game.batch.draw(playButtonPressed,xCenter-100,400,200,100);
             if(Gdx.input.isTouched()){
                 ContaminationMusic.stop();
-                this.dispose();
+                dispose();
                 game.setScreen(new GameScreen(game));
             }
         } else{
             game.batch.draw(playButton,xCenter-100,400,200,100);
         }
-
+        // Exit buttons
         if(Gdx.input.getX() < xCenter+100 && Gdx.input.getX() > xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 250 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 250){
             game.batch.draw(exitButtonPressed,xCenter-100,250,200,100);
             if(Gdx.input.isTouched()){
@@ -81,6 +83,7 @@ public class MainMenuScreen implements Screen {
             game.batch.draw(exitButton,xCenter-100,250,200,100);
         }
 
+        // credits button
         if(Gdx.input.getX() < xCenter+100 && Gdx.input.getX() > xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 100 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 100){
             game.batch.draw(creditsButtonPressed,xCenter-100,100,200,100);
         } else{
