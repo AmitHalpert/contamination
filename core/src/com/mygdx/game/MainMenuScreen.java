@@ -11,6 +11,9 @@ public class MainMenuScreen implements Screen {
 
     contamination game;
 
+    static final int xCenter = GameScreen.WORLD_WIDTH / 2;
+    static final int yCenter = GameScreen.WORLD_HEIGHT / 2;
+
     //SFX
     Music ContaminationMusic;
 
@@ -31,12 +34,12 @@ public class MainMenuScreen implements Screen {
 
         background = new Texture("MenuBackground.png");
 
-        playButton = new Texture("playB.png");
-        playButtonPressed = new Texture("playBP.png");
-        exitButton = new Texture("exitB.png");
-        exitButtonPressed = new Texture("exitBP.png");
-        creditsButton = new Texture("creditsB.png");
-        creditsButtonPressed = new Texture("credisBP.png");
+        playButton = new Texture("start.png");
+        playButtonPressed = new Texture("pstart.png");
+        exitButton = new Texture("exit.png");
+        exitButtonPressed = new Texture("pexit.png");
+        creditsButton = new Texture("credits.png");
+        creditsButtonPressed = new Texture("pcredits.png");
         ContaminationMusic.setLooping(true);
         ContaminationMusic.play();
     }
@@ -54,35 +57,34 @@ public class MainMenuScreen implements Screen {
 
 
         game.batch.begin();
-        game.batch.draw(background,0,0,GameScreen.WORLD_WIDTH,GameScreen.WORLD_HEIGHT);
 
 
-        if(Gdx.input.getX() < 910 + 100-50 && Gdx.input.getX() > 910 -50 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 150 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 150){
-            game.batch.draw(playButtonPressed,850+15,150,100,100);
+        if(Gdx.input.getX() < xCenter+100 && Gdx.input.getX() > xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 400 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 400){
+            game.batch.draw(playButtonPressed,xCenter-100,400,200,100);
             if(Gdx.input.isTouched()){
                 ContaminationMusic.stop();
                 this.dispose();
                 game.setScreen(new GameScreen(game));
             }
         } else{
-            game.batch.draw(playButton,850+15,150,100,100);
+            game.batch.draw(playButton,xCenter-100,400,200,100);
         }
 
-        if(Gdx.input.getX() < 765 + 100-50 && Gdx.input.getX() > 800 - 80 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 150 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 150){
-            game.batch.draw(exitButtonPressed,700+15,150,100,100);
+        if(Gdx.input.getX() < xCenter+100 && Gdx.input.getX() > xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 250 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 250){
+            game.batch.draw(exitButtonPressed,xCenter-100,250,200,100);
             if(Gdx.input.isTouched()){
                 dispose();
                 Gdx.app.exit();
             }
 
         } else{
-            game.batch.draw(exitButton,700+15,150,100,100);
+            game.batch.draw(exitButton,xCenter-100,250,200,100);
         }
 
-        if(Gdx.input.getX() < 1060 + 100-50 && Gdx.input.getX() > 1099 - 80 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 150 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 150){
-            game.batch.draw(creditsButtonPressed,1000+15,150,100,100);
+        if(Gdx.input.getX() < xCenter+100 && Gdx.input.getX() > xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 100 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 100){
+            game.batch.draw(creditsButtonPressed,xCenter-100,100,200,100);
         } else{
-            game.batch.draw(creditsButton,1000+15,150,100,100);
+            game.batch.draw(creditsButton,xCenter-100,100,200,100);
         }
 
 
