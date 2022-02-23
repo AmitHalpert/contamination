@@ -11,8 +11,6 @@ public class MainMenuScreen implements Screen {
 
     contamination game;
 
-
-
     static final int xCenter = GameScreen.WORLD_WIDTH / 2;
     static final int yCenter = GameScreen.WORLD_HEIGHT / 2;
 
@@ -21,6 +19,8 @@ public class MainMenuScreen implements Screen {
 
     // graphics
     Texture background;
+    Texture text;
+
 
     Texture playButton;
     Texture playButtonPressed;
@@ -33,9 +33,8 @@ public class MainMenuScreen implements Screen {
         this.game = game;
 
         ContaminationMusic = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
-
-        background = new Texture("MenuBackground.png");
-
+        text = new Texture("text-contamination.png");
+        background = new Texture("art.jpeg");
         playButton = new Texture("start.png");
         playButtonPressed = new Texture("pstart.png");
         exitButton = new Texture("exit.png");
@@ -55,17 +54,18 @@ public class MainMenuScreen implements Screen {
     public void render(float delta) {
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(0,0,0,1);
-
 
         game.batch.begin();
 
+
+        game.batch.draw(background,0,0,GameScreen.WORLD_WIDTH,GameScreen.WORLD_HEIGHT);
+        game.batch.draw(text,xCenter-500,yCenter+200,1000,100);
         // play button
         if(Gdx.input.getX() < xCenter+100 && Gdx.input.getX() > xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 400 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 400){
             game.batch.draw(playButtonPressed,xCenter-100,400,200,100);
             if(Gdx.input.isTouched()){
                 ContaminationMusic.stop();
-                dispose();
+                this.dispose();
                 game.setScreen(new GameScreen(game));
             }
         } else{
@@ -75,7 +75,7 @@ public class MainMenuScreen implements Screen {
         if(Gdx.input.getX() < xCenter+100 && Gdx.input.getX() > xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 250 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 250){
             game.batch.draw(exitButtonPressed,xCenter-100,250,200,100);
             if(Gdx.input.isTouched()){
-                dispose();
+                this.dispose();
                 Gdx.app.exit();
             }
 
@@ -89,7 +89,6 @@ public class MainMenuScreen implements Screen {
         } else{
             game.batch.draw(creditsButton,xCenter-100,100,200,100);
         }
-
 
         game.batch.end();
     }
@@ -123,6 +122,5 @@ public class MainMenuScreen implements Screen {
         exitButtonPressed.dispose();
         creditsButton.dispose();
         creditsButtonPressed.dispose();
-
     }
 }
