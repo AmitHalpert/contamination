@@ -145,6 +145,12 @@ class GameScreen implements Screen {
         // middle rock
         WorldBorder.add(new MapObject(1065,-35,74,329));
 
+        // middle pit left
+        WorldBorder.add(new MapObject(359,-115,150,260));
+        // middle pit right
+        WorldBorder.add(new MapObject(918,-115,100,275));
+
+
         // right rock
         WorldBorder.add(new MapObject(1495,-35,74,329));
 
@@ -236,6 +242,5 @@ class GameScreen implements Screen {
         guiMenu.dispose();
         player.dispose();
         background.dispose();
-
     }
 }

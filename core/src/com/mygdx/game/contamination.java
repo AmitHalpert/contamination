@@ -30,6 +30,9 @@ public class contamination extends Game {
 	@Override
 	public void render () {
 		super.render();
+		if(GameScreen.IsScreenMainMenu){
+			setScreen(new GameScreen(this));
+		}
 	}
 
 	@Override
