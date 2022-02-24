@@ -342,20 +342,20 @@ public class Player {
         //Smooths Player Movement
         if (Xspeed > 0 && Xspeed < 0.80) Xspeed = 0;
         if (Xspeed < 0 && Xspeed > -0.80) Xspeed = 0;
-        if (Xspeed > 12) Xspeed = 12;
-        if (Xspeed < -12) Xspeed = -12;
+        if (Xspeed > 10) Xspeed = 10;
+        if (Xspeed < -10) Xspeed = -10;
 
 
         //vertical input
         if ((Gdx.input.isKeyPressed(Input.Keys.UP)) && !GameScreen.isPaused) {
             hitBox.y++;
             if (IsPlayerOnGround || Yspeed == -Yspeed) {
-                Yspeed += 14;
+                Yspeed += 18;
 
             }
             hitBox.y--;
         }
-        Yspeed -= 0.6;
+        Yspeed -= 0.9;
 
     }
 

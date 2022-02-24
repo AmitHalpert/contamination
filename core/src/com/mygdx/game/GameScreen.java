@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g3d.environment.AmbientCubemap;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -15,14 +16,14 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 class GameScreen implements Screen {
 
-    private final contamination game;
+    final contamination game;
     Player player;
 
     // Main menu features
     float deltaTime;
-    boolean onepress;
+    boolean IsGUI;
     static boolean isPaused;
-    static boolean IsScreenMainMenu;
+    boolean IsScreenMainMenu;
 
 
     // SFX and music
@@ -47,7 +48,7 @@ class GameScreen implements Screen {
     public GameScreen(final contamination game){
         this.game =  game;
 
-        onepress = false;
+        IsGUI = false;
         isPaused = false;
         IsScreenMainMenu = false;
 
@@ -89,6 +90,11 @@ class GameScreen implements Screen {
     public void render(float deltaTime) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         deltaTime = Gdx.graphics.getDeltaTime();
+
+        if(IsScreenMainMenu){
+            game.setScreen(new MainMenuScreen(game));
+        }
+
 
         // pauses the game
         if (isPaused){
@@ -170,40 +176,46 @@ class GameScreen implements Screen {
 
     public void GUI(){
 
-        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) && !onepress) {
-           onepress = true;
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) && !IsGUI) {
+            IsGUI = true;
         }
-        else if(Gdx.input.isKeyJustPressed(Keys.ESCAPE) && onepress){
-            onepress = false;
+        else if(Gdx.input.isKeyJustPressed(Keys.ESCAPE) && IsGUI){
+            IsGUI = false;
             isPaused = false;
         }
 
 
-        if(onepress){
+        if(IsGUI){
             isPaused = true;
             game.batch.draw(guiMenu,MainMenuScreen.yCenter/2 + 500,MainMenuScreen.yCenter/2,400,400);
             //exit button
+
+
             if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 290 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 290){
                 if(Gdx.input.isTouched()){
                     dispose();
                     Gdx.app.exit();
                 }
             }
+
             // resume button
             if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 500 + 100  && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 530){
                 if(Gdx.input.isTouched()){
                     isPaused = false;
-                    onepress = false;
+                    IsGUI = false;
                 }
             }
             // main menu button
             if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 400 + 100  && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 400+40){
-                if(Gdx.input.isTouched()){
-                IsScreenMainMenu = true;
+                if(Gdx.input.justTouched() && !IsScreenMainMenu ){
+                    GameAmbience.stop();
+                    dispose();
+                    IsScreenMainMenu = true;
+                    }
                 }
             }
         }
-    }
+
 
 
     public void DrawBullets(){
@@ -239,6 +251,7 @@ class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        GameAmbience.dispose();
         guiMenu.dispose();
         player.dispose();
         background.dispose();

@@ -21,7 +21,6 @@ public class MainMenuScreen implements Screen {
     Texture background;
     Texture text;
 
-
     Texture playButton;
     Texture playButtonPressed;
     Texture exitButton;
@@ -52,9 +51,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         game.batch.begin();
 
 
@@ -115,6 +112,8 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
+
+        text.dispose();
         ContaminationMusic.dispose();
         playButton.dispose();
         playButtonPressed.dispose();
