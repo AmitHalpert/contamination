@@ -146,10 +146,13 @@ class GameScreen implements Screen {
         // environment bounds
 
         //left rock
-        WorldBorder.add(new MapObject(-435,-39,580,369));
+        WorldBorder.add(new MapObject(-435,-37,580,329));
+
 
         // middle rock
-        WorldBorder.add(new MapObject(1065,-35,74,329));
+        WorldBorder.add(new MapObject(1065,-37,75,310));
+
+
 
         // middle pit left
         WorldBorder.add(new MapObject(359,-115,150,260));
@@ -158,7 +161,7 @@ class GameScreen implements Screen {
 
 
         // right rock
-        WorldBorder.add(new MapObject(1495,-35,74,329));
+        WorldBorder.add(new MapObject(1495,-39,74,310));
 
 
         // WORLD BOUNDS
@@ -222,7 +225,7 @@ class GameScreen implements Screen {
         Array<Bullet> bullets = Player.getBullets();
         for (int w = 0; w < bullets.size; w++){
             Bullet b = (Bullet) bullets.get(w);
-            game.batch.draw(b.update(deltaTime,ground,WorldBorder),b.x,b.y,120,120);
+            game.batch.draw(b.update(deltaTime,ground,WorldBorder),b.xf,b.yf,120,120);
         }
 
     }

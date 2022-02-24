@@ -15,7 +15,7 @@ public class Bullet{
     // bullet parameters
     double DirectionSpeed;
     double Xspeed;
-    float x, y;
+    float xf, yf;
     int width, height;
     boolean isVisible;
     Rectangle hitBox;
@@ -26,16 +26,14 @@ public class Bullet{
 
     public Bullet(float x, float y) {
 
-        this.x = x;
-        this.y = y;
-        width = 20;
-        height = 20;
+        this.xf = x;
+        this.yf = y;
 
         BulletDirection();
 
 
-        hitBox = new Rectangle(x, y, 0.01f, 0.01f);
 
+        hitBox = new Rectangle(xf, yf, 0.001f, 0.001f);
         bullet_animation = new ObjectAnimation();
         bullet_animation.loadAnimation("bullet_", 4);
 
@@ -52,9 +50,9 @@ public class Bullet{
 
 
         // updates bullets position;
-        x += Xspeed;
-        hitBox.x = x;
-        hitBox.y = y;
+        xf += Xspeed;
+        hitBox.x = xf;
+        hitBox.y = yf;
 
 
         outputTexture = bullet_animation.getFrame(delta);
