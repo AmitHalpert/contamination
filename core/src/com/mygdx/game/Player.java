@@ -21,6 +21,8 @@ public class Player {
         dead
     }
 
+    public static final float SHOOT_WAIT_TIME = 0.5f;
+
     // Player parameters
     float x, y;
     int width, height;
@@ -29,8 +31,10 @@ public class Player {
     static boolean isFacingLeft;
     boolean Collision;
     boolean IsPlayerOnGround;
+
+    // gun parameters
+    float shootTimer;
     boolean isPlayerHoldingGun;
-    boolean isPlayerShooting;
     static Array<Bullet> bullets;
 
     // Animation parameters
@@ -39,7 +43,7 @@ public class Player {
     Texture playerTexture;
 
     // music and SFX
-    private Sound gunshot;
+    private final Sound gunshot;
 
     // create ObjectAnimation for every type of animation
     ObjectAnimation player_running_animation;
@@ -72,6 +76,9 @@ public class Player {
         height = 170;
         hitBox = new Rectangle(x, y, width, height);
 
+
+        //set up gun parameters
+        shootTimer = 0;
         bullets = new Array<>();
         gunshot = Gdx.audio.newSound(Gdx.files.internal("gun1.wav"));
 
@@ -80,7 +87,6 @@ public class Player {
         isPlayerHoldingGun = true;
         Collision = false;
         IsPlayerOnGround = false;
-        isPlayerShooting = false;
         state = playerState.Idle;
         idle_animation_time = 0;
 
@@ -130,10 +136,10 @@ public class Player {
 
 
         //Determine witch (playerState) state the player will be.
-        GetPlayerState(delta);
+        GetPlayerState();
 
         // keyboard input N Player movement
-        PlayerInputHandling();
+        PlayerInputHandling(delta);
 
         // Detects if the player touches A MapObject and changes speeds
         collisionDetection(Ground,WorldBorder);
@@ -295,7 +301,7 @@ public class Player {
 
 
     //Determine witch (playerState) state the player will be.
-    public void GetPlayerState(float delta) {
+    public void GetPlayerState() {
 
         // checks if the player is moving up or down
         if (Yspeed > 0) {
@@ -317,10 +323,11 @@ public class Player {
     }
 
     // keyboard input N Player movement
-    public void PlayerInputHandling() {
+    public void PlayerInputHandling(float delta) {
+        shootTimer += delta;
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.N) && !GameScreen.isPaused){
-
+        if(Gdx.input.isKeyPressed(Input.Keys.N) && shootTimer >= SHOOT_WAIT_TIME && !GameScreen.isPaused){
+            shootTimer = 0;
             gunshot.play(0.1f);
             ShootBullets();
         }
