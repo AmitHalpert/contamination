@@ -1,6 +1,9 @@
 {
   description = "A very minimal flake for building and running contamination";
 
+  nixConfig.extra-substituters = [ "https://contamination.cachix.org" ];
+  nixConfig.extra-trusted-public-keys = [ "contamination.cachix.org-1:KmdW5xVF8ccKEb9tvK6qtEMW+lGa83seGgFyBOkeM/4=" ];
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
