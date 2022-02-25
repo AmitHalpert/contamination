@@ -23,7 +23,7 @@ class GameScreen implements Screen {
     float deltaTime;
     boolean IsGUI;
     static boolean isPaused;
-    boolean IsScreenMainMenu;
+    static boolean IsScreenMainMenu;
 
 
     // SFX and music
@@ -190,11 +190,11 @@ class GameScreen implements Screen {
 
         if(IsGUI){
             isPaused = true;
-            game.batch.draw(guiMenu,MainMenuScreen.yCenter/2 + 500,MainMenuScreen.yCenter/2,400,400);
+            game.batch.draw(guiMenu,MainMenuScreen.xCenter/2+300,MainMenuScreen.yCenter/2+300,400,400);
             //exit button
 
 
-            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 290 + 100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 290){
+            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 290 + 100 + 300 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 290 + 300){
                 if(Gdx.input.isTouched()){
                     dispose();
                     Gdx.app.exit();
@@ -202,14 +202,14 @@ class GameScreen implements Screen {
             }
 
             // resume button
-            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 500 + 100  && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 530){
+            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 500 + 100 + 300  && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 530 + 300){
                 if(Gdx.input.isTouched()){
                     isPaused = false;
                     IsGUI = false;
                 }
             }
             // main menu button
-            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 400 + 100  && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 400+40){
+            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 400 + 100 + 300 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 400+40 + 300){
                 if(Gdx.input.justTouched() && !IsScreenMainMenu ){
                     GameAmbience.stop();
                     dispose();

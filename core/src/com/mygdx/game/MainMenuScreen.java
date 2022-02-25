@@ -14,6 +14,7 @@ public class MainMenuScreen implements Screen {
     static final int xCenter = GameScreen.WORLD_WIDTH / 2;
     static final int yCenter = GameScreen.WORLD_HEIGHT / 2;
 
+
     //SFX
     Music ContaminationMusic;
 
@@ -30,6 +31,7 @@ public class MainMenuScreen implements Screen {
 
     public MainMenuScreen(contamination game){
         this.game = game;
+
 
         ContaminationMusic = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
         text = new Texture("text-contamination.png");
@@ -53,6 +55,7 @@ public class MainMenuScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.begin();
+
 
 
         game.batch.draw(background,0,0,GameScreen.WORLD_WIDTH,GameScreen.WORLD_HEIGHT);

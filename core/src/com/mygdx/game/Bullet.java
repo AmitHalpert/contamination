@@ -32,7 +32,6 @@ public class Bullet{
         BulletDirection();
 
 
-
         hitBox = new Rectangle(xf, yf, 0.001f, 0.001f);
         bullet_animation = new ObjectAnimation();
         bullet_animation.loadAnimation("bullet_", 4);

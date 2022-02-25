@@ -21,7 +21,7 @@ public class Player {
         dead
     }
 
-    public static final float SHOOT_WAIT_TIME = 0.5f;
+    public static final float SHOOT_WAIT_TIME = 0.4f;
 
     // Player parameters
     float x, y;
@@ -326,9 +326,9 @@ public class Player {
     public void PlayerInputHandling(float delta) {
         shootTimer += delta;
 
-        if(Gdx.input.isKeyPressed(Input.Keys.N) && shootTimer >= SHOOT_WAIT_TIME && !GameScreen.isPaused){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.N) && shootTimer >= SHOOT_WAIT_TIME && !GameScreen.isPaused){
             shootTimer = 0;
-            gunshot.play(0.1f);
+            gunshot.play(0.01f);
             ShootBullets();
         }
 
