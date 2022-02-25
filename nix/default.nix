@@ -1,4 +1,5 @@
 { lib
+, nix-filter
 , callPackage
 , makeWrapper
 , jdk11
@@ -14,9 +15,18 @@ buildGradle rec {
   pname = "contamination";
   version = "1.0";
 
-  gradleFlags = [ "desktop:dist" ];
+  src = nix-filter {
+    root = ../.;
+    include = [
+      (nix-filter.inDirectory "core")
+      (nix-filter.inDirectory "desktop")
+      "build.gradle"
+      "settings.gradle"
+    ];
+  };
 
-  src = ../.;
+
+  gradleFlags = [ "desktop:dist" ];
 
   nativeBuildInputs = [ makeWrapper ];
 
