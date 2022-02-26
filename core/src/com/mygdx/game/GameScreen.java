@@ -2,12 +2,10 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g3d.environment.AmbientCubemap;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -17,7 +15,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 class GameScreen implements Screen {
 
     final contamination game;
-    Player player;
+    BluePlayer blue;
+    YellowPlayer yellow;
 
     // Main menu features
     float deltaTime;
@@ -73,8 +72,9 @@ class GameScreen implements Screen {
         createRadioActivePools();
 
 
-        // creates a player
-        player = new Player(1750,300);
+        // creates a players
+        blue = new BluePlayer(1750,300);
+        yellow = new YellowPlayer(500,500);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
@@ -99,7 +99,6 @@ class GameScreen implements Screen {
             game.setScreen(new MainMenuScreen(game));
         }
 
-
         //updates the camera
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
@@ -108,8 +107,9 @@ class GameScreen implements Screen {
         game.batch.begin();
         //Draw map
         game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
-        //Draw the player
-        game.batch.draw(player.render(deltaTime, ground, WorldBorder, RadioActivePool),  player.x,  player.y, player.width,  player.height);
+        //Draw the players
+        game.batch.draw(blue.render(deltaTime, ground, WorldBorder, RadioActivePool),  blue.x,  blue.y, blue.width,  blue.height);
+        game.batch.draw(yellow.render(deltaTime,ground,WorldBorder,RadioActivePool),   yellow.x,yellow.y ,yellow.width,yellow.height);
 
         DrawBullets();
         GUI();
@@ -164,7 +164,7 @@ class GameScreen implements Screen {
         }
 
     public void DrawBullets(){
-        Array<Bullet> bullets = Player.getBullets();
+        Array<Bullet> bullets = BluePlayer.getBullets();
         for (int w = 0; w < bullets.size; w++){
             Bullet b = bullets.get(w);
             game.batch.draw(b.update(deltaTime,ground,WorldBorder),b.bulletX,b.bulletY,120,120);
@@ -248,9 +248,10 @@ class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        yellow.dispose();
         GameAmbience.dispose();
         guiMenu.dispose();
-        player.dispose();
+        blue.dispose();
         background.dispose();
     }
 }

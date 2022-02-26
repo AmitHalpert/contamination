@@ -1,19 +1,16 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import java.lang.*;
+
 import java.util.Iterator;
-import java.util.LinkedList;
 
 
-public class Player {
+public class BluePlayer {
 
     // the player states
     public enum playerState {
@@ -23,7 +20,7 @@ public class Player {
         dead
     }
 
-    public static final float SHOOT_WAIT_TIME = 0.4f;
+    public final float SHOOT_WAIT_TIME = 0.4f;
 
     // Player parameters
     float x, y;
@@ -34,7 +31,7 @@ public class Player {
     static boolean isFacingLeft;
     boolean Collision;
     boolean IsPlayerOnGround;
-private
+
     // gun parameters
     float shootTimer;
     boolean isPlayerHoldingGun;
@@ -73,7 +70,7 @@ private
 
     playerState state;
 
-    public Player(float x, float y){
+    public BluePlayer(float x, float y){
 
         this.x = x;
         this.y = y;
@@ -171,7 +168,6 @@ private
 
             case dead:
 
-                GameScreen.isPaused = true;
                 dead_animation_time += delta;
                 if(dead_animation_time >= 0.04f) {
                     outputTexture = player_dead_animation.getFrame(delta);
@@ -411,7 +407,7 @@ private
     // Detects if the player touches A MapObject
     public void collisionHandling(Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
-        Array<Bullet> bullets = Player.getBullets();
+        Array<Bullet> bullets = BluePlayer.getBullets();
         for(Iterator<Bullet> iter = bullets.iterator(); iter.hasNext();){
             Bullet b = iter.next();
             if(b.hitBox.overlaps(PlayerHitBox)){

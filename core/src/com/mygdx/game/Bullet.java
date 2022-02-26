@@ -1,14 +1,10 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.SortedIntList;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 
 public class Bullet{
 
@@ -32,7 +28,7 @@ public class Bullet{
         BulletDirection();
 
 
-        hitBox = new Rectangle(bulletX, bulletY, 0.5f, 0.8f);
+        hitBox = new Rectangle(bulletX, bulletY, 5,5);
         bullet_animation = new ObjectAnimation();
         bullet_animation.loadAnimation("bullet_", 4);
 
@@ -54,7 +50,7 @@ public class Bullet{
         outputTexture = bullet_animation.getFrame(delta);
 
         for (MapObject Borders : WorldBorder) {
-            Array<Bullet> bullets = Player.getBullets();
+            Array<Bullet> bullets = BluePlayer.getBullets();
             for(Iterator<Bullet> iter = bullets.iterator(); iter.hasNext();){
                 Bullet b = iter.next();
                 if(b.hitBox.overlaps(Borders.hitBox)){
@@ -68,7 +64,7 @@ public class Bullet{
     }
 
     public void BulletDirection(){
-        if(Player.isFacingLeft){
+        if(BluePlayer.isFacingLeft){
             DirectionSpeed = -BULLET_MOVEMENT_SPEED;
         }
         else{
