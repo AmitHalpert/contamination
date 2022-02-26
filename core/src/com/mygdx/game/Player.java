@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -25,19 +26,22 @@ public class Player {
 
     // Player parameters
     float x, y;
+    int PlayerHealth;
     int width, height;
     double Xspeed, Yspeed;
     Rectangle hitBox;
     static boolean isFacingLeft;
     boolean Collision;
     boolean IsPlayerOnGround;
-
+private
     // gun parameters
     float shootTimer;
     boolean isPlayerHoldingGun;
     static Array<Bullet> bullets;
 
     // Animation parameters
+    float dead_para;
+    float dead_animation_time;
     float idle_animation_time;
     Texture outputTexture;
     Texture playerTexture;
@@ -45,7 +49,10 @@ public class Player {
     // music and SFX
     private final Sound gunshot;
 
+    Texture player_not_exiting;
     // create ObjectAnimation for every type of animation
+    ObjectAnimation player_dead_animation;
+    // right animations
     ObjectAnimation player_running_animation;
     ObjectAnimation player_jumping_animation;
     ObjectAnimation player_idle_animation;
@@ -53,8 +60,7 @@ public class Player {
     ObjectAnimation player_running_gun_animation;
     ObjectAnimation player_jumping_gun_animation;
     ObjectAnimation player_idle_gun_animation;
-
-    //left Animation
+    //left animations
     ObjectAnimation flipped_player_running_animation;
     ObjectAnimation flipped_player_jumping_animation;
     ObjectAnimation flipped_player_idle_animation;
@@ -64,7 +70,6 @@ public class Player {
     ObjectAnimation flipped_player_jumping_gun_animation;
 
 
-
     playerState state;
 
     public Player(float x, float y){
@@ -72,6 +77,8 @@ public class Player {
         this.x = x;
         this.y = y;
 
+        // player characteristics
+        PlayerHealth = 3;
         width = 170;
         height = 170;
         hitBox = new Rectangle(x, y, width, height);
@@ -89,9 +96,19 @@ public class Player {
         IsPlayerOnGround = false;
         state = playerState.Idle;
         idle_animation_time = 0;
+        dead_animation_time = 0;
+        dead_para = 0;
 
-
+        ////
         // set up the player animations
+        ////
+
+
+
+        player_dead_animation = new ObjectAnimation();
+        player_dead_animation.loadAnimation("player_dead_",7);
+
+        player_not_exiting = new Texture("player_dead_7.png");
 
         // player right animations
         player_running_animation = new ObjectAnimation();
@@ -145,15 +162,39 @@ public class Player {
         collisionDetection(Ground,WorldBorder);
 
         // Changes the player X AND Y
-
         if(!GameScreen.isPaused){
             updatePlayerPos();
         }
 
 
-
         // checks which animation should play according to the Player's state
         switch (state) {
+
+            case dead:
+                dead_animation_time += delta;
+
+                if(dead_animation_time >= 0.2f) {
+                    outputTexture = player_dead_animation.getFrame(delta);
+                    dead_animation_time = 0;
+                    dead_para++;
+                }
+                if(dead_para >= 15){
+                    outputTexture = player_not_exiting;
+                    GameScreen.isPaused = true;
+                    this.dispose();
+                }
+
+                player_idle_gun_animation.resetAnimation();
+                player_running_gun_animation.resetAnimation();
+                player_running_animation.resetAnimation();
+                player_jumping_animation.resetAnimation();
+                player_idle_animation.resetAnimation();
+                flipped_player_jumping_animation.resetAnimation();
+                flipped_player_idle_animation.resetAnimation();
+                flipped_player_running_animation.resetAnimation();
+                break;
+
+
             case Running:
                 // gun running animation
                 if(isPlayerHoldingGun && !isFacingLeft){
@@ -302,6 +343,9 @@ public class Player {
 
     //Determine witch (playerState) state the player will be.
     public void GetPlayerState() {
+        if(Gdx.input.isKeyPressed(Input.Keys.E)){
+            state = playerState.dead;
+        }
 
         // checks if the player is moving up or down
         if (Yspeed > 0) {
@@ -316,7 +360,7 @@ public class Player {
 
 
         }
-        else if (Xspeed == 0 && Yspeed == 0) {
+        else if (Xspeed == 0 && Yspeed == 0 && state != playerState.dead ) {
             state = playerState.Idle;
         }
 
@@ -369,6 +413,8 @@ public class Player {
     // Detects if the player touches A MapObject
     public void collisionDetection(Array<MapObject> Ground,Array<MapObject> WorldBorder ) {
 
+
+
         //bounds Collision
         hitBox.x += Xspeed;
         for (MapObject borders: WorldBorder) {
@@ -420,6 +466,7 @@ public class Player {
 
     public void dispose(){
         gunshot.dispose();
+        player_dead_animation.dispose();
         player_running_animation.dispose();
         player_jumping_animation.dispose();
         player_idle_animation.dispose();

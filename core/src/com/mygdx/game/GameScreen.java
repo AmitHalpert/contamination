@@ -94,6 +94,8 @@ class GameScreen implements Screen {
         if(IsScreenMainMenu){
             game.setScreen(new MainMenuScreen(game));
         }
+        
+
 
 
         // pauses the game
