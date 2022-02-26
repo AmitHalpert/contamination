@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import java.lang.*;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 
@@ -29,7 +30,7 @@ public class Player {
     int PlayerHealth;
     int width, height;
     double Xspeed, Yspeed;
-    Rectangle hitBox;
+    Rectangle PlayerHitBox;
     static boolean isFacingLeft;
     boolean Collision;
     boolean IsPlayerOnGround;
@@ -81,7 +82,7 @@ private
         PlayerHealth = 3;
         width = 170;
         height = 170;
-        hitBox = new Rectangle(x, y, width, height);
+        PlayerHitBox = new Rectangle(x, y, width, height);
 
 
         //set up gun parameters
@@ -102,8 +103,6 @@ private
         ////
         // set up the player animations
         ////
-
-
 
         player_dead_animation = new ObjectAnimation();
         player_dead_animation.loadAnimation("player_dead_",5);
@@ -143,7 +142,7 @@ private
         flipped_player_idle_gun_animation.loadAnimation("flipped_player_idle_gun_",1);
 
 
-
+        // default skin
         outputTexture = playerTexture;
     }
 
@@ -398,12 +397,12 @@ private
 
         //vertical input
         if ((Gdx.input.isKeyPressed(Input.Keys.UP)) && !GameScreen.isPaused && state != playerState.dead) {
-            hitBox.y++;
+            PlayerHitBox.y++;
             if (IsPlayerOnGround || Yspeed == -Yspeed) {
                 Yspeed += 18;
 
             }
-            hitBox.y--;
+            PlayerHitBox.y--;
         }
         Yspeed -= 0.9;
 
@@ -411,18 +410,27 @@ private
 
     // Detects if the player touches A MapObject
     public void collisionHandling(Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
-        
+
+        Array<Bullet> bullets = Player.getBullets();
+        for(Iterator<Bullet> iter = bullets.iterator(); iter.hasNext();){
+            Bullet b = iter.next();
+            if(b.hitBox.overlaps(PlayerHitBox)){
+                PlayerHealth--;
+                iter.remove();
+            }
+        }
+
 
         for(MapObject Pools : RadioActivePool){
-            if(hitBox.overlaps(Pools.hitBox)){
+            if(PlayerHitBox.overlaps(Pools.hitBox)){
                 PlayerHealth = 0;
             }
         }
 
         //bounds Collision
-        hitBox.x += Xspeed;
+        PlayerHitBox.x += Xspeed;
         for (MapObject borders: WorldBorder) {
-            if (hitBox.overlaps(borders.hitBox)) {
+            if (PlayerHitBox.overlaps(borders.hitBox)) {
                 Xspeed -= Xspeed;
                 Collision = true;
             }
@@ -433,9 +441,9 @@ private
         }
 
         //Ground Collision
-        hitBox.y += Yspeed;
+        PlayerHitBox.y += Yspeed;
         for (MapObject grounds : Ground) {
-            if (hitBox.overlaps(grounds.hitBox)) {
+            if (PlayerHitBox.overlaps(grounds.hitBox)) {
                 Yspeed -= Yspeed;
                 Collision = true;
                 IsPlayerOnGround = true;
@@ -456,8 +464,8 @@ private
         y += Yspeed;
 
 
-        hitBox.x = x;
-        hitBox.y = y;
+        PlayerHitBox.x = x;
+        PlayerHitBox.y = y;
 
     }
 

@@ -166,8 +166,8 @@ class GameScreen implements Screen {
     public void DrawBullets(){
         Array<Bullet> bullets = Player.getBullets();
         for (int w = 0; w < bullets.size; w++){
-            Bullet b = (Bullet) bullets.get(w);
-            game.batch.draw(b.update(deltaTime,ground,WorldBorder),b.xf,b.yf,120,120);
+            Bullet b = bullets.get(w);
+            game.batch.draw(b.update(deltaTime,ground,WorldBorder),b.bulletX,b.bulletY,120,120);
         }
 
     }
