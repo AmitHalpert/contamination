@@ -106,9 +106,9 @@ private
 
 
         player_dead_animation = new ObjectAnimation();
-        player_dead_animation.loadAnimation("player_dead_",7);
+        player_dead_animation.loadAnimation("player_dead_",5);
 
-        player_not_exiting = new Texture("player_dead_7.png");
+        player_not_exiting = new Texture("player_dead_5.png");
 
         // player right animations
         player_running_animation = new ObjectAnimation();
@@ -163,7 +163,7 @@ private
 
         // updates the player X AND Y
         if(!GameScreen.isPaused){
-            updatePlayerPos();
+            updatePlayerPosition();
         }
 
 
@@ -171,13 +171,15 @@ private
         switch (state) {
 
             case dead:
+
+                GameScreen.isPaused = true;
                 dead_animation_time += delta;
-                if(dead_animation_time >= 0.1f) {
+                if(dead_animation_time >= 0.04f) {
                     outputTexture = player_dead_animation.getFrame(delta);
                     dead_animation_time = 0;
                     dead_elapsedTime++;
                 }
-                if(dead_elapsedTime >= 15){
+                if(dead_elapsedTime >= 13){
                     outputTexture = player_not_exiting;
                 }
 
@@ -447,16 +449,16 @@ private
     }
 
     // Change the player X AND Y
-    public void updatePlayerPos(){
+    public void updatePlayerPosition(){
         //Updates X AND Y Position of the player
-        if(state != playerState.dead){
+
         x += Xspeed;
         y += Yspeed;
 
 
         hitBox.x = x;
         hitBox.y = y;
-        }
+
     }
 
     public void ShootBullets() {

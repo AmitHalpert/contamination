@@ -11,7 +11,6 @@ public class DesktopLauncher {
 		config.setWindowedMode(1920, 1080);
 		config.setTitle("contamination");
 		config.setForegroundFPS(60);
-		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 		new Lwjgl3Application(new contamination(), config);
 	}
 }

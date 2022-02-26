@@ -99,11 +99,6 @@ class GameScreen implements Screen {
             game.setScreen(new MainMenuScreen(game));
         }
 
-        // pauses the game
-        if (isPaused){
-            deltaTime = 0;
-        }
-
 
         //updates the camera
         camera.update();
