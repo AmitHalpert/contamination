@@ -40,7 +40,7 @@ private
     static Array<Bullet> bullets;
 
     // Animation parameters
-    float dead_para;
+    float dead_elapsedTime;
     float dead_animation_time;
     float idle_animation_time;
     Texture outputTexture;
@@ -97,7 +97,7 @@ private
         state = playerState.Idle;
         idle_animation_time = 0;
         dead_animation_time = 0;
-        dead_para = 0;
+        dead_elapsedTime = 0;
 
         ////
         // set up the player animations
@@ -149,7 +149,7 @@ private
 
 
 
-    public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder) {
+    public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
 
         //Determine witch (playerState) state the player will be.
@@ -159,9 +159,9 @@ private
         PlayerInputHandling(delta);
 
         // Detects if the player touches A MapObject and changes speeds
-        collisionDetection(Ground,WorldBorder);
+        collisionHandling(Ground,WorldBorder,RadioActivePool);
 
-        // Changes the player X AND Y
+        // updates the player X AND Y
         if(!GameScreen.isPaused){
             updatePlayerPos();
         }
@@ -172,16 +172,13 @@ private
 
             case dead:
                 dead_animation_time += delta;
-
-                if(dead_animation_time >= 0.2f) {
+                if(dead_animation_time >= 0.1f) {
                     outputTexture = player_dead_animation.getFrame(delta);
                     dead_animation_time = 0;
-                    dead_para++;
+                    dead_elapsedTime++;
                 }
-                if(dead_para >= 15){
+                if(dead_elapsedTime >= 15){
                     outputTexture = player_not_exiting;
-                    GameScreen.isPaused = true;
-                    this.dispose();
                 }
 
                 player_idle_gun_animation.resetAnimation();
@@ -343,7 +340,7 @@ private
 
     //Determine witch (playerState) state the player will be.
     public void GetPlayerState() {
-        if(Gdx.input.isKeyPressed(Input.Keys.E)){
+        if(PlayerHealth <= 0){
             state = playerState.dead;
         }
 
@@ -353,7 +350,7 @@ private
         }
 
         // checks if the player is moving left or right
-        if (Xspeed != 0) {
+        if (Xspeed != 0 && state != playerState.dead) {
             if (Xspeed != 0 && Yspeed == 0) {
                 state = playerState.Running;
             }
@@ -370,21 +367,21 @@ private
     public void PlayerInputHandling(float delta) {
         shootTimer += delta;
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.N) && shootTimer >= SHOOT_WAIT_TIME && !GameScreen.isPaused){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.N) && shootTimer >= SHOOT_WAIT_TIME && !GameScreen.isPaused && state != playerState.dead){
             shootTimer = 0;
             gunshot.play(0.01f);
             ShootBullets();
         }
 
         //Horizontal Player input
-        if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && (Gdx.input.isKeyPressed(Input.Keys.LEFT)) || !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !GameScreen.isPaused) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && (Gdx.input.isKeyPressed(Input.Keys.LEFT)) || !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !GameScreen.isPaused && state != playerState.dead) {
             Xspeed *= 0.8;
         }
-        else if ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !GameScreen.isPaused) {
+        else if ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !GameScreen.isPaused && state != playerState.dead) {
             Xspeed--;
             isFacingLeft = true;
         }
-        else if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !GameScreen.isPaused) {
+        else if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !GameScreen.isPaused && state != playerState.dead) {
             Xspeed++;
             isFacingLeft = false;
         }
@@ -398,7 +395,7 @@ private
 
 
         //vertical input
-        if ((Gdx.input.isKeyPressed(Input.Keys.UP)) && !GameScreen.isPaused) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.UP)) && !GameScreen.isPaused && state != playerState.dead) {
             hitBox.y++;
             if (IsPlayerOnGround || Yspeed == -Yspeed) {
                 Yspeed += 18;
@@ -411,9 +408,14 @@ private
     }
 
     // Detects if the player touches A MapObject
-    public void collisionDetection(Array<MapObject> Ground,Array<MapObject> WorldBorder ) {
+    public void collisionHandling(Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
+        
 
-
+        for(MapObject Pools : RadioActivePool){
+            if(hitBox.overlaps(Pools.hitBox)){
+                PlayerHealth = 0;
+            }
+        }
 
         //bounds Collision
         hitBox.x += Xspeed;
@@ -447,12 +449,14 @@ private
     // Change the player X AND Y
     public void updatePlayerPos(){
         //Updates X AND Y Position of the player
+        if(state != playerState.dead){
         x += Xspeed;
         y += Yspeed;
 
 
         hitBox.x = x;
         hitBox.y = y;
+        }
     }
 
     public void ShootBullets() {

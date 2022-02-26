@@ -44,6 +44,7 @@ class GameScreen implements Screen {
     //World objects
     Array<MapObject> ground;
     Array<MapObject> WorldBorder;
+    Array<MapObject> RadioActivePool;
 
     public GameScreen(final contamination game){
         this.game =  game;
@@ -63,11 +64,14 @@ class GameScreen implements Screen {
         // Map graphics
         background = new Texture("genesis.png");
 
-        // Creates the wall array for the map and calls makeWalls function
+        // Create Map Objects
         ground = new Array<MapObject>();
         WorldBorder = new Array<MapObject>();
+        RadioActivePool = new Array<MapObject>();
         createGrounds();
-        CreateMapBorders();
+        createMapBorders();
+        createRadioActivePools();
+
 
         // creates a player
         player = new Player(1750,300);
@@ -94,9 +98,6 @@ class GameScreen implements Screen {
         if(IsScreenMainMenu){
             game.setScreen(new MainMenuScreen(game));
         }
-        
-
-
 
         // pauses the game
         if (isPaused){
@@ -113,7 +114,7 @@ class GameScreen implements Screen {
         //Draw map
         game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
         //Draw the player
-        game.batch.draw(player.render(deltaTime, ground,WorldBorder),  player.x,  player.y, player.width,  player.height);
+        game.batch.draw(player.render(deltaTime, ground, WorldBorder, RadioActivePool),  player.x,  player.y, player.width,  player.height);
 
         DrawBullets();
         GUI();
@@ -122,62 +123,8 @@ class GameScreen implements Screen {
         game.batch.end();
     }
 
-    // Creates the maps ground
-    private void createGrounds(){
-
-        // environment Grounds
-
-        //left rock
-        ground.add(new MapObject(50,10,85,330));
-
-        // middle rock
-        ground.add(new MapObject(1067,-12,70,320));
-
-        // right rock
-        ground.add(new MapObject(1495,-12,70,320));
-
-        // right Ground
-        ground.add(new MapObject(920,-39,1200,224));
-        // left Ground
-        ground.add(new MapObject(50,-39,455,224));
-    }
-
-    private void CreateMapBorders(){
 
 
-        // environment bounds
-
-        //left rock
-        WorldBorder.add(new MapObject(-435,-37,580,329));
-
-
-        // middle rock
-        WorldBorder.add(new MapObject(1065,-37,75,310));
-
-
-
-        // middle pit left
-        WorldBorder.add(new MapObject(359,-115,150,260));
-        // middle pit right
-        WorldBorder.add(new MapObject(918,-115,100,275));
-
-
-        // right rock
-        WorldBorder.add(new MapObject(1495,-39,74,310));
-
-
-        // WORLD BOUNDS
-
-        // create left world border
-        WorldBorder.add(new MapObject(-650,200,580,3000));
-
-        // create right world border
-        WorldBorder.add(new MapObject(1989,200,500,1200));
-
-        // create upper world border
-        WorldBorder.add(new MapObject(-550,1200,3000,200));
-
-    }
 
     public void GUI(){
 
@@ -221,14 +168,64 @@ class GameScreen implements Screen {
             }
         }
 
-
-
     public void DrawBullets(){
         Array<Bullet> bullets = Player.getBullets();
         for (int w = 0; w < bullets.size; w++){
             Bullet b = (Bullet) bullets.get(w);
             game.batch.draw(b.update(deltaTime,ground,WorldBorder),b.xf,b.yf,120,120);
         }
+
+    }
+
+    public void createRadioActivePools(){
+        RadioActivePool.add(new MapObject(1260,5,70,200));
+        RadioActivePool.add(new MapObject(650,-100,100,170));
+    }
+
+    private void createGrounds(){
+        ////
+        // environment Grounds
+        ////
+        //left rock
+        ground.add(new MapObject(50,10,85,330));
+        // middle rock
+        ground.add(new MapObject(1067,-12,70,320));
+        // right rock
+        ground.add(new MapObject(1495,-12,70,320));
+        // right Ground
+        ground.add(new MapObject(920,-39,1200,224));
+        // left Ground
+        ground.add(new MapObject(50,-39,455,224));
+    }
+
+    private void createMapBorders(){
+
+        ////
+        // environment bounds
+        ////
+
+        //left rock
+        WorldBorder.add(new MapObject(-435,-37,580,329));
+        // middle rock
+        WorldBorder.add(new MapObject(1065,-37,75,310));
+        // middle pit left
+        WorldBorder.add(new MapObject(359,-115,150,260));
+        // middle pit right
+        WorldBorder.add(new MapObject(918,-115,100,275));
+        // right rock
+        WorldBorder.add(new MapObject(1495,-39,74,310));
+
+        ////
+        // WORLD BOUNDS
+        ////
+        // create left world border
+        WorldBorder.add(new MapObject(-650,200,580,3000));
+
+        // create right world border
+        WorldBorder.add(new MapObject(1989,200,500,1200));
+
+        // create upper world border
+        WorldBorder.add(new MapObject(-550,1200,3000,200));
 
     }
 
