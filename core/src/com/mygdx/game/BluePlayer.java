@@ -27,14 +27,16 @@ public class BluePlayer {
     int PlayerHealth;
     int width, height;
     double Xspeed, Yspeed;
-    Rectangle PlayerHitBox;
     static boolean isFacingLeft;
     boolean Collision;
     boolean IsPlayerOnGround;
+    Rectangle PlayerHitBox;
+    Rectangle PlayerBounds;
 
     // gun parameters
     float shootTimer;
     boolean isPlayerHoldingGun;
+    boolean IsPlayerFrozen;
     static Array<Bullet> bullets;
 
     // Animation parameters
@@ -79,7 +81,7 @@ public class BluePlayer {
         PlayerHealth = 3;
         width = 170;
         height = 170;
-        PlayerHitBox = new Rectangle(x, y, width, height);
+        PlayerBounds = new Rectangle(x, y, width, height);
 
 
         //set up gun parameters
@@ -92,6 +94,7 @@ public class BluePlayer {
         isPlayerHoldingGun = true;
         Collision = false;
         IsPlayerOnGround = false;
+        IsPlayerFrozen = false;
         state = playerState.Idle;
         idle_animation_time = 0;
         dead_animation_time = 0;
@@ -147,7 +150,9 @@ public class BluePlayer {
 
     public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
-
+    if(!GameScreen.isPaused){
+        // the player's Hit box for bullet collision
+        PlayerHitBox = new Rectangle(x-50, y-170, width, height);
         //Determine witch (playerState) state the player will be.
         GetPlayerState();
 
@@ -157,10 +162,11 @@ public class BluePlayer {
         // Detects if the player touches A MapObject and changes speeds
         collisionHandling(Ground,WorldBorder,RadioActivePool);
 
-        // updates the player X AND Y
-        if(!GameScreen.isPaused){
+        if (!IsPlayerFrozen) {
+            // updates the player X AND Y
             updatePlayerPosition();
         }
+    }
 
 
         // checks which animation should play according to the Player's state
@@ -168,6 +174,7 @@ public class BluePlayer {
 
             case dead:
 
+                IsPlayerFrozen = true;
                 dead_animation_time += delta;
                 if(dead_animation_time >= 0.04f) {
                     outputTexture = player_dead_animation.getFrame(delta);
@@ -407,7 +414,7 @@ public class BluePlayer {
     // Detects if the player touches A MapObject
     public void collisionHandling(Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
-        Array<Bullet> bullets = BluePlayer.getBullets();
+        Array<Bullet> bullets = YellowPlayer.getYellowPlayerBullets();
         for(Iterator<Bullet> iter = bullets.iterator(); iter.hasNext();){
             Bullet b = iter.next();
             if(b.hitBox.overlaps(PlayerHitBox)){
@@ -418,15 +425,15 @@ public class BluePlayer {
 
 
         for(MapObject Pools : RadioActivePool){
-            if(PlayerHitBox.overlaps(Pools.hitBox)){
+            if(PlayerBounds.overlaps(Pools.hitBox)){
                 PlayerHealth = 0;
             }
         }
 
         //bounds Collision
-        PlayerHitBox.x += Xspeed;
+        PlayerBounds.x += Xspeed;
         for (MapObject borders: WorldBorder) {
-            if (PlayerHitBox.overlaps(borders.hitBox)) {
+            if (PlayerBounds.overlaps(borders.hitBox)) {
                 Xspeed -= Xspeed;
                 Collision = true;
             }
@@ -437,9 +444,9 @@ public class BluePlayer {
         }
 
         //Ground Collision
-        PlayerHitBox.y += Yspeed;
+        PlayerBounds.y += Yspeed;
         for (MapObject grounds : Ground) {
-            if (PlayerHitBox.overlaps(grounds.hitBox)) {
+            if (PlayerBounds.overlaps(grounds.hitBox)) {
                 Yspeed -= Yspeed;
                 Collision = true;
                 IsPlayerOnGround = true;
@@ -460,15 +467,22 @@ public class BluePlayer {
         y += Yspeed;
 
 
-        PlayerHitBox.x = x;
-        PlayerHitBox.y = y;
+        PlayerBounds.x = x;
+        PlayerBounds.y = y;
 
     }
 
     public void ShootBullets() {
-        Bullet bullet = new Bullet(x, y - 35);
+        Bullet bullet;
+        if(isFacingLeft){
+            bullet = new Bullet(x, y - 35, true);
+        }
+        else {
+            bullet = new Bullet(x, y - 35, false);
+        }
         bullets.add(bullet);
     }
+
 
     public static Array<Bullet> getBullets(){
         return bullets;

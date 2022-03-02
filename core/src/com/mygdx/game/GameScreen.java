@@ -111,7 +111,7 @@ class GameScreen implements Screen {
         game.batch.draw(blue.render(deltaTime, ground, WorldBorder, RadioActivePool),  blue.x,  blue.y, blue.width,  blue.height);
         game.batch.draw(yellow.render(deltaTime,ground,WorldBorder,RadioActivePool),   yellow.x,yellow.y ,yellow.width,yellow.height);
 
-        DrawBullets();
+        DrawPlayersBullets();
         GUI();
 
 
@@ -163,11 +163,17 @@ class GameScreen implements Screen {
             }
         }
 
-    public void DrawBullets(){
-        Array<Bullet> bullets = BluePlayer.getBullets();
-        for (int w = 0; w < bullets.size; w++){
-            Bullet b = bullets.get(w);
-            game.batch.draw(b.update(deltaTime,ground,WorldBorder),b.bulletX,b.bulletY,120,120);
+    public void DrawPlayersBullets(){
+        Array<Bullet> Bluebullets = BluePlayer.getBullets();
+        for (int BlueIndex = 0; BlueIndex < Bluebullets.size; BlueIndex++){
+            Bullet BluePlayerBullets = Bluebullets.get(BlueIndex);
+            game.batch.draw(BluePlayerBullets.update(deltaTime,ground,WorldBorder),BluePlayerBullets.bulletX,BluePlayerBullets.bulletY,120,120);
+        }
+
+        Array<Bullet> Yellowbullets = YellowPlayer.getYellowPlayerBullets();
+        for (int YellowIndex = 0; YellowIndex < Yellowbullets.size; YellowIndex++){
+            Bullet YellowPlayerBullets = Yellowbullets.get(YellowIndex);
+            game.batch.draw(YellowPlayerBullets.update(deltaTime,ground,WorldBorder),YellowPlayerBullets.bulletX,YellowPlayerBullets.bulletY,120,120);
         }
 
     }

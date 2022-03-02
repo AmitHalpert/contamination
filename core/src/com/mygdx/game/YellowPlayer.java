@@ -22,19 +22,23 @@ public class YellowPlayer {
 
     public final float SHOOT_WAIT_TIME = 0.4f;
 
-    // Player parameters
+    // Player's parameters
     float x, y;
     int PlayerHealth;
     int width, height;
     double Xspeed, Yspeed;
-    Rectangle YellowHitBox;
-    static boolean isFacingLeft;
+
+    boolean IsPlayerFrozen;
+    boolean isFacingLeft;
     boolean Collision;
+    // for jumping
     boolean IsPlayerOnGround;
     // gun parameters
     float shootTimer;
     boolean isPlayerHoldingGun;
     static Array<Bullet> bullets;
+    Rectangle YellowBounds;
+    Rectangle YellowHitBox;
 
     // Animation parameters
     float dead_elapsedTime;
@@ -78,12 +82,14 @@ public class YellowPlayer {
         PlayerHealth = 3;
         width = 170;
         height = 170;
-        YellowHitBox = new Rectangle(x, y, width, height);
+        YellowBounds = new Rectangle(x, y, width, height);
 
 
         //set up gun parameters
         shootTimer = 0;
         bullets = new Array<>();
+
+        // SFX
         gunshot = Gdx.audio.newSound(Gdx.files.internal("gun1.wav"));
 
         // initialize player's settings
@@ -91,6 +97,7 @@ public class YellowPlayer {
         isPlayerHoldingGun = true;
         Collision = false;
         IsPlayerOnGround = false;
+        IsPlayerFrozen = false;
         state = playerState.Idle;
         idle_animation_time = 0;
         dead_animation_time = 0;
@@ -146,6 +153,9 @@ public class YellowPlayer {
 
     public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
+        if(!GameScreen.isPaused){
+        // the player's Hit box for bullet collision
+        YellowHitBox = new Rectangle(x-50, y-170, width, height);
 
         //Determine witch (playerState) state the player will be.
         GetPlayerState();
@@ -157,8 +167,10 @@ public class YellowPlayer {
         collisionHandling(Ground,WorldBorder,RadioActivePool);
 
         // updates the player X AND Y
-        if(!GameScreen.isPaused){
+        if(!IsPlayerFrozen) {
             updatePlayerPosition();
+        }
+
         }
 
 
@@ -167,6 +179,7 @@ public class YellowPlayer {
 
             case dead:
 
+                IsPlayerFrozen = true;
                 dead_animation_time += delta;
                 if(dead_animation_time >= 0.04f) {
                     outputTexture = player_dead_animation.getFrame(delta);
@@ -175,6 +188,7 @@ public class YellowPlayer {
                 }
                 if(dead_elapsedTime >= 13){
                     outputTexture = player_not_exiting;
+                    this.dispose();
                 }
 
                 player_idle_gun_animation.resetAnimation();
@@ -417,15 +431,15 @@ public class YellowPlayer {
 
 
         for(MapObject Pools : RadioActivePool){
-            if(YellowHitBox.overlaps(Pools.hitBox)){
+            if(YellowBounds.overlaps(Pools.hitBox)){
                 PlayerHealth = 0;
             }
         }
 
         //bounds Collision
-        YellowHitBox.x += Xspeed;
+        YellowBounds.x += Xspeed;
         for (MapObject borders: WorldBorder) {
-            if (YellowHitBox.overlaps(borders.hitBox)) {
+            if (YellowBounds.overlaps(borders.hitBox)) {
                 Xspeed -= Xspeed;
                 Collision = true;
             }
@@ -436,9 +450,9 @@ public class YellowPlayer {
         }
 
         //Ground Collision
-        YellowHitBox.y += Yspeed;
+        YellowBounds.y += Yspeed;
         for (MapObject grounds : Ground) {
-            if (YellowHitBox.overlaps(grounds.hitBox)) {
+            if (YellowBounds.overlaps(grounds.hitBox)) {
                 Yspeed -= Yspeed;
                 Collision = true;
                 IsPlayerOnGround = true;
@@ -459,17 +473,24 @@ public class YellowPlayer {
         y += Yspeed;
 
 
-        YellowHitBox.x = x;
-        YellowHitBox.y = y;
+        YellowBounds.x = x;
+        YellowBounds.y = y;
 
     }
 
     public void ShootBullets() {
-        Bullet bullet = new Bullet(x, y - 35);
+
+        Bullet bullet;
+        if(isFacingLeft){
+            bullet = new Bullet(x, y - 35, true);
+        }
+        else {
+            bullet = new Bullet(x, y - 35, false);
+        }
         bullets.add(bullet);
     }
 
-    public static Array<Bullet> getBullets(){
+    public static Array<Bullet> getYellowPlayerBullets(){
         return bullets;
     }
 
