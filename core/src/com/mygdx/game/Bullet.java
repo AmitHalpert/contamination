@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 public class Bullet{
 
-    public static final int BULLET_MOVEMENT_SPEED = 65;
+    public static final int BULLET_MOVEMENT_SPEED = 75;
 
     // bullet parameters
     double DirectionSpeed;
@@ -33,7 +33,7 @@ public class Bullet{
         }
 
 
-        hitBox = new Rectangle(bulletX, bulletY, 5,5);
+        hitBox = new Rectangle(bulletX, bulletY, 0.5f,0.5f);
         bullet_animation = new ObjectAnimation();
         bullet_animation.loadAnimation("bullet_", 4);
 
@@ -66,7 +66,6 @@ public class Bullet{
             Array<Bullet> BluePlayerbullets = BluePlayer.getBullets();
             for(Iterator<Bullet> BlueIter = BluePlayerbullets.iterator(); BlueIter.hasNext();){
                 Bullet TempBlueBullets = BlueIter.next();
-
                 if(TempBlueBullets.hitBox.overlaps(Borders.hitBox)){
                     BlueIter.remove();
                 }
@@ -83,5 +82,19 @@ public class Bullet{
                 }
             }
         }
+
+
+
     }
+
+
+
+
+
+
+
+
+
+
+
 }

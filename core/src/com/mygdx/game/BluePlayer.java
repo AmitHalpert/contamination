@@ -152,7 +152,7 @@ public class BluePlayer {
 
     if(!GameScreen.isPaused){
         // the player's Hit box for bullet collision
-        PlayerHitBox = new Rectangle(x-50, y-170, width, height);
+        PlayerHitBox = new Rectangle(x-50, y-170, width-50, height);
         //Determine witch (playerState) state the player will be.
         GetPlayerState();
 
@@ -183,6 +183,7 @@ public class BluePlayer {
                 }
                 if(dead_elapsedTime >= 13){
                     outputTexture = player_not_exiting;
+                    dispose();
                 }
 
                 player_idle_gun_animation.resetAnimation();

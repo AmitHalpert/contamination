@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
+
 class GameScreen implements Screen {
 
     final contamination game;
@@ -37,8 +38,8 @@ class GameScreen implements Screen {
     Texture guiMenu;
 
     // world parameters
-    static final int WORLD_WIDTH = 1920;
-    static final int WORLD_HEIGHT = 1080;
+    static final int WORLD_WIDTH = Gdx.graphics.getWidth();
+    static final int WORLD_HEIGHT = Gdx.graphics.getHeight();
 
     //World objects
     Array<MapObject> ground;
@@ -74,7 +75,7 @@ class GameScreen implements Screen {
 
         // creates a players
         blue = new BluePlayer(1750,300);
-        yellow = new YellowPlayer(500,500);
+        yellow = new YellowPlayer(400,500);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);

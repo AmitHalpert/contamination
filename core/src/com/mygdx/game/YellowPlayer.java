@@ -34,7 +34,7 @@ public class YellowPlayer {
     // for jumping
     boolean IsPlayerOnGround;
     // gun parameters
-    float shootTimer;
+    float TimeBetweenShots;
     boolean isPlayerHoldingGun;
     static Array<Bullet> bullets;
     Rectangle YellowBounds;
@@ -86,7 +86,7 @@ public class YellowPlayer {
 
 
         //set up gun parameters
-        shootTimer = 0;
+        TimeBetweenShots = 0;
         bullets = new Array<>();
 
         // SFX
@@ -155,7 +155,7 @@ public class YellowPlayer {
 
         if(!GameScreen.isPaused){
         // the player's Hit box for bullet collision
-        YellowHitBox = new Rectangle(x-50, y-170, width, height);
+        YellowHitBox = new Rectangle(x-50, y-170, width-50, height);
 
         //Determine witch (playerState) state the player will be.
         GetPlayerState();
@@ -188,7 +188,7 @@ public class YellowPlayer {
                 }
                 if(dead_elapsedTime >= 13){
                     outputTexture = player_not_exiting;
-                    this.dispose();
+                    dispose();
                 }
 
                 player_idle_gun_animation.resetAnimation();
@@ -375,10 +375,10 @@ public class YellowPlayer {
 
     // keyboard input N Player movement
     public void PlayerInputHandling(float delta) {
-        shootTimer += delta;
+        TimeBetweenShots += delta;
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) && shootTimer >= SHOOT_WAIT_TIME && !GameScreen.isPaused && state != playerState.dead){
-            shootTimer = 0;
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) && TimeBetweenShots >= SHOOT_WAIT_TIME && !GameScreen.isPaused && state != playerState.dead){
+            TimeBetweenShots = 0;
             gunshot.play(0.01f);
             ShootBullets();
         }
