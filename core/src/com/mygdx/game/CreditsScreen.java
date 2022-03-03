@@ -33,7 +33,7 @@ public class CreditsScreen implements Screen {
         CreditsMusic.play();
 
         CreditsText = new ObjectAnimation();
-        CreditsText.loadAnimation("creditsText_",21);
+        CreditsText.loadAnimation("creditsText_",15);
         BlankFrame = new Texture("creditsText_1.png");
 
 
@@ -61,7 +61,7 @@ public class CreditsScreen implements Screen {
         game.batch.begin();
 
         elapsedTime += deltaTime;
-        if(elapsedTime >= 169f){
+        if(elapsedTime >= 119f){
             CreditsMusic.stop();
             dispose();
             game.setScreen(new MainMenuScreen(game));

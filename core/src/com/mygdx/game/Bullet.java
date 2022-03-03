@@ -33,7 +33,7 @@ public class Bullet{
         }
 
 
-        hitBox = new Rectangle(bulletX, bulletY, 0.5f,0.5f);
+        hitBox = new Rectangle(bulletX, bulletY, 5,0.5f);
         bullet_animation = new ObjectAnimation();
         bullet_animation.loadAnimation("bullet_", 4);
 
