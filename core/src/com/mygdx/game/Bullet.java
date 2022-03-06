@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 public class Bullet{
 
-    public static final int BULLET_MOVEMENT_SPEED = 65;
+    public static final int BULLET_MOVEMENT_SPEED = 75;
 
     // bullet parameters
     double DirectionSpeed;
@@ -20,15 +20,20 @@ public class Bullet{
 
 
 
-    public Bullet(float x, float y) {
+    public Bullet(float x, float y, boolean IsBulletMovingLeft) {
 
         this.bulletX = x;
         this.bulletY = y;
 
-        BulletDirection();
+        if(IsBulletMovingLeft){
+            DirectionSpeed = -BULLET_MOVEMENT_SPEED;
+        }
+        else{
+            DirectionSpeed = BULLET_MOVEMENT_SPEED;
+        }
 
 
-        hitBox = new Rectangle(bulletX, bulletY, 5,5);
+        hitBox = new Rectangle(bulletX, bulletY, 5,0.5f);
         bullet_animation = new ObjectAnimation();
         bullet_animation.loadAnimation("bullet_", 4);
 
@@ -49,27 +54,47 @@ public class Bullet{
 
         outputTexture = bullet_animation.getFrame(delta);
 
+        BulletCollisionHandling(WorldBorder);
+
+        return outputTexture;
+    }
+
+
+    public void BulletCollisionHandling(Array<MapObject> WorldBorder){
+
         for (MapObject Borders : WorldBorder) {
-            Array<Bullet> bullets = BluePlayer.getBullets();
-            for(Iterator<Bullet> iter = bullets.iterator(); iter.hasNext();){
-                Bullet b = iter.next();
-                if(b.hitBox.overlaps(Borders.hitBox)){
-                    iter.remove();
+            Array<Bullet> BluePlayerbullets = BluePlayer.getBullets();
+            for(Iterator<Bullet> BlueIter = BluePlayerbullets.iterator(); BlueIter.hasNext();){
+                Bullet TempBlueBullets = BlueIter.next();
+                if(TempBlueBullets.hitBox.overlaps(Borders.hitBox)){
+                    BlueIter.remove();
                 }
             }
         }
 
 
-        return outputTexture;
+        for (MapObject Borders : WorldBorder) {
+            Array<Bullet> YellowPlayerbullets = OrangePlayer.getYellowPlayerBullets();
+            for(Iterator<Bullet> YellowIter = YellowPlayerbullets.iterator(); YellowIter.hasNext();){
+                Bullet TempYellowBullets = YellowIter.next();
+                if(TempYellowBullets.hitBox.overlaps(Borders.hitBox)){
+                    YellowIter.remove();
+                }
+            }
+        }
+
+
+
     }
 
-    public void BulletDirection(){
-        if(BluePlayer.isFacingLeft){
-            DirectionSpeed = -BULLET_MOVEMENT_SPEED;
-        }
-        else{
-            DirectionSpeed = BULLET_MOVEMENT_SPEED;
-        }
-    }
+
+
+
+
+
+
+
+
+
 
 }
