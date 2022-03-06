@@ -108,41 +108,44 @@ public class OrangePlayer {
         ////
 
         player_dead_animation = new ObjectAnimation();
-        player_dead_animation.loadAnimation("player_dead_",5);
-
+        player_dead_animation.loadAnimation("Orange-Player-Death_",5);
         player_not_exiting = new Texture("player_dead_5.png");
 
         // player right animations
         player_running_animation = new ObjectAnimation();
-        player_running_animation.loadAnimation("player_running_", 4);
+        player_running_animation.loadAnimation("Orange-Player-Running_", 4);
         player_jumping_animation = new ObjectAnimation();
-        player_jumping_animation.loadAnimation("player_jumping_", 2);
+        player_jumping_animation.loadAnimation("Orange-Player-Jumping_", 2);
         player_idle_animation = new ObjectAnimation();
-        player_idle_animation.loadAnimation("player_idle_", 1);
-        playerTexture = new Texture(Gdx.files.internal("player_idle_1.png"));
+        player_idle_animation.loadAnimation("Orange-Player-Idle_", 1);
+        playerTexture = new Texture(Gdx.files.internal("Orange-Player-Idle_1.png"));
 
         // player with a gun right animations
         player_running_gun_animation = new ObjectAnimation();
-        player_running_gun_animation.loadAnimation("player_running_with_gun_",4);
+        player_running_gun_animation.loadAnimation("Orange-Player-Running_Gun_",4);
         player_jumping_gun_animation = new ObjectAnimation();
-        player_jumping_gun_animation.loadAnimation("player_running_with_gun_",1);
+        player_jumping_gun_animation.loadAnimation("Orange-Player-Jumping_Gun_",1);
         player_idle_gun_animation = new ObjectAnimation();
-        player_idle_gun_animation.loadAnimation("player_idle_gun_",1);
+        player_idle_gun_animation.loadAnimation("Orange-Player-Idle-gun_",1);
+
+
+
+
 
         // player left animations
         flipped_player_running_animation = new ObjectAnimation();
-        flipped_player_running_animation.loadAnimation("fliped_player_running_",4);
+        flipped_player_running_animation.loadAnimation("flipped-orange-running_",4);
         flipped_player_jumping_animation = new ObjectAnimation();
-        flipped_player_jumping_animation.loadAnimation("fliped_player_jumping_", 2);
+        flipped_player_jumping_animation.loadAnimation("flipped-Orange-Player-Jumping_", 1);
         flipped_player_idle_animation = new ObjectAnimation();
-        flipped_player_idle_animation.loadAnimation("fliped_player_idle_", 1);
+        flipped_player_idle_animation.loadAnimation("flipped-Orange-Player-idle_gun_", 1);
         // player with a gun left animations
         flipped_player_running_gun_animation = new ObjectAnimation();
-        flipped_player_running_gun_animation.loadAnimation("flipped_player_running_with_gun_",4);
+        flipped_player_running_gun_animation.loadAnimation("flipped-Orange-Player-Running-gun_",4);
         flipped_player_jumping_gun_animation = new ObjectAnimation();
-        flipped_player_jumping_gun_animation.loadAnimation("flipped_player_running_with_gun_",1);
+        flipped_player_jumping_gun_animation.loadAnimation("flipped-Orange-Player-Jumping-gun_",1);
         flipped_player_idle_gun_animation = new ObjectAnimation();
-        flipped_player_idle_gun_animation.loadAnimation("flipped_player_idle_gun_",1);
+        flipped_player_idle_gun_animation.loadAnimation("flipped-Orange-Player-idle_gun_",1);
 
 
         // default skin
