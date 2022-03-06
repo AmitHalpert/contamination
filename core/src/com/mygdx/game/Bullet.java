@@ -74,7 +74,7 @@ public class Bullet{
 
 
         for (MapObject Borders : WorldBorder) {
-            Array<Bullet> YellowPlayerbullets = YellowPlayer.getYellowPlayerBullets();
+            Array<Bullet> YellowPlayerbullets = OrangePlayer.getYellowPlayerBullets();
             for(Iterator<Bullet> YellowIter = YellowPlayerbullets.iterator(); YellowIter.hasNext();){
                 Bullet TempYellowBullets = YellowIter.next();
                 if(TempYellowBullets.hitBox.overlaps(Borders.hitBox)){

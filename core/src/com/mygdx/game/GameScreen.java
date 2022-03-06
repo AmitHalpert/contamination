@@ -17,7 +17,7 @@ class GameScreen implements Screen {
 
     final contamination game;
     BluePlayer blue;
-    YellowPlayer yellow;
+    OrangePlayer yellow;
 
     // Main menu features
     float deltaTime;
@@ -75,7 +75,7 @@ class GameScreen implements Screen {
 
         // creates a players
         blue = new BluePlayer(1750,300);
-        yellow = new YellowPlayer(400,500);
+        yellow = new OrangePlayer(400,500);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
@@ -171,7 +171,7 @@ class GameScreen implements Screen {
             game.batch.draw(BluePlayerBullets.update(deltaTime,ground,WorldBorder),BluePlayerBullets.bulletX,BluePlayerBullets.bulletY,120,120);
         }
 
-        Array<Bullet> Yellowbullets = YellowPlayer.getYellowPlayerBullets();
+        Array<Bullet> Yellowbullets = OrangePlayer.getYellowPlayerBullets();
         for (int YellowIndex = 0; YellowIndex < Yellowbullets.size; YellowIndex++){
             Bullet YellowPlayerBullets = Yellowbullets.get(YellowIndex);
             game.batch.draw(YellowPlayerBullets.update(deltaTime,ground,WorldBorder),YellowPlayerBullets.bulletX,YellowPlayerBullets.bulletY,120,120);

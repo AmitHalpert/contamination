@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.Iterator;
 
 
-public class YellowPlayer {
+public class OrangePlayer {
 
     // the player states
     public enum playerState {
@@ -73,7 +73,7 @@ public class YellowPlayer {
 
     playerState state;
 
-    public YellowPlayer(float x, float y){
+    public OrangePlayer(float x, float y){
 
         this.x = x;
         this.y = y;

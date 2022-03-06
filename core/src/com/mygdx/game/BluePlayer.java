@@ -415,7 +415,7 @@ public class BluePlayer {
     // Detects if the player touches A MapObject
     public void collisionHandling(Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
-        Array<Bullet> bullets = YellowPlayer.getYellowPlayerBullets();
+        Array<Bullet> bullets = OrangePlayer.getYellowPlayerBullets();
         for(Iterator<Bullet> iter = bullets.iterator(); iter.hasNext();){
             Bullet b = iter.next();
             if(b.hitBox.overlaps(PlayerHitBox)){
@@ -476,10 +476,10 @@ public class BluePlayer {
     public void ShootBullets() {
         Bullet bullet;
         if(isFacingLeft){
-            bullet = new Bullet(x, y - 35, true);
+            bullet = new Bullet(x, y - 33, true);
         }
         else {
-            bullet = new Bullet(x, y - 35, false);
+            bullet = new Bullet(x, y - 33, false);
         }
         bullets.add(bullet);
     }
