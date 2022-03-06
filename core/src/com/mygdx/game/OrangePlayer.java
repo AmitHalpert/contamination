@@ -130,8 +130,6 @@ public class OrangePlayer {
 
 
 
-
-
         // player left animations
         flipped_player_running_animation = new ObjectAnimation();
         flipped_player_running_animation.loadAnimation("flipped-orange-running_",4);
