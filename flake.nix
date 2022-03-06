@@ -4,23 +4,20 @@
   nixConfig.extra-substituters = [ "https://contamination.cachix.org" ];
   nixConfig.extra-trusted-public-keys = [ "contamination.cachix.org-1:KmdW5xVF8ccKEb9tvK6qtEMW+lGa83seGgFyBOkeM/4=" ];
 
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
-    nix-filter.url = "github:numtide/nix-filter";
-  };
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  inputs.nix-filter.url = "github:numtide/nix-filter";
 
-  outputs = { self, nixpkgs, flake-utils, nix-filter }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in
-      {
-        packages.contamination = pkgs.callPackage ./nix/default.nix { nix-filter = nix-filter.lib; };
-        defaultPackage = self.packages.${system}.contamination;
+  outputs = { self, nixpkgs, nix-filter }:
+    let
+      supportedSystems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" ];
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+      nixpkgsFor = forAllSystems (system: nixpkgs.legacyPackages.${system});
+    in
+    {
+      packages = forAllSystems (system: { contamination = nixpkgsFor.${system}.callPackage ./nix/default.nix { nix-filter = nix-filter.lib; inherit self; }; });
+      defaultPackage = forAllSystems (system: self.packages.${system}.contamination);
 
-        apps.contamination = flake-utils.lib.mkApp { drv = self.defaultPackage.${system}; name = "contamination"; };
-        defaultApp = self.apps.${system}.contamination;
-      }
-    );
+      apps = forAllSystems (system: { contamination = { type = "app"; program = "${self.packages.${system}.contamination}/bin/contamination"; }; });
+      defaultApp = forAllSystems (system: self.apps.${system}.contamination);
+    };
 }

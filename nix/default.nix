@@ -1,4 +1,5 @@
 { lib
+, self
 , nix-filter
 , callPackage
 , makeWrapper
@@ -16,7 +17,7 @@ buildGradle rec {
   version = "1.0";
 
   src = nix-filter {
-    root = ../.;
+    root = self;
     include = [
       (nix-filter.inDirectory "core")
       (nix-filter.inDirectory "desktop")
