@@ -111,7 +111,7 @@ class GameScreen implements Screen {
             game.setScreen(new MainMenuScreen(game));
         }
 
-        OutputAnimation = RadioActivePoolAnimation.getFrame(deltaTime);
+        OutputAnimation = RadioActivePoolAnimation.getFrame(0.009f);
 
         //updates the camera
         camera.update();
@@ -122,13 +122,13 @@ class GameScreen implements Screen {
         ////
         game.batch.begin();
 
-        //Draw map
+        // Draws map
         game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
-
+        // Draws RadioActivePool Animation
         game.batch.draw(OutputAnimation,569,46,284,190);
         game.batch.draw(OutputAnimation,1209,200,213,190);
 
-        //Draw the players
+        // Draw the players
         for(Player players : Players){
             game.batch.draw(players.render(deltaTime,ground,WorldBorder,RadioActivePool), players.x,players.y,players.width,players.height);
         }

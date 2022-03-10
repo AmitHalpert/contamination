@@ -55,7 +55,7 @@ public class CreditsScreen implements Screen {
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)){
             dispose();
-            Gdx.app.exit();
+            game.setScreen(new MainMenuScreen(game));
         }
 
         game.batch.begin();
