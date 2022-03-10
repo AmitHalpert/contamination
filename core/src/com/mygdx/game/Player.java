@@ -494,12 +494,12 @@ public class Player {
 
         //vertical input
         if ((Gdx.input.isKeyPressed(Input.Keys.UP)) && !GameScreen.isPaused && state != playerState.dead) {
-            PlayerHitBox.y++;
+            PlayerBounds.y++;
             if (IsPlayerOnGround || Yspeed == -Yspeed) {
                 Yspeed += 18;
 
             }
-            PlayerHitBox.y--;
+            PlayerBounds.y--;
         }
         Yspeed -= 0.9;
 
@@ -586,7 +586,7 @@ public class Player {
             bullet = new Bullet(x, y - 33, true);
         }
         else {
-            bullet = new Bullet(x, y - 33, false);
+            bullet = new Bullet(x, y- 33, false);
         }
         bullets.add(bullet);
     }

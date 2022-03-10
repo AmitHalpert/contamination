@@ -13,9 +13,10 @@ public class Bullet{
     // bullet parameters
     double DirectionSpeed;
     double Xspeed;
+    int width , height;
     float bulletX, bulletY;
     Rectangle hitBox;
-    Texture outputTexture;
+    Texture bulletTex;
     ObjectAnimation bullet_animation;
 
 
@@ -25,17 +26,19 @@ public class Bullet{
         this.bulletX = x;
         this.bulletY = y;
 
+
+
+        hitBox = new Rectangle(bulletX, bulletY, 5, 5);
+
+        bulletTex = new Texture("bullet.png");
+
         if(IsBulletMovingLeft){
+
             DirectionSpeed = -BULLET_MOVEMENT_SPEED;
         }
         else{
             DirectionSpeed = BULLET_MOVEMENT_SPEED;
         }
-
-
-        hitBox = new Rectangle(bulletX, bulletY, 5,0.5f);
-        bullet_animation = new ObjectAnimation();
-        bullet_animation.loadAnimation("bullet_", 4);
 
     }
 
@@ -52,14 +55,11 @@ public class Bullet{
         hitBox.x = bulletX;
         hitBox.y = bulletY;
 
-        outputTexture = bullet_animation.getFrame(delta);
-
-
+        // removes the bullet if it overlaps WorldBorder
         BulletCollisionHandling(WorldBorder);
 
 
-
-        return outputTexture;
+        return bulletTex;
     }
 
 
