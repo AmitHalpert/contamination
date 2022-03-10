@@ -509,26 +509,26 @@ public class Player {
     public void collisionHandling(Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
         // Bullet collision
-        if(IsPlayerOnGround) {
+
             Array<Bullet> bulletsB = GameScreen.Players.get(0).getBullets();
             for (Iterator<Bullet> iterb = bulletsB.iterator(); iterb.hasNext(); ) {
                 Bullet bB = iterb.next();
-                if (bB.hitBox.overlaps(PlayerHitBox)) {
+                if (bB.hitBox.overlaps(GameScreen.Players.get(1).PlayerHitBox)) {
                     PlayerHealth--;
                     iterb.remove();
                 }
             }
-        }
-        else {
+
+
             Array<Bullet> bulletsY = GameScreen.Players.get(1).getBullets();
             for (Iterator<Bullet> iter = bulletsY.iterator(); iter.hasNext(); ) {
                 Bullet bY = iter.next();
-                if (bY.hitBox.overlaps(PlayerHitBox)) {
+                if (bY.hitBox.overlaps(GameScreen.Players.get(0).PlayerHitBox)) {
                     PlayerHealth--;
                     iter.remove();
                 }
             }
-        }
+
 
 
 
