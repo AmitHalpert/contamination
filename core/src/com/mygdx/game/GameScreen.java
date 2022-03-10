@@ -16,8 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 class GameScreen implements Screen {
 
     final contamination game;
-    BluePlayer blue;
-    OrangePlayer yellow;
+
 
     // Main menu features
     float deltaTime;
@@ -40,6 +39,9 @@ class GameScreen implements Screen {
     // world parameters
     static final int WORLD_WIDTH = Gdx.graphics.getWidth();
     static final int WORLD_HEIGHT = Gdx.graphics.getHeight();
+
+    // The players Array
+    Array<Player> Players;
 
     //World objects
     Array<MapObject> ground;
@@ -73,9 +75,11 @@ class GameScreen implements Screen {
         createRadioActivePools();
 
 
-        // creates a players
-        blue = new BluePlayer(1750,300);
-        yellow = new OrangePlayer(400,500);
+        // creates the players
+        Players = new Array<Player>();
+        Players.add(new Player(1600,400,false));
+        Players.add(new Player(400,500,true));
+
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
@@ -109,10 +113,14 @@ class GameScreen implements Screen {
         //Draw map
         game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
         //Draw the players
-        game.batch.draw(blue.render(deltaTime, ground, WorldBorder, RadioActivePool),  blue.x,  blue.y, blue.width,  blue.height);
-        game.batch.draw(yellow.render(deltaTime,ground,WorldBorder,RadioActivePool),   yellow.x,yellow.y ,yellow.width,yellow.height);
+        for(Player players : Players){
+            game.batch.draw(players.render(deltaTime,ground,WorldBorder,RadioActivePool), players.x,players.y,players.width,players.height);
+        }
 
+        /*
         DrawPlayersBullets();
+
+         */
         GUI();
 
 
@@ -164,6 +172,7 @@ class GameScreen implements Screen {
             }
         }
 
+        /*
     public void DrawPlayersBullets(){
         Array<Bullet> Bluebullets = BluePlayer.getBullets();
         for (int BlueIndex = 0; BlueIndex < Bluebullets.size; BlueIndex++){
@@ -178,6 +187,8 @@ class GameScreen implements Screen {
         }
 
     }
+
+         */
 
     public void createRadioActivePools(){
         RadioActivePool.add(new MapObject(1260,5,70,200));
@@ -255,10 +266,8 @@ class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        yellow.dispose();
         GameAmbience.dispose();
         guiMenu.dispose();
-        blue.dispose();
         background.dispose();
     }
 }
