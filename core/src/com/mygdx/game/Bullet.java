@@ -54,19 +54,19 @@ public class Bullet{
 
         outputTexture = bullet_animation.getFrame(delta);
 
-        /*
+
         BulletCollisionHandling(WorldBorder);
 
-         */
+
 
         return outputTexture;
     }
 
-    /*
+
     public void BulletCollisionHandling(Array<MapObject> WorldBorder){
 
         for (MapObject Borders : WorldBorder) {
-            Array<Bullet> BluePlayerbullets = Player.getBullets();
+            Array<Bullet> BluePlayerbullets = GameScreen.Players.get(0).getBullets();
             for(Iterator<Bullet> BlueIter = BluePlayerbullets.iterator(); BlueIter.hasNext();){
                 Bullet TempBlueBullets = BlueIter.next();
                 if(TempBlueBullets.hitBox.overlaps(Borders.hitBox)){
@@ -77,7 +77,7 @@ public class Bullet{
 
 
         for (MapObject Borders : WorldBorder) {
-            Array<Bullet> YellowPlayerbullets = OrangePlayer.getYellowPlayerBullets();
+            Array<Bullet> YellowPlayerbullets = GameScreen.Players.get(1).getBullets();
             for(Iterator<Bullet> YellowIter = YellowPlayerbullets.iterator(); YellowIter.hasNext();){
                 Bullet TempYellowBullets = YellowIter.next();
                 if(TempYellowBullets.hitBox.overlaps(Borders.hitBox)){
@@ -89,7 +89,7 @@ public class Bullet{
 
     }
 
-     */
+
 
 
 

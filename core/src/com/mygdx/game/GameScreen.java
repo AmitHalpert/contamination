@@ -41,7 +41,7 @@ class GameScreen implements Screen {
     static final int WORLD_HEIGHT = Gdx.graphics.getHeight();
 
     // The players Array
-    Array<Player> Players;
+    static Array<Player> Players;
 
     //World objects
     Array<MapObject> ground;
@@ -117,10 +117,10 @@ class GameScreen implements Screen {
             game.batch.draw(players.render(deltaTime,ground,WorldBorder,RadioActivePool), players.x,players.y,players.width,players.height);
         }
 
-        /*
+
         DrawPlayersBullets();
 
-         */
+
         GUI();
 
 
@@ -172,15 +172,16 @@ class GameScreen implements Screen {
             }
         }
 
-        /*
+
     public void DrawPlayersBullets(){
-        Array<Bullet> Bluebullets = BluePlayer.getBullets();
+
+        Array<Bullet> Bluebullets = Players.get(0).getBullets();
         for (int BlueIndex = 0; BlueIndex < Bluebullets.size; BlueIndex++){
             Bullet BluePlayerBullets = Bluebullets.get(BlueIndex);
             game.batch.draw(BluePlayerBullets.update(deltaTime,ground,WorldBorder),BluePlayerBullets.bulletX,BluePlayerBullets.bulletY,120,120);
         }
 
-        Array<Bullet> Yellowbullets = OrangePlayer.getYellowPlayerBullets();
+        Array<Bullet> Yellowbullets = Players.get(1).getBullets();
         for (int YellowIndex = 0; YellowIndex < Yellowbullets.size; YellowIndex++){
             Bullet YellowPlayerBullets = Yellowbullets.get(YellowIndex);
             game.batch.draw(YellowPlayerBullets.update(deltaTime,ground,WorldBorder),YellowPlayerBullets.bulletX,YellowPlayerBullets.bulletY,120,120);
@@ -188,7 +189,7 @@ class GameScreen implements Screen {
 
     }
 
-         */
+
 
     public void createRadioActivePools(){
         RadioActivePool.add(new MapObject(1260,5,70,200));

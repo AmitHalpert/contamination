@@ -38,7 +38,7 @@ public class Player {
     float TimeBetweenShots;
     boolean isPlayerHoldingGun;
     boolean IsPlayerFrozen;
-    static Array<Bullet> bullets;
+    Array<Bullet> bullets;
 
     // Animation parameters
     float dead_elapsedTime;
@@ -508,17 +508,29 @@ public class Player {
     // Detects if the player touches A MapObject
     public void collisionHandling(Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
-        /*
-        Array<Bullet> bullets = OrangePlayer.getYellowPlayerBullets();
-        for(Iterator<Bullet> iter = bullets.iterator(); iter.hasNext();){
-            Bullet b = iter.next();
-            if(b.hitBox.overlaps(PlayerHitBox)){
-                PlayerHealth--;
-                iter.remove();
+        // Bullet collision
+        if(IsPlayerOnGround) {
+            Array<Bullet> bulletsB = GameScreen.Players.get(0).getBullets();
+            for (Iterator<Bullet> iterb = bulletsB.iterator(); iterb.hasNext(); ) {
+                Bullet bB = iterb.next();
+                if (bB.hitBox.overlaps(PlayerHitBox)) {
+                    PlayerHealth--;
+                    iterb.remove();
+                }
+            }
+        }
+        else {
+            Array<Bullet> bulletsY = GameScreen.Players.get(1).getBullets();
+            for (Iterator<Bullet> iter = bulletsY.iterator(); iter.hasNext(); ) {
+                Bullet bY = iter.next();
+                if (bY.hitBox.overlaps(PlayerHitBox)) {
+                    PlayerHealth--;
+                    iter.remove();
+                }
             }
         }
 
-         */
+
 
 
         for(MapObject Pools : RadioActivePool){
@@ -581,7 +593,7 @@ public class Player {
     }
 
 
-    public static Array<Bullet> getBullets(){
+    public Array<Bullet> getBullets(){
         return bullets;
     }
 
