@@ -33,6 +33,8 @@ class GameScreen implements Screen {
     Viewport viewport;
 
     //graphics
+    ObjectAnimation RadioActivePoolAnimation;
+    Texture OutputAnimation;
     Texture background;
     Texture guiMenu;
 
@@ -57,7 +59,7 @@ class GameScreen implements Screen {
 
         guiMenu = new Texture("menugui.png");
 
-        // sounds
+        // SFX
         GameAmbience = Gdx.audio.newMusic(Gdx.files.internal("GameAmbience.mp3"));
         GameAmbience.setLooping(true);
         GameAmbience.setVolume(0.3f);
@@ -65,6 +67,10 @@ class GameScreen implements Screen {
 
         // Map graphics
         background = new Texture("genesis.png");
+        OutputAnimation = new Texture("player_dead_5.png");
+
+        RadioActivePoolAnimation = new ObjectAnimation();
+        RadioActivePoolAnimation.loadAnimation("RadioActivePoolAnimation_",5);
 
         // Create Map Objects
         ground = new Array<MapObject>();
@@ -81,6 +87,7 @@ class GameScreen implements Screen {
         Players.add(new Player(400,500,true));
 
 
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
@@ -88,11 +95,11 @@ class GameScreen implements Screen {
         // initialize parameters
         deltaTime = 0;
 
+
     }
 
     @Override
     public void show() {
-
     }
 
     @Override
@@ -104,14 +111,23 @@ class GameScreen implements Screen {
             game.setScreen(new MainMenuScreen(game));
         }
 
+        OutputAnimation = RadioActivePoolAnimation.getFrame(deltaTime);
+
         //updates the camera
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
+        ////
         // BEGIN TO DRAW:
+        ////
         game.batch.begin();
+
         //Draw map
         game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
+
+        game.batch.draw(OutputAnimation,569,46,284,190);
+        game.batch.draw(OutputAnimation,1209,200,213,190);
+
         //Draw the players
         for(Player players : Players){
             game.batch.draw(players.render(deltaTime,ground,WorldBorder,RadioActivePool), players.x,players.y,players.width,players.height);
@@ -119,8 +135,6 @@ class GameScreen implements Screen {
 
 
         DrawPlayersBullets();
-
-
         GUI();
 
 
@@ -172,7 +186,6 @@ class GameScreen implements Screen {
             }
         }
 
-
     public void DrawPlayersBullets(){
 
         Array<Bullet> Bluebullets = Players.get(0).getBullets();
@@ -188,8 +201,6 @@ class GameScreen implements Screen {
         }
 
     }
-
-
 
     public void createRadioActivePools(){
         RadioActivePool.add(new MapObject(1260,5,70,200));
@@ -267,6 +278,10 @@ class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+
+        for(Player players : Players){
+            players.dispose();
+        }
         GameAmbience.dispose();
         guiMenu.dispose();
         background.dispose();

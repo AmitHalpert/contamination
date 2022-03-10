@@ -591,7 +591,6 @@ public class Player {
         bullets.add(bullet);
     }
 
-
     public Array<Bullet> getBullets(){
         return bullets;
     }
