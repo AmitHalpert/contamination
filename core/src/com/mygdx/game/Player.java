@@ -195,7 +195,7 @@ public class Player {
 
     if(!GameScreen.isPaused){
         // the player's Hit box for bullet collision
-        PlayerHitBox = new Rectangle(x-50, y-170, width-50, height);
+        PlayerHitBox = new Rectangle(x, y, width, height-100);
         //Determine witch (playerState) state the player will be.
         GetPlayerState();
 
@@ -207,7 +207,7 @@ public class Player {
             BluePlayerInputHandling(delta);
         }
 
-        // Detects if the player touches A MapObject and changes speeds
+        // Detects if the player touches A MapObject
         collisionHandling(Ground,WorldBorder,RadioActivePool);
 
         if (!IsPlayerFrozen) {
@@ -583,10 +583,10 @@ public class Player {
     public void ShootBullets() {
         Bullet bullet;
         if(isFacingLeft){
-            bullet = new Bullet(x, y - 33, true);
+            bullet = new Bullet(x, y, true);
         }
         else {
-            bullet = new Bullet(x, y- 33, false);
+            bullet = new Bullet(x, y, false);
         }
         bullets.add(bullet);
     }

@@ -13,11 +13,10 @@ public class Bullet{
     // bullet parameters
     double DirectionSpeed;
     double Xspeed;
-    int width = 80 , height =50;
+    int width = 80 , height = 50;
     float bulletX, bulletY;
     Rectangle hitBox;
     Texture bulletTex;
-    ObjectAnimation bullet_animation;
 
 
 

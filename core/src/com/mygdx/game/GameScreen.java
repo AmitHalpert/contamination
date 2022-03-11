@@ -62,7 +62,7 @@ class GameScreen implements Screen {
         // SFX
         GameAmbience = Gdx.audio.newMusic(Gdx.files.internal("GameAmbience.mp3"));
         GameAmbience.setLooping(true);
-        GameAmbience.setVolume(0.3f);
+        GameAmbience.setVolume(0.09f);
         GameAmbience.play();
 
         // Map graphics
@@ -191,13 +191,13 @@ class GameScreen implements Screen {
         Array<Bullet> Bluebullets = Players.get(0).getBullets();
         for (int BlueIndex = 0; BlueIndex < Bluebullets.size; BlueIndex++){
             Bullet BluePlayerBullets = Bluebullets.get(BlueIndex);
-            game.batch.draw(BluePlayerBullets.update(deltaTime,ground,WorldBorder),BluePlayerBullets.bulletX,BluePlayerBullets.bulletY + 33,BluePlayerBullets.width,BluePlayerBullets.height);
+            game.batch.draw(BluePlayerBullets.update(deltaTime,ground,WorldBorder),BluePlayerBullets.bulletX,BluePlayerBullets.bulletY,BluePlayerBullets.width,BluePlayerBullets.height);
         }
 
         Array<Bullet> Yellowbullets = Players.get(1).getBullets();
         for (int YellowIndex = 0; YellowIndex < Yellowbullets.size; YellowIndex++){
             Bullet YellowPlayerBullets = Yellowbullets.get(YellowIndex);
-            game.batch.draw(YellowPlayerBullets.update(deltaTime,ground,WorldBorder),YellowPlayerBullets.bulletX,YellowPlayerBullets.bulletY + 33,YellowPlayerBullets.width,YellowPlayerBullets.height);
+            game.batch.draw(YellowPlayerBullets.update(deltaTime,ground,WorldBorder),YellowPlayerBullets.bulletX,YellowPlayerBullets.bulletY,YellowPlayerBullets.width,YellowPlayerBullets.height);
         }
 
     }
@@ -230,19 +230,20 @@ class GameScreen implements Screen {
         ////
 
         //left rock
-        WorldBorder.add(new MapObject(-435,-37,580,329));
+        WorldBorder.add(new MapObject(-435,-37,580,339));
         // middle rock
-        WorldBorder.add(new MapObject(1065,-37,75,310));
-        // middle pit left
+        WorldBorder.add(new MapObject(1065,-37,75,325));
+        // inner middle left RadioActivePool
         WorldBorder.add(new MapObject(359,-115,150,260));
-        // middle pit right
+        // inner middle right RadioActivePool
         WorldBorder.add(new MapObject(918,-115,100,275));
         // right rock
-        WorldBorder.add(new MapObject(1495,-39,74,310));
+        WorldBorder.add(new MapObject(1495,-39,74,315));
 
         ////
         // WORLD BOUNDS
         ////
+
         // create left world border
         WorldBorder.add(new MapObject(-650,200,580,3000));
 
