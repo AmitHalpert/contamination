@@ -191,13 +191,13 @@ class GameScreen implements Screen {
         Array<Bullet> Bluebullets = Players.get(0).getBullets();
         for (int BlueIndex = 0; BlueIndex < Bluebullets.size; BlueIndex++){
             Bullet BluePlayerBullets = Bluebullets.get(BlueIndex);
-            game.batch.draw(BluePlayerBullets.update(deltaTime,ground,WorldBorder),BluePlayerBullets.bulletX,BluePlayerBullets.bulletY + 33,80,50);
+            game.batch.draw(BluePlayerBullets.update(deltaTime,ground,WorldBorder),BluePlayerBullets.bulletX,BluePlayerBullets.bulletY + 33,BluePlayerBullets.width,BluePlayerBullets.height);
         }
 
         Array<Bullet> Yellowbullets = Players.get(1).getBullets();
         for (int YellowIndex = 0; YellowIndex < Yellowbullets.size; YellowIndex++){
             Bullet YellowPlayerBullets = Yellowbullets.get(YellowIndex);
-            game.batch.draw(YellowPlayerBullets.update(deltaTime,ground,WorldBorder),YellowPlayerBullets.bulletX,YellowPlayerBullets.bulletY + 33,80,50);
+            game.batch.draw(YellowPlayerBullets.update(deltaTime,ground,WorldBorder),YellowPlayerBullets.bulletX,YellowPlayerBullets.bulletY + 33,YellowPlayerBullets.width,YellowPlayerBullets.height);
         }
 
     }

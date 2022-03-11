@@ -13,7 +13,7 @@ public class Bullet{
     // bullet parameters
     double DirectionSpeed;
     double Xspeed;
-    int width , height;
+    int width = 80 , height =50;
     float bulletX, bulletY;
     Rectangle hitBox;
     Texture bulletTex;
@@ -21,24 +21,29 @@ public class Bullet{
 
 
 
-    public Bullet(float x, float y, boolean IsBulletMovingLeft) {
+    public Bullet(float x, float y, boolean IsPlayerFacingLeft) {
 
         this.bulletX = x;
         this.bulletY = y;
 
+        // changes the direction and sprite width
+        if(IsPlayerFacingLeft){
+
+            DirectionSpeed = -BULLET_MOVEMENT_SPEED;
+            width = width * -1;
+        }
+        else{
+
+            DirectionSpeed = BULLET_MOVEMENT_SPEED;
+
+        }
 
 
-        hitBox = new Rectangle(bulletX, bulletY, 5, 5);
+
+        hitBox = new Rectangle(bulletX, bulletY, width, height);
 
         bulletTex = new Texture("bullet.png");
 
-        if(IsBulletMovingLeft){
-
-            DirectionSpeed = -BULLET_MOVEMENT_SPEED;
-        }
-        else{
-            DirectionSpeed = BULLET_MOVEMENT_SPEED;
-        }
 
     }
 
