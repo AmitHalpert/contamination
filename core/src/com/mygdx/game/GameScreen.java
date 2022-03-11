@@ -67,7 +67,6 @@ class GameScreen implements Screen {
 
         // Map graphics
         background = new Texture("genesis.png");
-        OutputAnimation = new Texture("player_dead_5.png");
 
         RadioActivePoolAnimation = new ObjectAnimation();
         RadioActivePoolAnimation.loadAnimation("RadioActivePoolAnimation_",5);
@@ -111,7 +110,6 @@ class GameScreen implements Screen {
             game.setScreen(new MainMenuScreen(game));
         }
 
-        OutputAnimation = RadioActivePoolAnimation.getFrame(0.009f);
 
         //updates the camera
         camera.update();
@@ -120,13 +118,15 @@ class GameScreen implements Screen {
         ////
         // BEGIN TO DRAW:
         ////
+
+
         game.batch.begin();
 
         // Draws map
         game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
         // Draws RadioActivePool Animation
-        game.batch.draw(OutputAnimation,569,46,284,190);
-        game.batch.draw(OutputAnimation,1209,200,213,190);
+        game.batch.draw(RadioActivePoolAnimation.getFrame(0.005f),569,46,284,190);
+        game.batch.draw(RadioActivePoolAnimation.getFrame(0.005f),1209,200,213,190);
 
         // Draw the players
         for(Player players : Players){
