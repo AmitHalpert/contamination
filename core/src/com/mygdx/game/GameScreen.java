@@ -188,16 +188,18 @@ class GameScreen implements Screen {
 
     public void DrawPlayersBullets(){
 
+
+        // draws the blue's player bullets
         Array<Bullet> Bluebullets = Players.get(0).getBullets();
-        for (int BlueIndex = 0; BlueIndex < Bluebullets.size; BlueIndex++){
-            Bullet BluePlayerBullets = Bluebullets.get(BlueIndex);
-            game.batch.draw(BluePlayerBullets.update(deltaTime,ground,WorldBorder),BluePlayerBullets.bulletX,BluePlayerBullets.bulletY,BluePlayerBullets.width,BluePlayerBullets.height);
+        for(Bullet BluebulletsIndex : Bluebullets){
+            game.batch.draw(BluebulletsIndex.update(deltaTime,ground,WorldBorder),BluebulletsIndex.bulletX,BluebulletsIndex.bulletY,BluebulletsIndex.width,BluebulletsIndex.height);
         }
 
-        Array<Bullet> Yellowbullets = Players.get(1).getBullets();
-        for (int YellowIndex = 0; YellowIndex < Yellowbullets.size; YellowIndex++){
-            Bullet YellowPlayerBullets = Yellowbullets.get(YellowIndex);
-            game.batch.draw(YellowPlayerBullets.update(deltaTime,ground,WorldBorder),YellowPlayerBullets.bulletX,YellowPlayerBullets.bulletY,YellowPlayerBullets.width,YellowPlayerBullets.height);
+
+        // draws the orange's player bullets
+        Array<Bullet> Orangebullets = Players.get(1).getBullets();
+        for(Bullet OrangebulletsIndex : Orangebullets){
+            game.batch.draw(OrangebulletsIndex.update(deltaTime,ground,WorldBorder),OrangebulletsIndex.bulletX,OrangebulletsIndex.bulletY,OrangebulletsIndex.width,OrangebulletsIndex.height);
         }
 
     }
@@ -212,7 +214,7 @@ class GameScreen implements Screen {
         // environment Grounds
         ////
         //left rock
-        ground.add(new MapObject(50,10,85,330));
+        ground.add(new MapObject(50,10,82,330));
         // middle rock
         ground.add(new MapObject(1067,-12,70,320));
         // right rock
@@ -230,9 +232,9 @@ class GameScreen implements Screen {
         ////
 
         //left rock
-        WorldBorder.add(new MapObject(-435,-37,580,339));
+        WorldBorder.add(new MapObject(-435,-37,580,345));
         // middle rock
-        WorldBorder.add(new MapObject(1065,-37,75,325));
+        WorldBorder.add(new MapObject(1065,-37,75,329));
         // inner middle left RadioActivePool
         WorldBorder.add(new MapObject(359,-115,150,260));
         // inner middle right RadioActivePool
