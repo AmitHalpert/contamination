@@ -139,8 +139,8 @@ class GameScreen implements Screen {
         // Draws map
         game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
         // Draws RadioActivePool Animation
-        game.batch.draw(RadioActivePoolAnimation.getFrame(0.005f),569,46,284,190);
-        game.batch.draw(RadioActivePoolAnimation.getFrame(0.005f),1209,200,213,190);
+        game.batch.draw(RadioActivePoolAnimation.getFrame(0.002f),569,46,284,190);
+        game.batch.draw(RadioActivePoolAnimation.getFrame(0.002f),1209,200,213,190);
 
         // Draw the players
         for(Player players : Players){

@@ -196,10 +196,11 @@ public class Player {
 
         Xspeed = 0;
         if(!GameScreen.isPaused){
+
         // the player's Hit box for bullet collision
         PlayerHitBox = new Rectangle(x, y, width, height-100);
         //Determine witch (playerState) state the player will be.
-        GetPlayerState();
+        GetPlayerState(delta);
 
         // keyboard input and Player movement
         if(IsPlayerOrange) {
@@ -250,7 +251,7 @@ public class Player {
             case Running:
                 // gun running animation
                 if(isPlayerHoldingGun && !isFacingLeft){
-                    outputTexture = player_running_gun_animation.getFrame(delta);
+                    outputTexture = player_running_gun_animation.getFrame(0.002f);
 
                     player_running_animation.resetAnimation();
                     player_jumping_animation.resetAnimation();
@@ -260,7 +261,7 @@ public class Player {
                     flipped_player_running_animation.resetAnimation();
                 }
                 else if (isPlayerHoldingGun){
-                    outputTexture = flipped_player_running_gun_animation.getFrame(delta);
+                    outputTexture = flipped_player_running_gun_animation.getFrame(0.002f);
 
                     player_running_gun_animation.resetAnimation();
                     player_running_animation.resetAnimation();
@@ -394,31 +395,32 @@ public class Player {
 
 
     //Determine witch (playerState) state the player will be.
-    public void GetPlayerState() {
+    public void GetPlayerState(float delta) {
+
         if(PlayerHealth <= 0){
             state = playerState.dead;
         }
 
-        // checks if the player is moving up or down
-        if (Yspeed > 0) {
-            state = playerState.Jumping;
-        }
+        else {
 
-        // checks if the player is moving left or right
-        if (Xspeed != 0 && state != playerState.dead) {
-            if (Yspeed == 0) {
-                state = playerState.Running;
+            // checks if the player is moving up or down
+            if (Yspeed > 0) {
+                state = playerState.Jumping;
             }
+
+            // checks if the player is moving left or right
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.LEFT) && Yspeed == 0) {
+                state = playerState.Running;
+
+            } else if (Yspeed == 0) {
+                state = playerState.Idle;
+            }
+
         }
-
-
-        else if (Xspeed == 0 && Yspeed == 0 && state != playerState.dead ) {
-            state = playerState.Idle;
-        }
-
-
 
     }
+
+
 
     public void OrangePlayerInputHandling(float delta) {
         TimeBetweenShots += delta;
@@ -477,15 +479,21 @@ public class Player {
 
         //Horizontal Player input
         else if ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !GameScreen.isPaused && state != playerState.dead) {
-            Xspeed = -700 * delta;
+            Xspeed = -400 * delta;
             isFacingLeft = true;
         }
         else if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !GameScreen.isPaused && state != playerState.dead) {
-            Xspeed = 700 * delta;
+            Xspeed = 400 * delta;
             isFacingLeft = false;
         }
 
+        /*
+        if (Xspeed > 0 && Xspeed < 0.80) Xspeed = 0;
+        if (Xspeed < 0 && Xspeed > -0.80) Xspeed = 0;
+        if (Xspeed > 10) Xspeed = 10;
+        if (Xspeed < -10) Xspeed = -10;
 
+         */
 
 
         //vertical input
@@ -493,7 +501,6 @@ public class Player {
 
             if (IsPlayerOnGround || Yspeed == -Yspeed) {
                 Yspeed += 700 * delta;
-
             }
 
         }
