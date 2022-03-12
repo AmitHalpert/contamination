@@ -86,6 +86,7 @@ public class Player {
         PlayerBounds = new Rectangle(x, y, width, height);
 
 
+
         //set up gun parameters
         TimeBetweenShots = 0;
         bullets = new Array<>();
@@ -193,7 +194,8 @@ public class Player {
 
     public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
-    if(!GameScreen.isPaused){
+        Xspeed = 0;
+        if(!GameScreen.isPaused){
         // the player's Hit box for bullet collision
         PlayerHitBox = new Rectangle(x, y, width, height-100);
         //Determine witch (playerState) state the player will be.
@@ -227,9 +229,9 @@ public class Player {
                 if(dead_animation_time >= 0.04f) {
                     outputTexture = player_dead_animation.getFrame(delta);
                     dead_animation_time = 0;
-                    dead_elapsedTime++;
+                    dead_elapsedTime += delta;
                 }
-                if(dead_elapsedTime >= 13){
+                if(dead_elapsedTime >= 0.2f){
                     outputTexture = player_not_exiting;
                     dispose();
                 }
@@ -404,15 +406,17 @@ public class Player {
 
         // checks if the player is moving left or right
         if (Xspeed != 0 && state != playerState.dead) {
-            if (Xspeed != 0 && Yspeed == 0) {
+            if (Yspeed == 0) {
                 state = playerState.Running;
             }
-
-
         }
+
+
         else if (Xspeed == 0 && Yspeed == 0 && state != playerState.dead ) {
             state = playerState.Idle;
         }
+
+
 
     }
 
@@ -472,36 +476,28 @@ public class Player {
         }
 
         //Horizontal Player input
-        if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && (Gdx.input.isKeyPressed(Input.Keys.LEFT)) || !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !GameScreen.isPaused && state != playerState.dead) {
-            Xspeed *= 0.8;
-        }
         else if ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !GameScreen.isPaused && state != playerState.dead) {
-            Xspeed--;
+            Xspeed = -700 * delta;
             isFacingLeft = true;
         }
         else if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !GameScreen.isPaused && state != playerState.dead) {
-            Xspeed++;
+            Xspeed = 700 * delta;
             isFacingLeft = false;
         }
 
 
-        //Smooths Player Movement
-        if (Xspeed > 0 && Xspeed < 0.80) Xspeed = 0;
-        if (Xspeed < 0 && Xspeed > -0.80) Xspeed = 0;
-        if (Xspeed > 10) Xspeed = 10;
-        if (Xspeed < -10) Xspeed = -10;
 
 
         //vertical input
         if ((Gdx.input.isKeyPressed(Input.Keys.UP)) && !GameScreen.isPaused && state != playerState.dead) {
-            PlayerBounds.y++;
+
             if (IsPlayerOnGround || Yspeed == -Yspeed) {
-                Yspeed += 18;
+                Yspeed += 700 * delta;
 
             }
-            PlayerBounds.y--;
+
         }
-        Yspeed -= 0.9;
+        Yspeed -= 20 * delta;
 
     }
 
