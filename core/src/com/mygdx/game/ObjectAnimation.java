@@ -35,6 +35,13 @@ public class ObjectAnimation {
         return frames.get(currentFrame);
     }
 
+    // returns the frame in the array by the wanted index
+    public Texture getIndexFrame(int WantedFrame){
+        frames.get(WantedFrame);
+
+        return frames.get(WantedFrame);
+    }
+
     // resets the animation
     public void resetAnimation(){
         currentFrame = 0;

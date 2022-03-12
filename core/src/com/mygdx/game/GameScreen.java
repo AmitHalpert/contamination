@@ -33,8 +33,9 @@ class GameScreen implements Screen {
     Viewport viewport;
 
     //graphics
+    ObjectAnimation LeftPlayerHealthHUD;
+    ObjectAnimation RightPlayerHealthHUD;
     ObjectAnimation RadioActivePoolAnimation;
-    Texture OutputAnimation;
     Texture background;
     Texture guiMenu;
 
@@ -53,25 +54,38 @@ class GameScreen implements Screen {
     public GameScreen(final contamination game){
         this.game =  game;
 
+        // initialize parameters
         IsGUI = false;
         isPaused = false;
         IsScreenMainMenu = false;
 
-        guiMenu = new Texture("menugui.png");
 
+        ////
         // SFX
+        ////
         GameAmbience = Gdx.audio.newMusic(Gdx.files.internal("GameAmbience.mp3"));
         GameAmbience.setLooping(true);
         GameAmbience.setVolume(0.09f);
         GameAmbience.play();
 
-        // Map graphics
+        ////
+        // graphics
+        ////
+        guiMenu = new Texture("menugui.png");
         background = new Texture("genesis.png");
-
+        // right health bar
+        RightPlayerHealthHUD = new ObjectAnimation();
+        RightPlayerHealthHUD.loadAnimation("right-player-health_",4);
+        // left health bar
+        LeftPlayerHealthHUD = new ObjectAnimation();
+        LeftPlayerHealthHUD.loadAnimation("left-player-health_",4);
+        // RadioActive Pool
         RadioActivePoolAnimation = new ObjectAnimation();
         RadioActivePoolAnimation.loadAnimation("RadioActivePoolAnimation_",5);
 
+        ////
         // Create Map Objects
+        ////
         ground = new Array<MapObject>();
         WorldBorder = new Array<MapObject>();
         RadioActivePool = new Array<MapObject>();
@@ -135,16 +149,24 @@ class GameScreen implements Screen {
 
 
         DrawPlayersBullets();
-        GUI();
-
+        MenuGUI();
+        DrawPlayersHealthBarHUD();
 
         game.batch.end();
     }
 
 
+    public void DrawPlayersHealthBarHUD(){
+        // blue player
+        game.batch.draw(RightPlayerHealthHUD.getIndexFrame(1),1520,920,430,170);
+        game.batch.draw(Players.get(0).render(deltaTime,ground,WorldBorder,RadioActivePool), 1760,950,Players.get(0).width,Players.get(0).height);
 
+        // right player
+        game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(1),-30,920,430,170);
+        game.batch.draw(Players.get(1).render(deltaTime,ground,WorldBorder,RadioActivePool), -10,950,Players.get(1).width,Players.get(1).height);
+    }
 
-    public void GUI(){
+    public void MenuGUI(){
 
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) && !IsGUI) {
             IsGUI = true;
@@ -236,9 +258,9 @@ class GameScreen implements Screen {
         // middle rock
         WorldBorder.add(new MapObject(1065,-37,75,329));
         // inner middle left RadioActivePool
-        WorldBorder.add(new MapObject(359,-115,150,260));
+        WorldBorder.add(new MapObject(359,-115,150,275));
         // inner middle right RadioActivePool
-        WorldBorder.add(new MapObject(918,-115,100,275));
+        WorldBorder.add(new MapObject(918,-115,100,285));
         // right rock
         WorldBorder.add(new MapObject(1495,-39,74,315));
 
