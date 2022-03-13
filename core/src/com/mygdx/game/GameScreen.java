@@ -158,11 +158,11 @@ class GameScreen implements Screen {
 
     public void DrawPlayersHealthBarHUD(){
         // blue player
-        game.batch.draw(RightPlayerHealthHUD.getIndexFrame(1),1520,920,430,170);
+        game.batch.draw(RightPlayerHealthHUD.getIndexFrame(0),1520,920,430,170);
         game.batch.draw(Players.get(0).render(deltaTime,ground,WorldBorder,RadioActivePool), 1760,950,Players.get(0).width,Players.get(0).height);
 
         // right player
-        game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(1),-30,920,430,170);
+        game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(0),-30,920,430,170);
         game.batch.draw(Players.get(1).render(deltaTime,ground,WorldBorder,RadioActivePool), -10,950,Players.get(1).width,Players.get(1).height);
     }
 
