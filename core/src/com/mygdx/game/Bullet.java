@@ -8,12 +8,12 @@ import java.util.Iterator;
 
 public class Bullet{
 
-    public static final int BULLET_MOVEMENT_SPEED = 75;
+    public static final int BULLET_MOVEMENT_SPEED = 50;
 
     // bullet parameters
     double DirectionSpeed;
     double Xspeed;
-    int width = 80 , height = 50;
+    int width = 60 , height = 60;
     float bulletX, bulletY;
     Rectangle hitBox;
     Texture bulletTex;
@@ -24,12 +24,19 @@ public class Bullet{
 
         this.bulletX = x;
         this.bulletY = y;
+        hitBox = new Rectangle(bulletX, bulletY, width, height);
 
         // changes the direction and sprite width
-        if(IsPlayerFacingLeft){
-
+        if((IsPlayerFacingLeft && this.width > 0) || (!IsPlayerFacingLeft && this.width < 0)){
+            this.width = this.width * -1;
+            this.bulletX = this.bulletX + this.width * -1;
+            // move left
             DirectionSpeed = -BULLET_MOVEMENT_SPEED;
-            width = width * -1;
+
+            if(IsPlayerFacingLeft) {
+                this.hitBox.width = (this.hitBox.width * -1) / 1.3f;
+                this.hitBox.x = this.hitBox.x + this.hitBox.width * -1;
+            }
         }
         else{
 
@@ -39,7 +46,6 @@ public class Bullet{
 
 
 
-        hitBox = new Rectangle(bulletX, bulletY, width, height);
 
         bulletTex = new Texture("bullet.png");
 
@@ -49,10 +55,8 @@ public class Bullet{
     public Texture update(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder) {
 
 
-        Xspeed += DirectionSpeed;
-        if (Xspeed > BULLET_MOVEMENT_SPEED) Xspeed = BULLET_MOVEMENT_SPEED;
-        if (Xspeed < -BULLET_MOVEMENT_SPEED) Xspeed = -BULLET_MOVEMENT_SPEED;
 
+        Xspeed = DirectionSpeed;
 
         // updates bullets position;
         bulletX += Xspeed;
