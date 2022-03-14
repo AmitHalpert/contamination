@@ -7,10 +7,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
+import java.io.ObjectInputStream;
 import java.util.Iterator;
 
 
-public class BluePlayer {
+public class Player {
+
+
+
+     public enum PlayersController{
+        Blue,
+        Orange
+    }
+
 
     // the player states
     public enum playerState {
@@ -24,20 +33,21 @@ public class BluePlayer {
 
     // Player parameters
     float x, y;
+    boolean IsPlayerOrange;
     int PlayerHealth;
     int width, height;
     double Xspeed, Yspeed;
-    static boolean isFacingLeft;
+    boolean isFacingLeft;
     boolean Collision;
     boolean IsPlayerOnGround;
     Rectangle PlayerHitBox;
     Rectangle PlayerBounds;
 
     // gun parameters
-    float shootTimer;
+    float TimeBetweenShots;
     boolean isPlayerHoldingGun;
     boolean IsPlayerFrozen;
-    static Array<Bullet> bullets;
+    Array<Bullet> bullets;
 
     // Animation parameters
     float dead_elapsedTime;
@@ -49,6 +59,10 @@ public class BluePlayer {
     // music and SFX
     private final Sound gunshot;
 
+
+    /////
+    // types of animation and textures
+    ////
     Texture player_not_exiting;
     // create ObjectAnimation for every type of animation
     ObjectAnimation player_dead_animation;
@@ -69,13 +83,16 @@ public class BluePlayer {
     ObjectAnimation flipped_player_idle_gun_animation;
     ObjectAnimation flipped_player_jumping_gun_animation;
 
-
+    // creates enums
     playerState state;
+    PlayersController SelectedPlayer;
 
-    public BluePlayer(float x, float y){
+    public Player(float x, float y,PlayersController wownice){
 
         this.x = x;
         this.y = y;
+        this.SelectedPlayer = wownice;
+
 
         // player characteristics
         PlayerHealth = 3;
@@ -84,8 +101,9 @@ public class BluePlayer {
         PlayerBounds = new Rectangle(x, y, width, height);
 
 
+
         //set up gun parameters
-        shootTimer = 0;
+        TimeBetweenShots = 0;
         bullets = new Array<>();
         gunshot = Gdx.audio.newSound(Gdx.files.internal("gun1.wav"));
 
@@ -101,65 +119,128 @@ public class BluePlayer {
         dead_elapsedTime = 0;
 
         ////
-        // set up the player animations
+        // set up the players animations
         ////
 
-        player_dead_animation = new ObjectAnimation();
-        player_dead_animation.loadAnimation("player_dead_",5);
+        // detect player color according to the PlayersController enum and apply the animation
+        switch (SelectedPlayer) {
 
-        player_not_exiting = new Texture("player_dead_5.png");
+            case Orange:
 
-        // player right animations
-        player_running_animation = new ObjectAnimation();
-        player_running_animation.loadAnimation("player_running_", 4);
-        player_jumping_animation = new ObjectAnimation();
-        player_jumping_animation.loadAnimation("player_jumping_", 2);
-        player_idle_animation = new ObjectAnimation();
-        player_idle_animation.loadAnimation("player_idle_", 1);
-        playerTexture = new Texture(Gdx.files.internal("player_idle_1.png"));
+            player_dead_animation = new ObjectAnimation();
+            player_dead_animation.loadAnimation("Orange-Player-Death_", 5);
+            player_not_exiting = new Texture("player_dead_5.png");
 
-        // player with a gun right animations
-        player_running_gun_animation = new ObjectAnimation();
-        player_running_gun_animation.loadAnimation("player_running_with_gun_",4);
-        player_jumping_gun_animation = new ObjectAnimation();
-        player_jumping_gun_animation.loadAnimation("player_running_with_gun_",1);
-        player_idle_gun_animation = new ObjectAnimation();
-        player_idle_gun_animation.loadAnimation("player_idle_gun_",1);
+            // player right animations
+            player_running_animation = new ObjectAnimation();
+            player_running_animation.loadAnimation("Orange-Player-Running_", 4);
+            player_jumping_animation = new ObjectAnimation();
+            player_jumping_animation.loadAnimation("Orange-Player-Jumping_", 2);
+            player_idle_animation = new ObjectAnimation();
+            player_idle_animation.loadAnimation("Orange-Player-Idle_", 1);
+            playerTexture = new Texture(Gdx.files.internal("Orange-Player-Idle_1.png"));
 
-        // player left animations
-        flipped_player_running_animation = new ObjectAnimation();
-        flipped_player_running_animation.loadAnimation("fliped_player_running_",4);
-        flipped_player_jumping_animation = new ObjectAnimation();
-        flipped_player_jumping_animation.loadAnimation("fliped_player_jumping_", 2);
-        flipped_player_idle_animation = new ObjectAnimation();
-        flipped_player_idle_animation.loadAnimation("fliped_player_idle_", 1);
-        // player with a gun left animations
-        flipped_player_running_gun_animation = new ObjectAnimation();
-        flipped_player_running_gun_animation.loadAnimation("flipped_player_running_with_gun_",4);
-        flipped_player_jumping_gun_animation = new ObjectAnimation();
-        flipped_player_jumping_gun_animation.loadAnimation("flipped_player_running_with_gun_",1);
-        flipped_player_idle_gun_animation = new ObjectAnimation();
-        flipped_player_idle_gun_animation.loadAnimation("flipped_player_idle_gun_",1);
+            // player with a gun right animations
+            player_running_gun_animation = new ObjectAnimation();
+            player_running_gun_animation.loadAnimation("Orange-Player-Running_Gun_", 4);
+            player_jumping_gun_animation = new ObjectAnimation();
+            player_jumping_gun_animation.loadAnimation("Orange-Player-Jumping_Gun_", 1);
+            player_idle_gun_animation = new ObjectAnimation();
+            player_idle_gun_animation.loadAnimation("Orange-Player-Idle-gun_", 1);
+
+            // player left animations
+            flipped_player_running_animation = new ObjectAnimation();
+            flipped_player_running_animation.loadAnimation("flipped-orange-running_", 4);
+            flipped_player_jumping_animation = new ObjectAnimation();
+            flipped_player_jumping_animation.loadAnimation("flipped-Orange-Player-Jumping_", 1);
+            flipped_player_idle_animation = new ObjectAnimation();
+            flipped_player_idle_animation.loadAnimation("flipped-Orange-Player-idle_gun_", 1);
+            // player with a gun left animations
+            flipped_player_running_gun_animation = new ObjectAnimation();
+            flipped_player_running_gun_animation.loadAnimation("flipped-Orange-Player-Running-gun_", 4);
+            flipped_player_jumping_gun_animation = new ObjectAnimation();
+            flipped_player_jumping_gun_animation.loadAnimation("flipped-Orange-Player-Jumping-gun_", 1);
+            flipped_player_idle_gun_animation = new ObjectAnimation();
+            flipped_player_idle_gun_animation.loadAnimation("flipped-Orange-Player-idle_gun_", 1);
+            break;
 
 
-        // default skin
-        outputTexture = playerTexture;
+            case Blue:
+
+            player_dead_animation = new ObjectAnimation();
+            player_dead_animation.loadAnimation("player_dead_", 5);
+
+            player_not_exiting = new Texture("player_dead_5.png");
+
+            // player right animations
+            player_running_animation = new ObjectAnimation();
+            player_running_animation.loadAnimation("player_running_", 4);
+            player_jumping_animation = new ObjectAnimation();
+            player_jumping_animation.loadAnimation("player_jumping_", 2);
+            player_idle_animation = new ObjectAnimation();
+            player_idle_animation.loadAnimation("player_idle_", 1);
+            playerTexture = new Texture(Gdx.files.internal("player_idle_1.png"));
+
+            // player with a gun right animations
+            player_running_gun_animation = new ObjectAnimation();
+            player_running_gun_animation.loadAnimation("player_running_with_gun_", 4);
+            player_jumping_gun_animation = new ObjectAnimation();
+            player_jumping_gun_animation.loadAnimation("player_running_with_gun_", 1);
+            player_idle_gun_animation = new ObjectAnimation();
+            player_idle_gun_animation.loadAnimation("player_idle_gun_", 1);
+
+            // player left animations
+            flipped_player_running_animation = new ObjectAnimation();
+            flipped_player_running_animation.loadAnimation("fliped_player_running_", 4);
+            flipped_player_jumping_animation = new ObjectAnimation();
+            flipped_player_jumping_animation.loadAnimation("fliped_player_jumping_", 2);
+            flipped_player_idle_animation = new ObjectAnimation();
+            flipped_player_idle_animation.loadAnimation("fliped_player_idle_", 1);
+            // player with a gun left animations
+            flipped_player_running_gun_animation = new ObjectAnimation();
+            flipped_player_running_gun_animation.loadAnimation("flipped_player_running_with_gun_", 4);
+            flipped_player_jumping_gun_animation = new ObjectAnimation();
+            flipped_player_jumping_gun_animation.loadAnimation("flipped_player_running_with_gun_", 1);
+            flipped_player_idle_gun_animation = new ObjectAnimation();
+            flipped_player_idle_gun_animation.loadAnimation("flipped_player_idle_gun_", 1);
+        }
+
+
+            // default skin
+            outputTexture = playerTexture;
     }
 
 
 
     public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
+        if(!GameScreen.isPaused){
 
-    if(!GameScreen.isPaused){
+
         // the player's Hit box for bullet collision
-        PlayerHitBox = new Rectangle(x-50, y-170, width-50, height);
-        //Determine witch (playerState) state the player will be.
-        GetPlayerState();
+        PlayerHitBox = new Rectangle(x+40, y, width, height-115);
 
-        // keyboard input N Player movement
-        PlayerInputHandling(delta);
 
-        // Detects if the player touches A MapObject and changes speeds
+        switch (SelectedPlayer){
+            case Blue:
+                //Determine witch (playerState) state the player will be.
+                GetBluePlayerState(delta);
+                // keyboard input and Player movement
+                BluePlayerInputHandling(delta);
+                break;
+
+            case Orange:
+                //Determine witch (playerState) state the player will be.
+                GetOrangePlayerState(delta);
+                // keyboard input and Player movement
+                OrangePlayerInputHandling(delta);
+                break;
+
+        }
+
+
+
+
+        // Detects if the player touches A MapObject
         collisionHandling(Ground,WorldBorder,RadioActivePool);
 
         if (!IsPlayerFrozen) {
@@ -179,9 +260,9 @@ public class BluePlayer {
                 if(dead_animation_time >= 0.04f) {
                     outputTexture = player_dead_animation.getFrame(delta);
                     dead_animation_time = 0;
-                    dead_elapsedTime++;
+                    dead_elapsedTime += delta;
                 }
-                if(dead_elapsedTime >= 13){
+                if(dead_elapsedTime >= 0.2f){
                     outputTexture = player_not_exiting;
                     dispose();
                 }
@@ -200,7 +281,7 @@ public class BluePlayer {
             case Running:
                 // gun running animation
                 if(isPlayerHoldingGun && !isFacingLeft){
-                    outputTexture = player_running_gun_animation.getFrame(delta);
+                    outputTexture = player_running_gun_animation.getFrame(0.002f);
 
                     player_running_animation.resetAnimation();
                     player_jumping_animation.resetAnimation();
@@ -210,7 +291,7 @@ public class BluePlayer {
                     flipped_player_running_animation.resetAnimation();
                 }
                 else if (isPlayerHoldingGun){
-                    outputTexture = flipped_player_running_gun_animation.getFrame(delta);
+                    outputTexture = flipped_player_running_gun_animation.getFrame(0.002f);
 
                     player_running_gun_animation.resetAnimation();
                     player_running_animation.resetAnimation();
@@ -342,87 +423,156 @@ public class BluePlayer {
     // The player functions
     //###
 
-
-    //Determine witch (playerState) state the player will be.
-    public void GetPlayerState() {
-        if(PlayerHealth <= 0){
-            state = playerState.dead;
-        }
-
-        // checks if the player is moving up or down
-        if (Yspeed > 0) {
-            state = playerState.Jumping;
-        }
-
-        // checks if the player is moving left or right
-        if (Xspeed != 0 && state != playerState.dead) {
-            if (Xspeed != 0 && Yspeed == 0) {
-                state = playerState.Running;
-            }
+    public void BluePlayerInputHandling(float delta) {
 
 
-        }
-        else if (Xspeed == 0 && Yspeed == 0 && state != playerState.dead ) {
-            state = playerState.Idle;
-        }
+        TimeBetweenShots += delta;
 
-    }
-
-    // keyboard input N Player movement
-    public void PlayerInputHandling(float delta) {
-        shootTimer += delta;
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.N) && shootTimer >= SHOOT_WAIT_TIME && !GameScreen.isPaused && state != playerState.dead){
-            shootTimer = 0;
+        if(Gdx.input.isKeyJustPressed(Input.Keys.N) && TimeBetweenShots >= SHOOT_WAIT_TIME && !GameScreen.isPaused && state != playerState.dead){
+            TimeBetweenShots = 0;
             gunshot.play(0.01f);
             ShootBullets();
         }
 
         //Horizontal Player input
-        if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && (Gdx.input.isKeyPressed(Input.Keys.LEFT)) || !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !GameScreen.isPaused && state != playerState.dead) {
-            Xspeed *= 0.8;
-        }
-        else if ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !GameScreen.isPaused && state != playerState.dead) {
-            Xspeed--;
+        if ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !GameScreen.isPaused && state != playerState.dead) {
+            Xspeed = -400 * delta;
             isFacingLeft = true;
         }
         else if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !GameScreen.isPaused && state != playerState.dead) {
-            Xspeed++;
+            Xspeed = 400 * delta;
             isFacingLeft = false;
         }
 
-
-        //Smooths Player Movement
+        /*
         if (Xspeed > 0 && Xspeed < 0.80) Xspeed = 0;
         if (Xspeed < 0 && Xspeed > -0.80) Xspeed = 0;
         if (Xspeed > 10) Xspeed = 10;
         if (Xspeed < -10) Xspeed = -10;
 
+         */
 
         //vertical input
         if ((Gdx.input.isKeyPressed(Input.Keys.UP)) && !GameScreen.isPaused && state != playerState.dead) {
-            PlayerHitBox.y++;
+
             if (IsPlayerOnGround || Yspeed == -Yspeed) {
-                Yspeed += 18;
-
+                Yspeed += 700 * delta;
             }
-            PlayerHitBox.y--;
-        }
-        Yspeed -= 0.9;
 
+        }
+        Yspeed -= 20 * delta;
+
+    }
+
+    public void GetBluePlayerState(float delta) {
+
+
+        // checks if the player is moving up or down
+        if (Yspeed > 0) {
+            state = playerState.Jumping;
+        } else if (Yspeed < 0) {
+            state = playerState.Jumping;
+        } else {
+
+
+            // checks if the player is moving left or right
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.RIGHT) && Yspeed == 0) {
+                state = playerState.Running;
+                // check if the player is not moving
+            } else if (Yspeed == 0 && Xspeed == 0 && !Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                state = playerState.Idle;
+            }
+        }
+        // checks if the player is dead
+        if (PlayerHealth <= 0) {
+            state = playerState.dead;
+        }
+
+    }
+
+    public void OrangePlayerInputHandling(float delta) {
+        TimeBetweenShots += delta;
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) && TimeBetweenShots >= SHOOT_WAIT_TIME && !GameScreen.isPaused && state != playerState.dead){
+            TimeBetweenShots = 0;
+            gunshot.play(0.01f);
+            ShootBullets();
+        }
+
+        //Horizontal Player input
+        if ((Gdx.input.isKeyPressed(Input.Keys.A)) && !(Gdx.input.isKeyPressed(Input.Keys.D)) && !GameScreen.isPaused && state != playerState.dead) {
+            Xspeed = -400 * delta;
+            isFacingLeft = true;
+        }
+        else if ((Gdx.input.isKeyPressed(Input.Keys.D)) && !(Gdx.input.isKeyPressed(Input.Keys.A)) && !GameScreen.isPaused && state != playerState.dead) {
+            Xspeed = 400 * delta;
+            isFacingLeft = false;
+        }
+
+
+
+        //vertical input
+        if ((Gdx.input.isKeyPressed(Input.Keys.W)) && !GameScreen.isPaused && state != playerState.dead) {
+            if (IsPlayerOnGround || Yspeed == -Yspeed) {
+                Yspeed += 700 * delta;
+            }
+        }
+        Yspeed -= 20 * delta;
+
+    }
+
+    public void GetOrangePlayerState(float delta) {
+
+
+        // checks if the player is moving up or down
+        if (Yspeed > 0) {
+            state = playerState.Jumping;
+        } else if (Yspeed < 0) {
+            state = playerState.Jumping;
+        } else {
+
+
+            // checks if the player is moving left or right
+            if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.D) && Yspeed == 0) {
+                state = playerState.Running;
+                // check if the player is not moving
+            } else if (Yspeed == 0 && Xspeed == 0 && !Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.W)) {
+                state = playerState.Idle;
+            }
+        }
+        // checks if the player is dead
+        if (PlayerHealth <= 0) {
+            state = playerState.dead;
+        }
     }
 
     // Detects if the player touches A MapObject
     public void collisionHandling(Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
-        Array<Bullet> bullets = OrangePlayer.getYellowPlayerBullets();
-        for(Iterator<Bullet> iter = bullets.iterator(); iter.hasNext();){
-            Bullet b = iter.next();
-            if(b.hitBox.overlaps(PlayerHitBox)){
-                PlayerHealth--;
-                iter.remove();
+
+
+        // Bullet collision
+            Array<Bullet> bulletsB = GameScreen.Players.get(1).getBullets();
+            for (Iterator<Bullet> iterb = bulletsB.iterator(); iterb.hasNext(); ) {
+                Bullet bB = iterb.next();
+                if (bB.hitBox.overlaps(GameScreen.Players.get(0).PlayerHitBox)) {
+                    GameScreen.Players.get(0).PlayerHealth--;
+                    iterb.remove();
+                }
             }
-        }
+
+
+            Array<Bullet> bulletsY = GameScreen.Players.get(0).getBullets();
+            for (Iterator<Bullet> iter = bulletsY.iterator(); iter.hasNext(); ) {
+                Bullet bY = iter.next();
+                if (bY.hitBox.overlaps(GameScreen.Players.get(1).PlayerHitBox)) {
+                    GameScreen.Players.get(1).PlayerHealth--;
+                    iter.remove();
+                }
+            }
+
+
+
 
 
         for(MapObject Pools : RadioActivePool){
@@ -476,16 +626,15 @@ public class BluePlayer {
     public void ShootBullets() {
         Bullet bullet;
         if(isFacingLeft){
-            bullet = new Bullet(x, y - 33, true);
+            bullet = new Bullet(x, y, true);
         }
         else {
-            bullet = new Bullet(x, y - 33, false);
+            bullet = new Bullet(x, y, false);
         }
         bullets.add(bullet);
     }
 
-
-    public static Array<Bullet> getBullets(){
+    public Array<Bullet> getBullets(){
         return bullets;
     }
 

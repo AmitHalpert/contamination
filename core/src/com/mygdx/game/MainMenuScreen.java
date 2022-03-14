@@ -16,6 +16,7 @@ public class MainMenuScreen implements Screen {
 
 
     //SFX
+    boolean isMusicPlaying;
     Music ContaminationMusic;
 
     // graphics
@@ -32,6 +33,7 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(contamination game){
         this.game = game;
 
+        isMusicPlaying = true;
 
         ContaminationMusic = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
         text = new Texture("text-contamination.png");
@@ -54,6 +56,17 @@ public class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && isMusicPlaying){
+            ContaminationMusic.setVolume(0);
+            isMusicPlaying = false;
+        }
+        else if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && !isMusicPlaying){
+            ContaminationMusic.setVolume(100);
+            isMusicPlaying = true;
+        }
+
         game.batch.begin();
 
 

@@ -16,8 +16,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 class GameScreen implements Screen {
 
     final contamination game;
-    BluePlayer blue;
-    OrangePlayer yellow;
+
+
 
     // Main menu features
     float deltaTime;
@@ -34,6 +34,9 @@ class GameScreen implements Screen {
     Viewport viewport;
 
     //graphics
+    ObjectAnimation LeftPlayerHealthHUD;
+    ObjectAnimation RightPlayerHealthHUD;
+    ObjectAnimation RadioActivePoolAnimation;
     Texture background;
     Texture guiMenu;
 
@@ -41,30 +44,62 @@ class GameScreen implements Screen {
     static final int WORLD_WIDTH = Gdx.graphics.getWidth();
     static final int WORLD_HEIGHT = Gdx.graphics.getHeight();
 
+    // The players Array
+    static Array<Player> Players;
+
     //World objects
     Array<MapObject> ground;
     Array<MapObject> WorldBorder;
     Array<MapObject> RadioActivePool;
 
+
     public GameScreen(final contamination game){
         this.game =  game;
 
+        // initialize parameters
         IsGUI = false;
         isPaused = false;
         IsScreenMainMenu = false;
 
-        guiMenu = new Texture("menugui.png");
+        //**
+        // players controller
+        //**
 
-        // sounds
+
+        // creates the players
+        Players = new Array<Player>();
+        Players.add(new Player(300,400, Player.PlayersController.Blue));
+        Players.add(new Player(400,500,Player.PlayersController.Orange));
+
+
+
+
+        ////
+        // SFX
+        ////
         GameAmbience = Gdx.audio.newMusic(Gdx.files.internal("GameAmbience.mp3"));
         GameAmbience.setLooping(true);
-        GameAmbience.setVolume(0.3f);
+        GameAmbience.setVolume(0.09f);
         GameAmbience.play();
 
-        // Map graphics
+        ////
+        // graphics
+        ////
+        guiMenu = new Texture("menugui.png");
         background = new Texture("genesis.png");
+        // right health bar
+        RightPlayerHealthHUD = new ObjectAnimation();
+        RightPlayerHealthHUD.loadAnimation("right-player-health_",4);
+        // left health bar
+        LeftPlayerHealthHUD = new ObjectAnimation();
+        LeftPlayerHealthHUD.loadAnimation("left-player-health_",4);
+        // RadioActive Pool
+        RadioActivePoolAnimation = new ObjectAnimation();
+        RadioActivePoolAnimation.loadAnimation("RadioActivePoolAnimation_",5);
 
+        ////
         // Create Map Objects
+        ////
         ground = new Array<MapObject>();
         WorldBorder = new Array<MapObject>();
         RadioActivePool = new Array<MapObject>();
@@ -73,9 +108,6 @@ class GameScreen implements Screen {
         createRadioActivePools();
 
 
-        // creates a players
-        blue = new BluePlayer(1750,300);
-        yellow = new OrangePlayer(400,500);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
@@ -84,11 +116,11 @@ class GameScreen implements Screen {
         // initialize parameters
         deltaTime = 0;
 
+
     }
 
     @Override
     public void show() {
-
     }
 
     @Override
@@ -100,29 +132,49 @@ class GameScreen implements Screen {
             game.setScreen(new MainMenuScreen(game));
         }
 
+
         //updates the camera
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
+        ////
         // BEGIN TO DRAW:
+        ////
+
+
         game.batch.begin();
-        //Draw map
+
+        // Draws map
         game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
-        //Draw the players
-        game.batch.draw(blue.render(deltaTime, ground, WorldBorder, RadioActivePool),  blue.x,  blue.y, blue.width,  blue.height);
-        game.batch.draw(yellow.render(deltaTime,ground,WorldBorder,RadioActivePool),   yellow.x,yellow.y ,yellow.width,yellow.height);
+        // Draws RadioActivePool Animation
+        game.batch.draw(RadioActivePoolAnimation.getFrame(0.002f),569,46,284,190);
+        game.batch.draw(RadioActivePoolAnimation.getFrame(0.002f),1209,200,213,190);
+
+        // Draw the players
+        for(Player players : Players){
+            game.batch.draw(players.render(deltaTime,ground,WorldBorder,RadioActivePool), players.x,players.y,players.width,players.height);
+        }
+
 
         DrawPlayersBullets();
-        GUI();
-
+        MenuGUI();
+        DrawPlayersHealthBarHUD();
 
         game.batch.end();
     }
 
 
+    public void DrawPlayersHealthBarHUD(){
+        // blue player
+        game.batch.draw(RightPlayerHealthHUD.getIndexFrame(0),1520,920,430,170);
+        game.batch.draw(Players.get(0).render(deltaTime,ground,WorldBorder,RadioActivePool), 1760,950,Players.get(0).width,Players.get(0).height);
 
+        // right player
+        game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(0),-30,920,430,170);
+        game.batch.draw(Players.get(1).render(deltaTime,ground,WorldBorder,RadioActivePool), -10,950,Players.get(1).width,Players.get(1).height);
+    }
 
-    public void GUI(){
+    public void MenuGUI(){
 
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) && !IsGUI) {
             IsGUI = true;
@@ -165,16 +217,21 @@ class GameScreen implements Screen {
         }
 
     public void DrawPlayersBullets(){
-        Array<Bullet> Bluebullets = BluePlayer.getBullets();
-        for (int BlueIndex = 0; BlueIndex < Bluebullets.size; BlueIndex++){
-            Bullet BluePlayerBullets = Bluebullets.get(BlueIndex);
-            game.batch.draw(BluePlayerBullets.update(deltaTime,ground,WorldBorder),BluePlayerBullets.bulletX,BluePlayerBullets.bulletY,120,120);
+
+
+        // draws the blue's player bullets
+        Array<Bullet> Bluebullets = Players.get(0).getBullets();
+        for(Bullet BluebulletsIndex : Bluebullets){
+            if(Bullet.isVisible) {
+                game.batch.draw(BluebulletsIndex.update(deltaTime, ground, WorldBorder), BluebulletsIndex.bulletX, BluebulletsIndex.bulletY, BluebulletsIndex.width, BluebulletsIndex.height);
+            }
         }
 
-        Array<Bullet> Yellowbullets = OrangePlayer.getYellowPlayerBullets();
-        for (int YellowIndex = 0; YellowIndex < Yellowbullets.size; YellowIndex++){
-            Bullet YellowPlayerBullets = Yellowbullets.get(YellowIndex);
-            game.batch.draw(YellowPlayerBullets.update(deltaTime,ground,WorldBorder),YellowPlayerBullets.bulletX,YellowPlayerBullets.bulletY,120,120);
+
+        // draws the orange's player bullets
+        Array<Bullet> Orangebullets = Players.get(1).getBullets();
+        for(Bullet OrangebulletsIndex : Orangebullets){
+            game.batch.draw(OrangebulletsIndex.update(deltaTime,ground,WorldBorder),OrangebulletsIndex.bulletX,OrangebulletsIndex.bulletY,OrangebulletsIndex.width,OrangebulletsIndex.height);
         }
 
     }
@@ -189,7 +246,7 @@ class GameScreen implements Screen {
         // environment Grounds
         ////
         //left rock
-        ground.add(new MapObject(50,10,85,330));
+        ground.add(new MapObject(50,10,82,330));
         // middle rock
         ground.add(new MapObject(1067,-12,70,320));
         // right rock
@@ -207,19 +264,20 @@ class GameScreen implements Screen {
         ////
 
         //left rock
-        WorldBorder.add(new MapObject(-435,-37,580,329));
+        WorldBorder.add(new MapObject(-435,-37,580,360));
         // middle rock
-        WorldBorder.add(new MapObject(1065,-37,75,310));
-        // middle pit left
-        WorldBorder.add(new MapObject(359,-115,150,260));
-        // middle pit right
-        WorldBorder.add(new MapObject(918,-115,100,275));
+        WorldBorder.add(new MapObject(1065,-37,75,329));
+        // inner middle left RadioActivePool
+        WorldBorder.add(new MapObject(359,-115,150,275));
+        // inner middle right RadioActivePool
+        WorldBorder.add(new MapObject(918,-115,100,285));
         // right rock
-        WorldBorder.add(new MapObject(1495,-39,74,310));
+        WorldBorder.add(new MapObject(1495,-39,74,315));
 
         ////
         // WORLD BOUNDS
         ////
+
         // create left world border
         WorldBorder.add(new MapObject(-650,200,580,3000));
 
@@ -255,10 +313,12 @@ class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        yellow.dispose();
+
+        for(Player players : Players){
+            players.dispose();
+        }
         GameAmbience.dispose();
         guiMenu.dispose();
-        blue.dispose();
         background.dispose();
     }
 }

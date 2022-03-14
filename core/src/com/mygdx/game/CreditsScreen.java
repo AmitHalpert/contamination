@@ -18,10 +18,10 @@ public class CreditsScreen implements Screen {
 
     //SFX
     Music CreditsMusic;
+    boolean isMusicPlaying;
 
     // graphics
     ObjectAnimation CreditsText;
-    Texture output;
     Texture BlankFrame;
 
 
@@ -29,15 +29,15 @@ public class CreditsScreen implements Screen {
         this.game = game;
 
         CreditsMusic = Gdx.audio.newMusic(Gdx.files.internal("creditsmusic.mp3"));
-        CreditsMusic.setVolume(0.4f);
+        CreditsMusic.setVolume(0.05f);
         CreditsMusic.play();
+        isMusicPlaying = true;
 
         CreditsText = new ObjectAnimation();
-        CreditsText.loadAnimation("creditsText_",15);
+        CreditsText.loadAnimation("creditsText_",14);
         BlankFrame = new Texture("creditsText_1.png");
 
 
-        output = BlankFrame;
         elapsedTime = 0;
         deltaTime = 0;
     }
@@ -53,13 +53,27 @@ public class CreditsScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         deltaTime = Gdx.graphics.getDeltaTime();
 
-        if(Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)){
-            dispose();
-            Gdx.app.exit();
+
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && isMusicPlaying){
+            CreditsMusic.setVolume(0);
+            isMusicPlaying = false;
+        }
+        else if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && !isMusicPlaying){
+            CreditsMusic.setVolume(0.05f);
+            isMusicPlaying = true;
         }
 
-        game.batch.begin();
 
+
+
+
+        if(Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)){
+            dispose();
+            game.setScreen(new MainMenuScreen(game));
+        }
+
+        // timer to end the credits
         elapsedTime += deltaTime;
         if(elapsedTime >= 119f){
             CreditsMusic.stop();
@@ -67,9 +81,11 @@ public class CreditsScreen implements Screen {
             game.setScreen(new MainMenuScreen(game));
         }
 
-        game.batch.draw(output,0,0,GameScreen.WORLD_WIDTH,GameScreen.WORLD_HEIGHT);
+        game.batch.begin();
 
-        output = CreditsText.getFrame(0.0001f);
+
+        game.batch.draw(CreditsText.getFrame(0.0001f),0,0,GameScreen.WORLD_WIDTH,GameScreen.WORLD_HEIGHT);
+
 
 
         game.batch.end();
@@ -99,7 +115,6 @@ public class CreditsScreen implements Screen {
     public void dispose() {
         CreditsMusic.dispose();
         CreditsText.dispose();
-        output.dispose();
         BlankFrame.dispose();
 
     }
