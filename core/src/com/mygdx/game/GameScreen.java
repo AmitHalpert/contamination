@@ -18,6 +18,7 @@ class GameScreen implements Screen {
     final contamination game;
 
 
+
     // Main menu features
     float deltaTime;
     boolean IsGUI;
@@ -51,6 +52,7 @@ class GameScreen implements Screen {
     Array<MapObject> WorldBorder;
     Array<MapObject> RadioActivePool;
 
+
     public GameScreen(final contamination game){
         this.game =  game;
 
@@ -58,6 +60,18 @@ class GameScreen implements Screen {
         IsGUI = false;
         isPaused = false;
         IsScreenMainMenu = false;
+
+        //**
+        // players controller
+        //**
+
+
+        // creates the players
+        Players = new Array<Player>();
+        Players.add(new Player(300,400, Player.PlayersController.Blue));
+        Players.add(new Player(400,500,Player.PlayersController.Orange));
+
+
 
 
         ////
@@ -92,12 +106,6 @@ class GameScreen implements Screen {
         createGrounds();
         createMapBorders();
         createRadioActivePools();
-
-
-        // creates the players
-        Players = new Array<Player>();
-        Players.add(new Player(1600,400,false));
-        Players.add(new Player(400,500,true));
 
 
 
@@ -214,7 +222,9 @@ class GameScreen implements Screen {
         // draws the blue's player bullets
         Array<Bullet> Bluebullets = Players.get(0).getBullets();
         for(Bullet BluebulletsIndex : Bluebullets){
-            game.batch.draw(BluebulletsIndex.update(deltaTime,ground,WorldBorder),BluebulletsIndex.bulletX,BluebulletsIndex.bulletY,BluebulletsIndex.width,BluebulletsIndex.height);
+            if(Bullet.isVisible) {
+                game.batch.draw(BluebulletsIndex.update(deltaTime, ground, WorldBorder), BluebulletsIndex.bulletX, BluebulletsIndex.bulletY, BluebulletsIndex.width, BluebulletsIndex.height);
+            }
         }
 
 
@@ -254,7 +264,7 @@ class GameScreen implements Screen {
         ////
 
         //left rock
-        WorldBorder.add(new MapObject(-435,-37,580,345));
+        WorldBorder.add(new MapObject(-435,-37,580,360));
         // middle rock
         WorldBorder.add(new MapObject(1065,-37,75,329));
         // inner middle left RadioActivePool

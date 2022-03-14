@@ -11,12 +11,15 @@ public class Bullet{
     public static final int BULLET_MOVEMENT_SPEED = 50;
 
     // bullet parameters
+    static boolean isVisible;
     double DirectionSpeed;
     double Xspeed;
     int width = 60 , height = 60;
     float bulletX, bulletY;
     Rectangle hitBox;
     Texture bulletTex;
+    Texture bulletNotExisting;
+    Texture outTexture;
 
 
 
@@ -25,6 +28,7 @@ public class Bullet{
         this.bulletX = x;
         this.bulletY = y;
         hitBox = new Rectangle(bulletX, bulletY, width, height);
+        isVisible = true;
 
         // changes the direction and sprite width
         if((IsPlayerFacingLeft && this.width > 0) || (!IsPlayerFacingLeft && this.width < 0)){
@@ -46,7 +50,8 @@ public class Bullet{
 
 
 
-
+        outTexture = new Texture("bullet.png");
+        bulletNotExisting = new Texture("player_dead_5.png");
         bulletTex = new Texture("bullet.png");
 
 
@@ -67,17 +72,23 @@ public class Bullet{
         BulletCollisionHandling(WorldBorder);
 
 
-        return bulletTex;
+
+        return outTexture;
     }
 
 
     public void BulletCollisionHandling(Array<MapObject> WorldBorder){
+
+
+
+
 
         for (MapObject Borders : WorldBorder) {
             Array<Bullet> BluePlayerbullets = GameScreen.Players.get(0).getBullets();
             for(Iterator<Bullet> BlueIter = BluePlayerbullets.iterator(); BlueIter.hasNext();){
                 Bullet TempBlueBullets = BlueIter.next();
                 if(TempBlueBullets.hitBox.overlaps(Borders.hitBox)){
+                    isVisible = false;
                     BlueIter.remove();
                 }
             }
@@ -89,10 +100,13 @@ public class Bullet{
             for(Iterator<Bullet> YellowIter = YellowPlayerbullets.iterator(); YellowIter.hasNext();){
                 Bullet TempYellowBullets = YellowIter.next();
                 if(TempYellowBullets.hitBox.overlaps(Borders.hitBox)){
+                    isVisible = false;
                     YellowIter.remove();
                 }
             }
         }
+
+
 
 
     }
