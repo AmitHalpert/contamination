@@ -152,7 +152,7 @@ class GameScreen implements Screen {
 
         // Draw the players
         for(Player players : Players){
-            game.batch.draw(players.render(deltaTime,ground,WorldBorder,RadioActivePool), players.x,players.y,players.width,players.height);
+            game.batch.draw(players.render(deltaTime,ground,WorldBorder,RadioActivePool), players.PlayerX,players.PlayerY,players.width,players.height);
         }
 
 
