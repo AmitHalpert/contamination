@@ -62,16 +62,11 @@ class GameScreen implements Screen {
         IsScreenMainMenu = false;
 
         //**
-        // players controller
-        //**
-
-
         // creates the players
+        //**
         Players = new Array<Player>();
-        Players.add(new Player(300,400, Player.PlayersController.Blue));
+        Players.add(new Player(1500,400, Player.PlayersController.Blue));
         Players.add(new Player(400,500,Player.PlayersController.Orange));
-
-
 
 
         ////
@@ -98,22 +93,17 @@ class GameScreen implements Screen {
         RadioActivePoolAnimation.loadAnimation("RadioActivePoolAnimation_",5);
 
         ////
-        // Create Map Objects
+        // Create Map Objects array
         ////
         ground = new Array<MapObject>();
         WorldBorder = new Array<MapObject>();
         RadioActivePool = new Array<MapObject>();
-        createGrounds();
-        createMapBorders();
-        createRadioActivePools();
 
 
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
-
-        // initialize parameters
         deltaTime = 0;
 
 
@@ -137,11 +127,14 @@ class GameScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
+        // Creates and places the map Objects
+        createGrounds();
+        createMapBorders();
+        createRadioActivePools();
+
         ////
         // BEGIN TO DRAW:
         ////
-
-
         game.batch.begin();
 
         // Draws map
@@ -155,12 +148,15 @@ class GameScreen implements Screen {
             game.batch.draw(players.render(deltaTime,ground,WorldBorder,RadioActivePool), players.PlayerX,players.PlayerY,players.width,players.height);
         }
 
-
+        // Draw GUIs
         DrawPlayersBullets();
         MenuGUI();
         DrawPlayersHealthBarHUD();
 
         game.batch.end();
+        ////
+        // END TO DRAW:
+        ////
     }
 
 
@@ -179,6 +175,9 @@ class GameScreen implements Screen {
                 game.batch.draw(RightPlayerHealthHUD.getIndexFrame(2),1520,920,430,170);
                 break;
             case 0:
+                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(3),1520,920,430,170);
+                break;
+            default:
                 game.batch.draw(RightPlayerHealthHUD.getIndexFrame(3),1520,920,430,170);
 
         }
@@ -202,7 +201,9 @@ class GameScreen implements Screen {
                 break;
             case 0:
                 game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(3),-30,920,430,170);
-
+                break;
+            default:
+                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(3),-30,920,430,170);
         }
         game.batch.draw(Players.get(1).render(deltaTime,ground,WorldBorder,RadioActivePool), -10,950,Players.get(1).width,Players.get(1).height);
     }
@@ -279,7 +280,7 @@ class GameScreen implements Screen {
         // environment Grounds
         ////
         //left rock
-        ground.add(new MapObject(50,10,82,330));
+        ground.add(new MapObject(50,10,89,330));
         // middle rock
         ground.add(new MapObject(1067,-12,70,320));
         // right rock
@@ -297,15 +298,15 @@ class GameScreen implements Screen {
         ////
 
         //left rock
-        WorldBorder.add(new MapObject(-435,-37,580,360));
-        // middle rock
-        WorldBorder.add(new MapObject(1065,-37,75,329));
+        WorldBorder.add(new MapObject(-435,-37,580,375));
+        // middle(left) rock
+        WorldBorder.add(new MapObject(1065,-37,75,345));
         // inner middle left RadioActivePool
         WorldBorder.add(new MapObject(359,-115,150,275));
         // inner middle right RadioActivePool
         WorldBorder.add(new MapObject(918,-115,100,285));
         // right rock
-        WorldBorder.add(new MapObject(1495,-39,74,315));
+        WorldBorder.add(new MapObject(1495,-39,74,345));
 
         ////
         // WORLD BOUNDS

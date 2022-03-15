@@ -29,8 +29,9 @@ public class Player {
     }
 
     // Initializing players' final Variables
+    public final float ANIMATIONS_TIME = 0.002f;
     public final float SHOOT_WAIT_TIME = 0.4f;
-    public final int MOVEMENT_SPEED = 400;
+    public final int MOVEMENT_SPEED = 600;
     public final int JUMP_FORCE = 5;
     public final int GRAVITATIONAL_FORCE = 20;
 
@@ -124,7 +125,7 @@ public class Player {
         // set up the players animations
         ////
 
-        // detect Player according to the PlayersController enum and apply the animation
+        // detect Player according to the PlayersController enum and apply the animations
         switch (SelectedPlayer) {
 
             case Orange:
@@ -221,25 +222,23 @@ public class Player {
             // the player's Hit box for bullet collision
             PlayerHitBox = new Rectangle(PlayerX + 40, PlayerY, width, height-115);
 
-
+            // selects the correct functions for Player(color)
             switch (SelectedPlayer){
                 case Blue:
-                    //Determine witch (playerState) state the player will be.
+                    //Determine which (playerState) state the player will be.
                     GetBluePlayerState();
                     // keyboard input and Player movement
                     BluePlayerInputHandling(delta);
                     break;
 
                 case Orange:
-                    //Determine witch (playerState) state the player will be.
+                    //Determine which (playerState) state the player will be.
                     GetOrangePlayerState();
                     // keyboard input and Player movement
                     OrangePlayerInputHandling(delta);
                     break;
 
             }
-
-
 
 
             // Detects if the player touches A MapObject
@@ -283,7 +282,7 @@ public class Player {
             case Running:
                 // gun running animation
                 if(isPlayerHoldingGun && !isFacingLeft){
-                    outputTexture = player_running_gun_animation.getFrame(0.002f);
+                    outputTexture = player_running_gun_animation.getFrame(ANIMATIONS_TIME);
 
                     player_running_animation.resetAnimation();
                     player_jumping_animation.resetAnimation();
@@ -293,7 +292,7 @@ public class Player {
                     flipped_player_running_animation.resetAnimation();
                 }
                 else if (isPlayerHoldingGun){
-                    outputTexture = flipped_player_running_gun_animation.getFrame(0.002f);
+                    outputTexture = flipped_player_running_gun_animation.getFrame(ANIMATIONS_TIME);
 
                     player_running_gun_animation.resetAnimation();
                     player_running_animation.resetAnimation();
@@ -451,7 +450,7 @@ public class Player {
 
 
         //vertical input
-        if ((Gdx.input.isKeyPressed(Input.Keys.UP)) && !GameScreen.isPaused && state != playerState.dead) {
+        if ((Gdx.input.isKeyJustPressed(Input.Keys.UP)) && !GameScreen.isPaused && state != playerState.dead) {
 
             if (IsPlayerOnGround || Yspeed == -Yspeed) {
                 Yspeed += JUMP_FORCE;
@@ -474,10 +473,10 @@ public class Player {
 
 
             // checks if the player is moving left or right
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.RIGHT) && Yspeed == 0) {
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.RIGHT) && Yspeed == 0 && !(Gdx.input.isKeyJustPressed(Input.Keys.UP))){
                 state = playerState.Running;
                 // check if the player is not moving
-            } else if (Yspeed == 0 && Xspeed == 0 && !Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            } else if (Yspeed == 0 && Xspeed == 0 && !Gdx.input.isKeyPressed(Input.Keys.LEFT) && !Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
                 state = playerState.Idle;
             }
         }
@@ -489,7 +488,6 @@ public class Player {
     }
 
     // orange player
-
     public void OrangePlayerInputHandling(float delta) {
         TimeBetweenShots += delta;
 
@@ -512,7 +510,7 @@ public class Player {
 
 
         //vertical input
-        if ((Gdx.input.isKeyPressed(Input.Keys.W)) && !GameScreen.isPaused && state != playerState.dead) {
+        if ((Gdx.input.isKeyJustPressed(Input.Keys.W)) && !GameScreen.isPaused && state != playerState.dead) {
             if (IsPlayerOnGround || Yspeed == -Yspeed) {
                 Yspeed += JUMP_FORCE;
             }
@@ -536,7 +534,7 @@ public class Player {
             if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.D) && Yspeed == 0) {
                 state = playerState.Running;
                 // check if the player is not moving
-            } else if (Yspeed == 0 && Xspeed == 0 && !Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.W)) {
+            } else if (Yspeed == 0 && Xspeed == 0 && !Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyJustPressed(Input.Keys.W)) {
                 state = playerState.Idle;
             }
         }
@@ -553,6 +551,7 @@ public class Player {
 
 
         // Bullet collision
+
         // Blue Player
         Array<Bullet> bulletsB = GameScreen.Players.get(1).getBullets();
         for (Iterator<Bullet> iterb = bulletsB.iterator(); iterb.hasNext(); ) {
@@ -574,7 +573,7 @@ public class Player {
         }
 
 
-
+        // kills you if you touch RadioActivePool
         for(MapObject Pools : RadioActivePool){
             if(PlayerBounds.overlaps(Pools.hitBox)){
                 PlayerHealth = 0;
