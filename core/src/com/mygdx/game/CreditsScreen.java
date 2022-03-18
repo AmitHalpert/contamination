@@ -75,7 +75,7 @@ public class CreditsScreen implements Screen {
 
         // timer to end the credits
         elapsedTime += deltaTime;
-        if(elapsedTime >= 119f){
+        if(elapsedTime >= 95f){
             CreditsMusic.stop();
             dispose();
             game.setScreen(new MainMenuScreen(game));
@@ -84,7 +84,7 @@ public class CreditsScreen implements Screen {
         game.batch.begin();
 
 
-        game.batch.draw(CreditsText.getFrame(0.0001f),0,0,GameScreen.WORLD_WIDTH,GameScreen.WORLD_HEIGHT);
+        game.batch.draw(CreditsText.getFrame(0.00005f),0,0,GameScreen.WORLD_WIDTH,GameScreen.WORLD_HEIGHT);
 
 
 

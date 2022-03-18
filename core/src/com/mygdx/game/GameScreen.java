@@ -154,22 +154,24 @@ class GameScreen implements Screen {
 
 
 
-        // Drops Spawner. adds drop to the AmmoDrop Array every N time
+        // Drop Spawner.
         timeDrop += deltaTime;
-        if (timeDrop >= 20f) {
-            AmmoDrop drop = new AmmoDrop(MathUtils.random(0, 1900), 1920,false);
+        if (timeDrop >= 1f) {
+            AmmoDrop drop = new AmmoDrop(MathUtils.random(0, 1900), 1920);
             AmmoDrops.add(drop);
             timeDrop = 0;
         }
+        for (AmmoDrop drops : AmmoDrops) {
+            game.batch.draw(drops.update(deltaTime, ground, WorldBorder, RadioActivePool), drops.dropX, drops.dropY, drops.width, drops.height);
+        }
 
-        AmmoDropsCollisionHandling();
+
 
 
         /////
         // Draw hierarchy
-        // the last element in the hierarchy Draws over everything above it,
         /////
-        DrawAmmoDrops();
+
         DrawPlayersBullets();
         MenuGUI();
         DrawPlayersHealthBarHUD();
@@ -181,23 +183,10 @@ class GameScreen implements Screen {
         ////
     }
 
-    public void AmmoDropsCollisionHandling(){
-        for(int i = 0; i < ground.size - 1; ++i) {
-            for (int j = i + 1; j < AmmoDrops.size ; ++j) {
-                if(AmmoDrops.get(i).hitBox.overlaps(ground.get(j).hitBox)){
-                    AmmoDrops.get(i).freeze = true;
-                }
-                if(AmmoDrops.get(i).hitBox.overlaps(RadioActivePool.get(j).hitBox)){
-                    AmmoDrops.removeIndex(i);
-                }
-            }
-        }
-    }
 
     public void DrawAmmoDrops(){
-        for (AmmoDrop drops : AmmoDrops) {
-            game.batch.draw(drops.update(deltaTime, ground, WorldBorder), drops.dropX, drops.dropY, drops.width, drops.height);
-        }
+        // Draws AmmoDrops
+
     }
 
     public void DrawPlayersHealthBarHUD(){
