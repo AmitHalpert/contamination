@@ -11,7 +11,6 @@ public class Bullet{
     public static final int BULLET_MOVEMENT_SPEED = 50;
 
     // bullet parameters
-    static boolean isVisible;
     double DirectionSpeed;
     double Xspeed;
     int width = 60 , height = 60;
@@ -27,25 +26,21 @@ public class Bullet{
 
         this.bulletX = x;
         this.bulletY = y;
-        hitBox = new Rectangle(bulletX, bulletY, width, height);
-        isVisible = true;
+        hitBox = new Rectangle(bulletX, bulletY, width+43, height);
 
         // changes the direction and sprite width
         if((IsPlayerFacingLeft && this.width > 0) || (!IsPlayerFacingLeft && this.width < 0)){
-            this.width = this.width * -1;
-            this.bulletX = this.bulletX + this.width * -1;
+
+            // changes the direction and sprite width
+            FlipBulletSprite(IsPlayerFacingLeft);
+
             // move left
             DirectionSpeed = -BULLET_MOVEMENT_SPEED;
 
-            if(IsPlayerFacingLeft) {
-                this.hitBox.width = (this.hitBox.width * -1) / 1.3f;
-                this.hitBox.x = this.hitBox.x + this.hitBox.width * -1;
-            }
         }
         else{
-
+            // move right
             DirectionSpeed = BULLET_MOVEMENT_SPEED;
-
         }
 
 
@@ -76,11 +71,19 @@ public class Bullet{
         return outTexture;
     }
 
+    public void FlipBulletSprite(boolean IsPlayerFacingLeft){
+        width = width * -1;
+        bulletX = bulletX + width+43 * -1;
+
+            if (IsPlayerFacingLeft) {
+            hitBox.width = (hitBox.width+43 * -1) / 1.3f;
+            hitBox.x = hitBox.x + hitBox.width+43 * -1;
+            }
+
+    }
+
 
     public void BulletCollisionHandling(Array<MapObject> WorldBorder){
-
-
-
 
 
         for (MapObject Borders : WorldBorder) {
@@ -88,7 +91,7 @@ public class Bullet{
             for(Iterator<Bullet> BlueIter = BluePlayerbullets.iterator(); BlueIter.hasNext();){
                 Bullet TempBlueBullets = BlueIter.next();
                 if(TempBlueBullets.hitBox.overlaps(Borders.hitBox)){
-                    isVisible = false;
+                    outTexture = bulletNotExisting;
                     BlueIter.remove();
                 }
             }
@@ -100,14 +103,11 @@ public class Bullet{
             for(Iterator<Bullet> YellowIter = YellowPlayerbullets.iterator(); YellowIter.hasNext();){
                 Bullet TempYellowBullets = YellowIter.next();
                 if(TempYellowBullets.hitBox.overlaps(Borders.hitBox)){
-                    isVisible = false;
+                    outTexture = bulletNotExisting;
                     YellowIter.remove();
                 }
             }
         }
-
-
-
 
     }
 

@@ -6,11 +6,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.Iterator;
 
 
 class GameScreen implements Screen {
@@ -23,8 +27,7 @@ class GameScreen implements Screen {
     float deltaTime;
     boolean IsGUI;
     static boolean isPaused;
-    static boolean IsScreenMainMenu;
-
+    float timeDrop;
 
     // SFX and music
     Music GameAmbience;
@@ -48,9 +51,11 @@ class GameScreen implements Screen {
     static Array<Player> Players;
 
     //World objects
+    static Array<AmmoDrop> AmmoDrops;
     Array<MapObject> ground;
     Array<MapObject> WorldBorder;
     Array<MapObject> RadioActivePool;
+
 
 
     public GameScreen(final contamination game){
@@ -59,7 +64,6 @@ class GameScreen implements Screen {
         // initialize parameters
         IsGUI = false;
         isPaused = false;
-        IsScreenMainMenu = false;
 
         //**
         // creates the players
@@ -67,6 +71,9 @@ class GameScreen implements Screen {
         Players = new Array<Player>();
         Players.add(new Player(1500,400, Player.PlayersController.Blue));
         Players.add(new Player(400,500,Player.PlayersController.Orange));
+
+
+
 
 
         ////
@@ -93,18 +100,19 @@ class GameScreen implements Screen {
         RadioActivePoolAnimation.loadAnimation("RadioActivePoolAnimation_",5);
 
         ////
-        // Create Map Objects array
+        // Create Map Objects
         ////
         ground = new Array<MapObject>();
         WorldBorder = new Array<MapObject>();
         RadioActivePool = new Array<MapObject>();
-
+        AmmoDrops = new Array<>();
 
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         deltaTime = 0;
+        timeDrop = 0;
 
 
     }
@@ -117,10 +125,6 @@ class GameScreen implements Screen {
     public void render(float deltaTime) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         deltaTime = Gdx.graphics.getDeltaTime();
-
-        if(IsScreenMainMenu){
-            game.setScreen(new MainMenuScreen(game));
-        }
 
 
         //updates the camera
@@ -138,27 +142,63 @@ class GameScreen implements Screen {
         game.batch.begin();
 
         // Draws map
-        game.batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
+        game.batch.draw(background, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
         // Draws RadioActivePool Animation
-        game.batch.draw(RadioActivePoolAnimation.getFrame(0.002f),569,46,284,190);
-        game.batch.draw(RadioActivePoolAnimation.getFrame(0.002f),1209,200,213,190);
+        game.batch.draw(RadioActivePoolAnimation.getFrame(0.002f), 569, 46, 284, 190);
+        game.batch.draw(RadioActivePoolAnimation.getFrame(0.002f), 1209, 200, 213, 190);
 
         // Draw the players
-        for(Player players : Players){
-            game.batch.draw(players.render(deltaTime,ground,WorldBorder,RadioActivePool), players.PlayerX,players.PlayerY,players.width,players.height);
+        for (Player players : Players) {
+            game.batch.draw(players.render(deltaTime, ground, WorldBorder, RadioActivePool), players.PlayerX, players.PlayerY, players.width, players.height);
         }
 
-        // Draw GUIs
+
+
+        // Drops Spawner. adds drop to the AmmoDrop Array every N time
+        timeDrop += deltaTime;
+        if (timeDrop >= 20f) {
+            AmmoDrop drop = new AmmoDrop(MathUtils.random(0, 1900), 1920,false);
+            AmmoDrops.add(drop);
+            timeDrop = 0;
+        }
+
+        AmmoDropsCollisionHandling();
+
+
+        /////
+        // Draw hierarchy
+        // the last element in the hierarchy Draws over everything above it,
+        /////
+        DrawAmmoDrops();
         DrawPlayersBullets();
         MenuGUI();
         DrawPlayersHealthBarHUD();
 
         game.batch.end();
+
         ////
         // END TO DRAW:
         ////
     }
 
+    public void AmmoDropsCollisionHandling(){
+        for(int i = 0; i < ground.size - 1; ++i) {
+            for (int j = i + 1; j < AmmoDrops.size ; ++j) {
+                if(AmmoDrops.get(i).hitBox.overlaps(ground.get(j).hitBox)){
+                    AmmoDrops.get(i).freeze = true;
+                }
+                if(AmmoDrops.get(i).hitBox.overlaps(RadioActivePool.get(j).hitBox)){
+                    AmmoDrops.removeIndex(i);
+                }
+            }
+        }
+    }
+
+    public void DrawAmmoDrops(){
+        for (AmmoDrop drops : AmmoDrops) {
+            game.batch.draw(drops.update(deltaTime, ground, WorldBorder), drops.dropX, drops.dropY, drops.width, drops.height);
+        }
+    }
 
     public void DrawPlayersHealthBarHUD(){
         // blue player health bar
@@ -241,10 +281,10 @@ class GameScreen implements Screen {
             }
             // main menu button
             if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 400 + 100 + 300 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 400+40 + 300){
-                if(Gdx.input.justTouched() && !IsScreenMainMenu ){
+                if(Gdx.input.justTouched()){
                     GameAmbience.stop();
                     dispose();
-                    IsScreenMainMenu = true;
+                    game.setScreen(new MainMenuScreen(game));
                     }
                 }
             }
@@ -252,13 +292,11 @@ class GameScreen implements Screen {
 
     public void DrawPlayersBullets(){
 
-
         // draws the blue's player bullets
         Array<Bullet> Bluebullets = Players.get(0).getBullets();
         for(Bullet BluebulletsIndex : Bluebullets){
-            if(Bullet.isVisible) {
-                game.batch.draw(BluebulletsIndex.update(deltaTime, ground, WorldBorder), BluebulletsIndex.bulletX, BluebulletsIndex.bulletY, BluebulletsIndex.width, BluebulletsIndex.height);
-            }
+
+            game.batch.draw(BluebulletsIndex.update(deltaTime, ground, WorldBorder), BluebulletsIndex.bulletX, BluebulletsIndex.bulletY, BluebulletsIndex.width, BluebulletsIndex.height);
         }
 
 
@@ -302,9 +340,9 @@ class GameScreen implements Screen {
         // middle(left) rock
         WorldBorder.add(new MapObject(1065,-37,75,345));
         // inner middle left RadioActivePool
-        WorldBorder.add(new MapObject(359,-115,150,275));
+        WorldBorder.add(new MapObject(359,-115,150,295));
         // inner middle right RadioActivePool
-        WorldBorder.add(new MapObject(918,-115,100,285));
+        WorldBorder.add(new MapObject(918,-115,100,295));
         // right rock
         WorldBorder.add(new MapObject(1495,-39,74,345));
 
@@ -323,6 +361,9 @@ class GameScreen implements Screen {
 
     }
 
+    static public Array<AmmoDrop> getAmmoDrops(){
+        return AmmoDrops;
+    }
 
     @Override
     public void resize(int width, int height) {
@@ -351,6 +392,9 @@ class GameScreen implements Screen {
         for(Player players : Players){
             players.dispose();
         }
+        RightPlayerHealthHUD.dispose();
+        LeftPlayerHealthHUD.dispose();
+        RadioActivePoolAnimation.dispose();
         GameAmbience.dispose();
         guiMenu.dispose();
         background.dispose();

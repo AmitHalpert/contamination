@@ -32,7 +32,7 @@ public class Player {
     public final float ANIMATIONS_TIME = 0.002f;
     public final float SHOOT_WAIT_TIME = 0.4f;
     public final int MOVEMENT_SPEED = 600;
-    public final int JUMP_FORCE = 5;
+    public final int JUMP_FORCE = 760;
     public final int GRAVITATIONAL_FORCE = 20;
 
     // player characteristics
@@ -47,7 +47,9 @@ public class Player {
     Rectangle PlayerHitBox;
     Rectangle PlayerBounds;
 
+
     // gun parameters
+    int PlayerGunAmmo;
     float TimeBetweenShots;
     boolean isPlayerHoldingGun;
     Array<Bullet> bullets;
@@ -97,7 +99,7 @@ public class Player {
         this.SelectedPlayer = SelectedPlayer;
 
 
-
+        PlayerGunAmmo = 5;
         PlayerHealth = 3;
         width = 170;
         height = 170;
@@ -218,9 +220,14 @@ public class Player {
     public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
         if(!GameScreen.isPaused){
 
-
-            // the player's Hit box for bullet collision
-            PlayerHitBox = new Rectangle(PlayerX + 40, PlayerY, width, height-115);
+           // "removes" the PlayerHitBox if he is dead
+           if(state != playerState.dead ) {
+               // the player's Hit box for bullet collision
+               PlayerHitBox = new Rectangle(PlayerX + 40, PlayerY, width, height - 115);
+           }
+           else{
+               PlayerHitBox = new Rectangle(2000, 2000, width, height - 115);
+           }
 
             // selects the correct functions for Player(color)
             switch (SelectedPlayer){
@@ -237,12 +244,11 @@ public class Player {
                     // keyboard input and Player movement
                     OrangePlayerInputHandling(delta);
                     break;
-
             }
 
 
             // Detects if the player touches A MapObject
-            collisionHandling(Ground,WorldBorder,RadioActivePool);
+            collisionHandling(delta,Ground,WorldBorder,RadioActivePool);
 
             if (!IsPlayerFrozen) {
                 // updates the player X AND Y
@@ -251,7 +257,10 @@ public class Player {
         }
 
 
+
+
         // checks which animation should play according to the Player's state
+        // and outputs the animation
         switch (state) {
 
             case dead:
@@ -431,8 +440,9 @@ public class Player {
 
         // weapon input
         TimeBetweenShots += delta;
-        if(Gdx.input.isKeyJustPressed(Input.Keys.N) && TimeBetweenShots >= SHOOT_WAIT_TIME && !GameScreen.isPaused && state != playerState.dead){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.N) && TimeBetweenShots >= SHOOT_WAIT_TIME && PlayerGunAmmo != 0 && state != playerState.dead){
             TimeBetweenShots = 0;
+            PlayerGunAmmo--;
             gunshot.play(0.01f);
             ShootBullets();
         }
@@ -453,7 +463,7 @@ public class Player {
         if ((Gdx.input.isKeyJustPressed(Input.Keys.UP)) && !GameScreen.isPaused && state != playerState.dead) {
 
             if (IsPlayerOnGround || Yspeed == -Yspeed) {
-                Yspeed += JUMP_FORCE;
+                Yspeed += JUMP_FORCE * delta;
             }
 
         }
@@ -512,7 +522,7 @@ public class Player {
         //vertical input
         if ((Gdx.input.isKeyJustPressed(Input.Keys.W)) && !GameScreen.isPaused && state != playerState.dead) {
             if (IsPlayerOnGround || Yspeed == -Yspeed) {
-                Yspeed += JUMP_FORCE;
+                Yspeed += JUMP_FORCE * delta;
             }
         }
         Yspeed -= GRAVITATIONAL_FORCE * delta;
@@ -544,9 +554,9 @@ public class Player {
         }
     }
 
-    // all players
+    // all players functions
 
-    public void collisionHandling(Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
+    public void collisionHandling(float delta, Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
 
 
