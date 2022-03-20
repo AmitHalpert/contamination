@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.Iterator;
+
 
 public class AmmoDrop {
 
@@ -15,34 +15,40 @@ public class AmmoDrop {
     int width = 120 , height = 120;
     float dropX, dropY;
     boolean freeze;
+    float DropDeleteTimer;
+    boolean DeleteDrop;
     Rectangle hitBox;
     Texture AmmoDropOntheGroundTexture;
     Texture ParaAmmoDropTexture;
     Texture outTexture;
-    Texture DropNotExisting;
 
     public AmmoDrop(float x, float y){
         this.dropX = x;
         this.dropY = y;
-        freeze = false;
 
+
+        freeze = false;
+        DeleteDrop = false;
+        DropDeleteTimer = 0;
 
         hitBox = new Rectangle(dropX, dropY, width, height);
 
-        DropNotExisting = new Texture("player_dead_5.png");
         outTexture = new Texture("para_ammo_barrel.png");
         AmmoDropOntheGroundTexture = new Texture("ammo_barrel.png");
         ParaAmmoDropTexture = new Texture("para_ammo_barrel.png");
     }
 
-    public Texture update(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder, Array<MapObject> RadioActivePool){
+    public Texture update(float delta){
 
-
-
-        collisionHandling(Ground, RadioActivePool);
 
         if(freeze){
             outTexture = AmmoDropOntheGroundTexture;
+
+            DropDeleteTimer += delta;
+            if(DropDeleteTimer >= 2f){
+                DeleteDrop = true;
+            }
+
         }
         else {
 
@@ -54,29 +60,7 @@ public class AmmoDrop {
         }
 
 
-
-
         return outTexture;
-    }
-
-    public void collisionHandling(Array<MapObject> Ground,Array<MapObject> RadioActivePools){
-        // collisionHandling
-
-        // freeze if on ground
-        for(int i = 0; i < Ground.size; i++) {
-            if(Ground.get(i).hitBox.overlaps(hitBox)){
-                freeze = true;
-            }
-        }
-
-        for(int i = 0; i < RadioActivePools.size; i++) {
-            if(RadioActivePools.get(i).hitBox.overlaps(hitBox)){
-                outTexture = DropNotExisting;
-            }
-        }
-
-
-
     }
 
 

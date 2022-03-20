@@ -7,14 +7,13 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 
 class GameScreen implements Screen {
@@ -51,10 +50,10 @@ class GameScreen implements Screen {
     static Array<Player> Players;
 
     //World objects
-    static Array<AmmoDrop> AmmoDrops;
-    Array<MapObject> ground;
-    Array<MapObject> WorldBorder;
-    Array<MapObject> RadioActivePool;
+    LinkedList<AmmoDrop> AmmoDrops;
+    Array<MapObject> Grounds;
+    Array<MapObject> WorldBorders;
+    Array<MapObject> RadioActivePools;
 
 
 
@@ -102,10 +101,10 @@ class GameScreen implements Screen {
         ////
         // Create Map Objects
         ////
-        ground = new Array<MapObject>();
-        WorldBorder = new Array<MapObject>();
-        RadioActivePool = new Array<MapObject>();
-        AmmoDrops = new Array<>();
+        Grounds = new Array<MapObject>();
+        WorldBorders = new Array<MapObject>();
+        RadioActivePools = new Array<MapObject>();
+        AmmoDrops = new LinkedList<>();
 
 
         camera = new OrthographicCamera();
@@ -149,7 +148,29 @@ class GameScreen implements Screen {
 
         // Draw the players
         for (Player players : Players) {
-            game.batch.draw(players.render(deltaTime, ground, WorldBorder, RadioActivePool), players.PlayerX, players.PlayerY, players.width, players.height);
+            game.batch.draw(players.render(deltaTime, Grounds, WorldBorders, RadioActivePools), players.PlayerX, players.PlayerY, players.width, players.height);
+        }
+
+
+
+        // collisionHandling
+        // freeze if on ground
+        for(MapObject GroundIndex : Grounds){
+            for(AmmoDrop DropIndex : AmmoDrops){
+                if(DropIndex.hitBox.overlaps(GroundIndex.hitBox)){
+                    DropIndex.freeze = true;
+                }
+            }
+        }
+
+
+        for(MapObject RadioActivePoolIndex : RadioActivePools) {
+            for (Iterator<AmmoDrop> Iter = AmmoDrops.iterator(); Iter.hasNext(); ) {
+                AmmoDrop TempAmmoDrops = Iter.next();
+                if (TempAmmoDrops.hitBox.overlaps(RadioActivePoolIndex.hitBox) || TempAmmoDrops.DeleteDrop) {
+                    Iter.remove();
+                }
+            }
         }
 
 
@@ -161,8 +182,12 @@ class GameScreen implements Screen {
             AmmoDrops.add(drop);
             timeDrop = 0;
         }
+
+
+
+
         for (AmmoDrop drops : AmmoDrops) {
-            game.batch.draw(drops.update(deltaTime, ground, WorldBorder, RadioActivePool), drops.dropX, drops.dropY, drops.width, drops.height);
+            game.batch.draw(drops.update(deltaTime), drops.dropX, drops.dropY, drops.width, drops.height);
         }
 
 
@@ -210,7 +235,7 @@ class GameScreen implements Screen {
                 game.batch.draw(RightPlayerHealthHUD.getIndexFrame(3),1520,920,430,170);
 
         }
-        game.batch.draw(Players.get(0).render(deltaTime,ground,WorldBorder,RadioActivePool), 1760,950,Players.get(0).width,Players.get(0).height);
+        game.batch.draw(Players.get(0).render(deltaTime, Grounds, WorldBorders, RadioActivePools), 1760,950,Players.get(0).width,Players.get(0).height);
 
 
 
@@ -234,7 +259,7 @@ class GameScreen implements Screen {
             default:
                 game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(3),-30,920,430,170);
         }
-        game.batch.draw(Players.get(1).render(deltaTime,ground,WorldBorder,RadioActivePool), -10,950,Players.get(1).width,Players.get(1).height);
+        game.batch.draw(Players.get(1).render(deltaTime, Grounds, WorldBorders, RadioActivePools), -10,950,Players.get(1).width,Players.get(1).height);
     }
 
     public void MenuGUI(){
@@ -285,21 +310,21 @@ class GameScreen implements Screen {
         Array<Bullet> Bluebullets = Players.get(0).getBullets();
         for(Bullet BluebulletsIndex : Bluebullets){
 
-            game.batch.draw(BluebulletsIndex.update(deltaTime, ground, WorldBorder), BluebulletsIndex.bulletX, BluebulletsIndex.bulletY, BluebulletsIndex.width, BluebulletsIndex.height);
+            game.batch.draw(BluebulletsIndex.update(deltaTime, Grounds, WorldBorders), BluebulletsIndex.bulletX, BluebulletsIndex.bulletY, BluebulletsIndex.width, BluebulletsIndex.height);
         }
 
 
         // draws the orange's player bullets
         Array<Bullet> Orangebullets = Players.get(1).getBullets();
         for(Bullet OrangebulletsIndex : Orangebullets){
-            game.batch.draw(OrangebulletsIndex.update(deltaTime,ground,WorldBorder),OrangebulletsIndex.bulletX,OrangebulletsIndex.bulletY,OrangebulletsIndex.width,OrangebulletsIndex.height);
+            game.batch.draw(OrangebulletsIndex.update(deltaTime, Grounds, WorldBorders),OrangebulletsIndex.bulletX,OrangebulletsIndex.bulletY,OrangebulletsIndex.width,OrangebulletsIndex.height);
         }
 
     }
 
     public void createRadioActivePools(){
-        RadioActivePool.add(new MapObject(1260,5,70,200));
-        RadioActivePool.add(new MapObject(650,-100,100,170));
+        RadioActivePools.add(new MapObject(1260,5,90,200));
+        RadioActivePools.add(new MapObject(610,-100,190,170));
     }
 
     private void createGrounds(){
@@ -307,15 +332,15 @@ class GameScreen implements Screen {
         // environment Grounds
         ////
         //left rock
-        ground.add(new MapObject(50,10,89,330));
+        Grounds.add(new MapObject(50,10,89,330));
         // middle rock
-        ground.add(new MapObject(1067,-12,70,320));
+        Grounds.add(new MapObject(1067,-12,70,320));
         // right rock
-        ground.add(new MapObject(1495,-12,70,320));
+        Grounds.add(new MapObject(1495,-12,70,320));
         // right Ground
-        ground.add(new MapObject(920,-39,1200,224));
+        Grounds.add(new MapObject(920,-39,1200,224));
         // left Ground
-        ground.add(new MapObject(50,-39,455,224));
+        Grounds.add(new MapObject(50,-39,455,224));
     }
 
     private void createMapBorders(){
@@ -325,34 +350,31 @@ class GameScreen implements Screen {
         ////
 
         //left rock
-        WorldBorder.add(new MapObject(-435,-37,580,375));
+        WorldBorders.add(new MapObject(-435,-37,580,375));
         // middle(left) rock
-        WorldBorder.add(new MapObject(1065,-37,75,345));
+        WorldBorders.add(new MapObject(1065,-37,75,345));
         // inner middle left RadioActivePool
-        WorldBorder.add(new MapObject(359,-115,150,295));
+        WorldBorders.add(new MapObject(359,-115,150,295));
         // inner middle right RadioActivePool
-        WorldBorder.add(new MapObject(918,-115,100,295));
+        WorldBorders.add(new MapObject(918,-115,100,295));
         // right rock
-        WorldBorder.add(new MapObject(1495,-39,74,345));
+        WorldBorders.add(new MapObject(1495,-39,74,345));
 
         ////
         // WORLD BOUNDS
         ////
 
         // create left world border
-        WorldBorder.add(new MapObject(-650,200,580,3000));
+        WorldBorders.add(new MapObject(-650,200,580,3000));
 
         // create right world border
-        WorldBorder.add(new MapObject(1989,200,500,1200));
+        WorldBorders.add(new MapObject(1989,200,500,1200));
 
         // create upper world border
-        WorldBorder.add(new MapObject(-550,1200,3000,200));
+        WorldBorders.add(new MapObject(-550,1200,3000,200));
 
     }
 
-    static public Array<AmmoDrop> getAmmoDrops(){
-        return AmmoDrops;
-    }
 
     @Override
     public void resize(int width, int height) {

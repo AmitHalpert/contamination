@@ -32,8 +32,8 @@ public class Player {
     public final float ANIMATIONS_TIME = 0.002f;
     public final float SHOOT_WAIT_TIME = 0.4f;
     public final int MOVEMENT_SPEED = 600;
-    public final int JUMP_FORCE = 760;
-    public final int GRAVITATIONAL_FORCE = 20;
+    public final int JUMP_FORCE = 6;
+    public final float GRAVITATIONAL_FORCE = 0.08f;
 
     // player characteristics
     float PlayerX, PlayerY;
@@ -463,11 +463,11 @@ public class Player {
         if ((Gdx.input.isKeyJustPressed(Input.Keys.UP)) && !GameScreen.isPaused && state != playerState.dead) {
 
             if (IsPlayerOnGround || Yspeed == -Yspeed) {
-                Yspeed += JUMP_FORCE * delta;
+                Yspeed += JUMP_FORCE;
             }
 
         }
-        Yspeed -= GRAVITATIONAL_FORCE * delta;
+        Yspeed -= GRAVITATIONAL_FORCE ;
 
     }
 
@@ -522,10 +522,10 @@ public class Player {
         //vertical input
         if ((Gdx.input.isKeyJustPressed(Input.Keys.W)) && !GameScreen.isPaused && state != playerState.dead) {
             if (IsPlayerOnGround || Yspeed == -Yspeed) {
-                Yspeed += JUMP_FORCE * delta;
+                Yspeed += JUMP_FORCE;
             }
         }
-        Yspeed -= GRAVITATIONAL_FORCE * delta;
+        Yspeed -= GRAVITATIONAL_FORCE;
 
     }
 
@@ -617,9 +617,6 @@ public class Player {
                 Collision = false;
             }
         }
-
-
-
 
 
     }
