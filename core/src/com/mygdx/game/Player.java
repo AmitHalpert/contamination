@@ -42,7 +42,6 @@ public class Player {
     double Xspeed, Yspeed;
     boolean isFacingLeft;
     boolean Collision;
-    boolean IsPlayerOnGround;
     boolean IsPlayerFrozen;
     Rectangle PlayerHitBox;
     Rectangle PlayerBounds;
@@ -116,7 +115,6 @@ public class Player {
         isFacingLeft = false;
         isPlayerHoldingGun = true;
         Collision = false;
-        IsPlayerOnGround = false;
         IsPlayerFrozen = false;
         state = playerState.Idle;
         idle_animation_time = 0;
@@ -220,12 +218,13 @@ public class Player {
     public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
         if(!GameScreen.isPaused){
 
-           // "removes" the PlayerHitBox if he is dead
+
            if(state != playerState.dead ) {
                // the player's Hit box for bullet collision
                PlayerHitBox = new Rectangle(PlayerX + 40, PlayerY, width, height - 115);
            }
            else{
+               // "removes" the PlayerHitBox if he is dead
                PlayerHitBox = new Rectangle(2000, 2000, width, height - 115);
            }
 
@@ -435,7 +434,6 @@ public class Player {
 
 
     // blue player
-
     public void BluePlayerInputHandling(float delta) {
 
         // weapon input
@@ -462,7 +460,7 @@ public class Player {
         //vertical input
         if ((Gdx.input.isKeyJustPressed(Input.Keys.UP)) && !GameScreen.isPaused && state != playerState.dead) {
 
-            if (IsPlayerOnGround || Yspeed == -Yspeed) {
+            if (Yspeed == -Yspeed) {
                 Yspeed += JUMP_FORCE;
             }
 
@@ -497,6 +495,7 @@ public class Player {
 
     }
 
+
     // orange player
     public void OrangePlayerInputHandling(float delta) {
         TimeBetweenShots += delta;
@@ -521,7 +520,7 @@ public class Player {
 
         //vertical input
         if ((Gdx.input.isKeyJustPressed(Input.Keys.W)) && !GameScreen.isPaused && state != playerState.dead) {
-            if (IsPlayerOnGround || Yspeed == -Yspeed) {
+            if (Yspeed == -Yspeed) {
                 Yspeed += JUMP_FORCE;
             }
         }
@@ -595,12 +594,8 @@ public class Player {
         for (MapObject borders: WorldBorder) {
             if (PlayerBounds.overlaps(borders.hitBox)) {
                 Xspeed -= Xspeed;
-                Collision = true;
-            }
-            else {
-                Collision = false;
-            }
 
+            }
         }
 
 
@@ -609,16 +604,8 @@ public class Player {
         for (MapObject grounds : Ground) {
             if (PlayerBounds.overlaps(grounds.hitBox)) {
                 Yspeed -= Yspeed;
-                Collision = true;
-                IsPlayerOnGround = true;
-            }
-            else {
-                IsPlayerOnGround = false;
-                Collision = false;
             }
         }
-
-
     }
 
     public void updatePlayerPosition(){

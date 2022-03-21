@@ -107,6 +107,12 @@ class GameScreen implements Screen {
         AmmoDrops = new LinkedList<>();
 
 
+        // Creates and places the map Objects
+        createGrounds();
+        createMapBorders();
+        createRadioActivePools();
+
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
@@ -130,10 +136,6 @@ class GameScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
-        // Creates and places the map Objects
-        createGrounds();
-        createMapBorders();
-        createRadioActivePools();
 
         ////
         // BEGIN TO DRAW:
@@ -196,7 +198,6 @@ class GameScreen implements Screen {
         /////
         // Draw hierarchy
         /////
-
         DrawPlayersBullets();
         MenuGUI();
         DrawPlayersHealthBarHUD();
@@ -209,10 +210,6 @@ class GameScreen implements Screen {
     }
 
 
-    public void DrawAmmoDrops(){
-        // Draws AmmoDrops
-
-    }
 
     public void DrawPlayersHealthBarHUD(){
         // blue player health bar
