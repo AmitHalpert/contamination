@@ -154,10 +154,69 @@ class GameScreen implements Screen {
         }
 
 
+        PlayersBulletCollisionHandling();
 
-        ///////////////////
-        //  Bullet handling
-        ///////////////////
+
+
+
+
+        /////
+        // Draw hierarchy
+        /////
+
+
+        // Draw,spawn,collision for the AmmoDrop
+        DrawAmmoDrop(deltaTime);
+        DrawPlayersBullets();
+        MenuGUI();
+        // draw health bars and HUD-players
+        DrawPlayersHealthBarHUD();
+
+        game.batch.end();
+
+        ////
+        // END TO DRAW:
+        ////
+    }
+
+    public void DrawAmmoDrop(float delta){
+        // ammo drop collision handling with grounds
+        for(MapObject GroundIndex : Grounds){
+            for(AmmoDrop DropIndex : AmmoDrops){
+                // freeze if the drop on ground
+                if(DropIndex.hitBox.overlaps(GroundIndex.hitBox)){
+                    DropIndex.freeze = true;
+                }
+            }
+        }
+
+        // ammo drop collision handling with RadioActivePools
+        for(MapObject RadioActivePoolIndex : RadioActivePools) {
+            for (Iterator<AmmoDrop> Iter = AmmoDrops.iterator(); Iter.hasNext(); ) {
+                AmmoDrop TempAmmoDrops = Iter.next();
+                if (TempAmmoDrops.hitBox.overlaps(RadioActivePoolIndex.hitBox) || TempAmmoDrops.DeleteDrop) {
+                    Iter.remove();
+                }
+            }
+        }
+
+        // Spawns the drop in random X every 15 sec.
+        timeDrop += delta;
+        if (timeDrop >= 12f) {
+            AmmoDrop drop = new AmmoDrop(MathUtils.random(0, 1900), 1920);
+            AmmoDrops.add(drop);
+            timeDrop = 0;
+        }
+
+        // draws the ammo drops
+        for (AmmoDrop drops : AmmoDrops) {
+            game.batch.draw(drops.update(delta), drops.dropX, drops.dropY, drops.width, drops.height);
+        }
+
+    }
+
+    public void PlayersBulletCollisionHandling(){
+
         // removes the bullet if it overlaps WorldBorder
         for (MapObject Borders : WorldBorders) {
             Array<Bullet> BluePlayerbullets = GameScreen.Players.get(0).getBullets();
@@ -181,68 +240,7 @@ class GameScreen implements Screen {
         }
 
 
-
-
-
-
-        ///////////////////
-        //  drop handling
-        ///////////////////
-
-        // ammo drop collision handling with grounds
-        for(MapObject GroundIndex : Grounds){
-            for(AmmoDrop DropIndex : AmmoDrops){
-                // freeze if the drop on ground
-                if(DropIndex.hitBox.overlaps(GroundIndex.hitBox)){
-                    DropIndex.freeze = true;
-                }
-            }
-        }
-
-        // ammo drop collision handling with RadioActivePools
-        for(MapObject RadioActivePoolIndex : RadioActivePools) {
-            for (Iterator<AmmoDrop> Iter = AmmoDrops.iterator(); Iter.hasNext(); ) {
-                AmmoDrop TempAmmoDrops = Iter.next();
-                if (TempAmmoDrops.hitBox.overlaps(RadioActivePoolIndex.hitBox) || TempAmmoDrops.DeleteDrop) {
-                    Iter.remove();
-                }
-            }
-        }
-
-
-
-
-        // Spawns the drop in random X every 15 sec.
-        timeDrop += deltaTime;
-        if (timeDrop >= 2f) {
-            AmmoDrop drop = new AmmoDrop(MathUtils.random(0, 1900), 1920);
-            AmmoDrops.add(drop);
-            timeDrop = 0;
-        }
-
-        // draws the ammo drops
-        for (AmmoDrop drops : AmmoDrops) {
-            game.batch.draw(drops.update(deltaTime), drops.dropX, drops.dropY, drops.width, drops.height);
-        }
-
-
-
-
-        /////
-        // Draw hierarchy
-        /////
-        DrawPlayersBullets();
-        MenuGUI();
-        DrawPlayersHealthBarHUD();
-
-        game.batch.end();
-
-        ////
-        // END TO DRAW:
-        ////
     }
-
-
 
     public void DrawPlayersHealthBarHUD(){
         // blue player health bar
