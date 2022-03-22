@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 
 public class Player {
@@ -218,8 +219,7 @@ public class Player {
 
 
     public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
-
-        // freeze all players
+        // freezes all the players
         if(!GameScreen.isPaused){
 
 
@@ -260,7 +260,7 @@ public class Player {
             }
         }
 
-
+        PlayerParametersHandling();
 
 
         // checks which animation should play according to the Player's state
@@ -505,8 +505,9 @@ public class Player {
     public void OrangePlayerInputHandling(float delta) {
         TimeBetweenShots += delta;
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) && TimeBetweenShots >= SHOOT_WAIT_TIME && !GameScreen.isPaused && state != playerState.dead){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) && TimeBetweenShots >= SHOOT_WAIT_TIME && PlayerGunAmmo != 0 && !GameScreen.isPaused && state != playerState.dead){
             TimeBetweenShots = 0;
+            PlayerGunAmmo--;
             gunshot.play(0.01f);
             ShootBullets();
         }
@@ -564,7 +565,18 @@ public class Player {
 
 
 
+        LinkedList<AmmoDrop> TempAmmoDrops = GameScreen.GetAmmoDrops();
+        for (Iterator<AmmoDrop> Iter = TempAmmoDrops.iterator(); Iter.hasNext(); ) {
+            AmmoDrop AmmoDropsIndex = Iter.next();
+            if (AmmoDropsIndex.hitBox.overlaps(PlayerHitBox) && PlayerGunAmmo != 5) {
+                PlayerGunAmmo++;
+                Iter.remove();
+            }
+        }
+
+        /////
         // Bullet collision
+        /////
 
         // Blue Player
         Array<Bullet> bulletsB = GameScreen.Players.get(1).getBullets();
@@ -630,6 +642,17 @@ public class Player {
         Bullet bullet;
         bullet = new Bullet(PlayerX, PlayerY, isFacingLeft);
         bullets.add(bullet);
+    }
+
+    public void PlayerParametersHandling(){
+
+        if(PlayerHealth > 3){
+            PlayerHealth = 3;
+        }
+
+        if(PlayerGunAmmo > 5){
+            PlayerGunAmmo = 5;
+        }
     }
 
     public Array<Bullet> getBullets(){

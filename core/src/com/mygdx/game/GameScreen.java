@@ -50,7 +50,7 @@ class GameScreen implements Screen {
     static Array<Player> Players;
 
     //World objects
-    LinkedList<AmmoDrop> AmmoDrops;
+    static LinkedList<AmmoDrop> AmmoDrops;
     Array<MapObject> Grounds;
     Array<MapObject> WorldBorders;
     Array<MapObject> RadioActivePools;
@@ -153,6 +153,8 @@ class GameScreen implements Screen {
             game.batch.draw(players.render(deltaTime, Grounds, WorldBorders, RadioActivePools), players.PlayerX, players.PlayerY, players.width, players.height);
         }
 
+
+
         ///////////////////
         //  Bullet handling
         ///////////////////
@@ -179,20 +181,25 @@ class GameScreen implements Screen {
         }
 
 
+
+
+
+
         ///////////////////
         //  drop handling
         ///////////////////
-        // ammo drop collision Handling
-        // freeze if on ground
+
+        // ammo drop collision handling with grounds
         for(MapObject GroundIndex : Grounds){
             for(AmmoDrop DropIndex : AmmoDrops){
+                // freeze if the drop on ground
                 if(DropIndex.hitBox.overlaps(GroundIndex.hitBox)){
                     DropIndex.freeze = true;
                 }
             }
         }
 
-
+        // ammo drop collision handling with RadioActivePools
         for(MapObject RadioActivePoolIndex : RadioActivePools) {
             for (Iterator<AmmoDrop> Iter = AmmoDrops.iterator(); Iter.hasNext(); ) {
                 AmmoDrop TempAmmoDrops = Iter.next();
@@ -204,17 +211,16 @@ class GameScreen implements Screen {
 
 
 
-        // Drop Spawner.
+
+        // Spawns the drop in random X every 15 sec.
         timeDrop += deltaTime;
-        if (timeDrop >= 1f) {
+        if (timeDrop >= 2f) {
             AmmoDrop drop = new AmmoDrop(MathUtils.random(0, 1900), 1920);
             AmmoDrops.add(drop);
             timeDrop = 0;
         }
 
-
-
-
+        // draws the ammo drops
         for (AmmoDrop drops : AmmoDrops) {
             game.batch.draw(drops.update(deltaTime), drops.dropX, drops.dropY, drops.width, drops.height);
         }
@@ -399,6 +405,9 @@ class GameScreen implements Screen {
 
     }
 
+    public static LinkedList<AmmoDrop> GetAmmoDrops(){
+        return AmmoDrops;
+    }
 
     @Override
     public void resize(int width, int height) {

@@ -45,7 +45,7 @@ public class AmmoDrop {
             outTexture = AmmoDropOntheGroundTexture;
 
             DropDeleteTimer += delta;
-            if(DropDeleteTimer >= 2f){
+            if(DropDeleteTimer >= 8f){
                 DeleteDrop = true;
             }
 
