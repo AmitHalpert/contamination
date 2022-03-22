@@ -28,6 +28,8 @@ public class Player {
         dead
     }
 
+    float DeltaTime;
+
     // Initializing players' final Variables
     public final float ANIMATIONS_TIME = 0.002f;
     public final float SHOOT_WAIT_TIME = 0.4f;
@@ -103,7 +105,7 @@ public class Player {
         width = 170;
         height = 170;
         PlayerBounds = new Rectangle(x, y, width, height);
-
+        DeltaTime = 0;
 
 
         //set up gun parameters
@@ -216,6 +218,8 @@ public class Player {
 
 
     public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
+
+        // freeze all players
         if(!GameScreen.isPaused){
 
 
@@ -249,6 +253,7 @@ public class Player {
             // Detects if the player touches A MapObject
             collisionHandling(delta,Ground,WorldBorder,RadioActivePool);
 
+           // freeze player to the current position
             if (!IsPlayerFrozen) {
                 // updates the player X AND Y
                 updatePlayerPosition();

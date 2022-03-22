@@ -63,9 +63,6 @@ public class Bullet{
         hitBox.x = bulletX;
         hitBox.y = bulletY;
 
-        // removes the bullet if it overlaps WorldBorder
-        BulletCollisionHandling(WorldBorder);
-
 
 
         return outTexture;
@@ -81,38 +78,6 @@ public class Bullet{
             }
 
     }
-
-
-    public void BulletCollisionHandling(Array<MapObject> WorldBorder){
-
-
-        for (MapObject Borders : WorldBorder) {
-            Array<Bullet> BluePlayerbullets = GameScreen.Players.get(0).getBullets();
-            for(Iterator<Bullet> BlueIter = BluePlayerbullets.iterator(); BlueIter.hasNext();){
-                Bullet TempBlueBullets = BlueIter.next();
-                if(TempBlueBullets.hitBox.overlaps(Borders.hitBox)){
-                    outTexture = bulletNotExisting;
-                    BlueIter.remove();
-                }
-            }
-        }
-
-
-        for (MapObject Borders : WorldBorder) {
-            Array<Bullet> YellowPlayerbullets = GameScreen.Players.get(1).getBullets();
-            for(Iterator<Bullet> YellowIter = YellowPlayerbullets.iterator(); YellowIter.hasNext();){
-                Bullet TempYellowBullets = YellowIter.next();
-                if(TempYellowBullets.hitBox.overlaps(Borders.hitBox)){
-                    outTexture = bulletNotExisting;
-                    YellowIter.remove();
-                }
-            }
-        }
-
-    }
-
-
-
 
 
 

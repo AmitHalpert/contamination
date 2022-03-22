@@ -153,9 +153,36 @@ class GameScreen implements Screen {
             game.batch.draw(players.render(deltaTime, Grounds, WorldBorders, RadioActivePools), players.PlayerX, players.PlayerY, players.width, players.height);
         }
 
+        ///////////////////
+        //  Bullet handling
+        ///////////////////
+        // removes the bullet if it overlaps WorldBorder
+        for (MapObject Borders : WorldBorders) {
+            Array<Bullet> BluePlayerbullets = GameScreen.Players.get(0).getBullets();
+            for(Iterator<Bullet> BlueIter = BluePlayerbullets.iterator(); BlueIter.hasNext();){
+                Bullet TempBlueBullets = BlueIter.next();
+                if(TempBlueBullets.hitBox.overlaps(Borders.hitBox)){
+                    BlueIter.remove();
+                }
+            }
+        }
 
 
-        // collisionHandling
+        for (MapObject Borders : WorldBorders) {
+            Array<Bullet> YellowPlayerbullets = GameScreen.Players.get(1).getBullets();
+            for(Iterator<Bullet> YellowIter = YellowPlayerbullets.iterator(); YellowIter.hasNext();){
+                Bullet TempYellowBullets = YellowIter.next();
+                if(TempYellowBullets.hitBox.overlaps(Borders.hitBox)){
+                    YellowIter.remove();
+                }
+            }
+        }
+
+
+        ///////////////////
+        //  drop handling
+        ///////////////////
+        // ammo drop collision Handling
         // freeze if on ground
         for(MapObject GroundIndex : Grounds){
             for(AmmoDrop DropIndex : AmmoDrops){
