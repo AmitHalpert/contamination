@@ -20,8 +20,6 @@ class GameScreen implements Screen {
 
     final contamination game;
 
-
-
     // Main menu features
     float deltaTime;
     boolean IsGUI;
@@ -64,15 +62,11 @@ class GameScreen implements Screen {
         IsGUI = false;
         isPaused = false;
 
-        //**
+
         // creates the players
-        //**
         Players = new Array<Player>();
         Players.add(new Player(1500,400, Player.PlayersController.Blue));
         Players.add(new Player(400,500,Player.PlayersController.Orange));
-
-
-
 
 
         ////
@@ -137,46 +131,51 @@ class GameScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
 
-        ////
+        //###################
         // BEGIN TO DRAW:
-        ////
+        //###################
         game.batch.begin();
 
+        //////////
+        // Map
+        //////////
         // Draws map
         game.batch.draw(background, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
         // Draws RadioActivePool Animation
         game.batch.draw(RadioActivePoolAnimation.getFrame(0.002f), 569, 46, 284, 190);
         game.batch.draw(RadioActivePoolAnimation.getFrame(0.002f), 1209, 200, 213, 190);
 
+        //////////
+        // Players
+        //////////
         // Draw the players
         for (Player players : Players) {
             game.batch.draw(players.render(deltaTime, Grounds, WorldBorders, RadioActivePools), players.PlayerX, players.PlayerY, players.width, players.height);
         }
-
-
         PlayersBulletCollisionHandling();
 
 
-
-
-
-        /////
+        //////////
         // Draw hierarchy
-        /////
-
+        //////////
 
         // Draw,spawn,collision for the AmmoDrop
         DrawAmmoDrop(deltaTime);
+
+        // draw every player's bullets
         DrawPlayersBullets();
+
+        // draw and pauses the game
         MenuGUI();
+
         // draw health bars and HUD-players
         DrawPlayersHealthBarHUD();
 
-        game.batch.end();
 
-        ////
-        // END TO DRAW:
-        ////
+        game.batch.end();
+        //###################
+        // END DRAW:
+        //###################
     }
 
     public void DrawAmmoDrop(float delta){
@@ -199,6 +198,21 @@ class GameScreen implements Screen {
                 }
             }
         }
+
+        // removes Bullet and AmmoDrop if they touch each other it
+        for(Player playerIndex : Players) {
+            for (Iterator<Bullet> BulletIter = playerIndex.getBullets().iterator(); BulletIter.hasNext(); ) {
+                Bullet TempBullets = BulletIter.next();
+                for (Iterator<AmmoDrop> AmmoIter = AmmoDrops.iterator(); AmmoIter.hasNext(); ) {
+                    AmmoDrop TempAmmoDrops = AmmoIter.next();
+                    if (TempAmmoDrops.hitBox.overlaps(TempBullets.hitBox)) {
+                        BulletIter.remove();
+                        AmmoIter.remove();
+                    }
+                }
+            }
+        }
+
 
         // Spawns the drop in random X every 15 sec.
         timeDrop += delta;

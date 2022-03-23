@@ -29,8 +29,6 @@ public class Player {
         dead
     }
 
-    float DeltaTime;
-
     // Initializing players' final Variables
     public final float ANIMATIONS_TIME = 0.002f;
     public final float SHOOT_WAIT_TIME = 0.4f;
@@ -106,7 +104,6 @@ public class Player {
         width = 170;
         height = 170;
         PlayerBounds = new Rectangle(x, y, width, height);
-        DeltaTime = 0;
 
 
         //set up gun parameters
@@ -127,7 +124,6 @@ public class Player {
         ////
         // set up the players animations
         ////
-
         // detect Player according to the PlayersController enum and apply the animations
         switch (SelectedPlayer) {
 
@@ -219,7 +215,7 @@ public class Player {
 
 
     public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
-        // freezes all the players
+        // freezes everything
         if(!GameScreen.isPaused){
 
 
@@ -228,7 +224,7 @@ public class Player {
                PlayerHitBox = new Rectangle(PlayerX + 40, PlayerY, width, height - 115);
            }
            else{
-               // "removes" the PlayerHitBox if he is dead
+               // teleports "removes" the PlayerHitBox if he is dead
                PlayerHitBox = new Rectangle(2000, 2000, width, height - 115);
            }
 
@@ -500,7 +496,6 @@ public class Player {
 
     }
 
-
     // orange player
     public void OrangePlayerInputHandling(float delta) {
         TimeBetweenShots += delta;
@@ -559,7 +554,6 @@ public class Player {
         }
     }
 
-    // all players functions
 
     public void collisionHandling(float delta, Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
