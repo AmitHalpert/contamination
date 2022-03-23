@@ -48,7 +48,7 @@ class GameScreen implements Screen {
     static Array<Player> Players;
 
     //World objects
-    static LinkedList<AmmoDrop> AmmoDrops;
+    static Array<AmmoDrop> AmmoDrops;
     Array<MapObject> Grounds;
     Array<MapObject> WorldBorders;
     Array<MapObject> RadioActivePools;
@@ -64,7 +64,7 @@ class GameScreen implements Screen {
 
 
         // creates the players
-        Players = new Array<Player>();
+        Players = new Array<>();
         Players.add(new Player(1500,400, Player.PlayersController.Blue));
         Players.add(new Player(400,500,Player.PlayersController.Orange));
 
@@ -93,20 +93,18 @@ class GameScreen implements Screen {
         RadioActivePoolAnimation.loadAnimation("RadioActivePoolAnimation_",5);
 
         ////
-        // Create Map Objects
+        // Map Objects
         ////
-        Grounds = new Array<MapObject>();
-        WorldBorders = new Array<MapObject>();
-        RadioActivePools = new Array<MapObject>();
-        AmmoDrops = new LinkedList<>();
-
-
+        Grounds = new Array<>();
+        WorldBorders = new Array<>();
+        RadioActivePools = new Array<>();
+        AmmoDrops = new Array<>();
         // Creates and places the map Objects
         createGrounds();
         createMapBorders();
         createRadioActivePools();
 
-
+        // Camera and viewport
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
@@ -214,9 +212,9 @@ class GameScreen implements Screen {
         }
 
 
-        // Spawns the drop in random X every 15 sec.
+        // Spawns the drop in random X position every 15 sec.
         timeDrop += delta;
-        if (timeDrop >= 12f) {
+        if (timeDrop >= 2f) {
             AmmoDrop drop = new AmmoDrop(MathUtils.random(0, 1900), 1920);
             AmmoDrops.add(drop);
             timeDrop = 0;
@@ -317,7 +315,7 @@ class GameScreen implements Screen {
 
         if(IsGUI){
             isPaused = true;
-            game.batch.draw(guiMenu,MainMenuScreen.xCenter/2+300,MainMenuScreen.yCenter/2+300,400,400);
+            game.batch.draw(guiMenu,MainMenuScreen.xCenter/2f+300f,MainMenuScreen.yCenter/2f+300f,400,400);
             //exit button
 
 
@@ -417,7 +415,7 @@ class GameScreen implements Screen {
 
     }
 
-    public static LinkedList<AmmoDrop> GetAmmoDrops(){
+    public static Array<AmmoDrop> GetAmmoDrops(){
         return AmmoDrops;
     }
 

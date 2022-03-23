@@ -559,7 +559,7 @@ public class Player {
 
 
 
-        LinkedList<AmmoDrop> TempAmmoDrops = GameScreen.GetAmmoDrops();
+        Array<AmmoDrop> TempAmmoDrops = GameScreen.GetAmmoDrops();
         for (Iterator<AmmoDrop> Iter = TempAmmoDrops.iterator(); Iter.hasNext(); ) {
             AmmoDrop AmmoDropsIndex = Iter.next();
             if (AmmoDropsIndex.hitBox.overlaps(PlayerHitBox) && PlayerGunAmmo != 5) {
