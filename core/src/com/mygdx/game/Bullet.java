@@ -21,7 +21,6 @@ public class Bullet{
     Texture outTexture;
 
 
-
     public Bullet(float x, float y, boolean IsPlayerFacingLeft) {
 
         this.bulletX = x;

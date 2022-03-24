@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 
 
 public class Player {
@@ -62,7 +61,7 @@ public class Player {
     Texture playerTexture;
 
     // music and SFX
-    private final Sound gunshot;
+    final Sound gunshot;
 
 
     /////
@@ -225,7 +224,7 @@ public class Player {
            }
            else{
                // teleports "removes" the PlayerHitBox if he is dead
-               PlayerHitBox = new Rectangle(2000, 2000, width, height - 115);
+               PlayerHitBox.x = 3000;
            }
 
             // selects the correct functions for Player(color)
@@ -457,7 +456,6 @@ public class Player {
         }
 
 
-
         //vertical input
         if ((Gdx.input.isKeyJustPressed(Input.Keys.UP)) && !GameScreen.isPaused && state != playerState.dead) {
 
@@ -558,11 +556,19 @@ public class Player {
     public void collisionHandling(float delta, Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
 
-
         Array<AmmoDrop> TempAmmoDrops = GameScreen.GetAmmoDrops();
+        for(AmmoDrop DropIndex : TempAmmoDrops){
+            if(DropIndex.ExplosiveHitBox.overlaps(PlayerHitBox)){
+                if(DropIndex.IsExplosion) {
+                    PlayerHealth = 0;
+                }
+            }
+        }
+
+
         for (Iterator<AmmoDrop> Iter = TempAmmoDrops.iterator(); Iter.hasNext(); ) {
             AmmoDrop AmmoDropsIndex = Iter.next();
-            if (AmmoDropsIndex.hitBox.overlaps(PlayerHitBox) && PlayerGunAmmo != 5) {
+            if (AmmoDropsIndex.DropHitBox.overlaps(PlayerHitBox) && PlayerGunAmmo != 5 && !AmmoDropsIndex.IsExplosion) {
                 PlayerGunAmmo++;
                 Iter.remove();
             }
@@ -571,7 +577,6 @@ public class Player {
         /////
         // Bullet collision
         /////
-
         // Blue Player
         Array<Bullet> bulletsB = GameScreen.Players.get(1).getBullets();
         for (Iterator<Bullet> iterb = bulletsB.iterator(); iterb.hasNext(); ) {

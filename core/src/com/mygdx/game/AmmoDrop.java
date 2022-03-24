@@ -1,9 +1,8 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
-
 
 
 public class AmmoDrop {
@@ -17,7 +16,12 @@ public class AmmoDrop {
     boolean freeze;
     float DropDeleteTimer;
     boolean DeleteDrop;
-    Rectangle hitBox;
+    boolean IsExplosion;
+    Rectangle DropHitBox;
+    Rectangle ExplosiveHitBox;
+
+    // graphics
+    ObjectAnimation ExplosionAnimation;
     Texture AmmoDropOntheGroundTexture;
     Texture ParaAmmoDropTexture;
     Texture outTexture;
@@ -28,10 +32,13 @@ public class AmmoDrop {
 
 
         freeze = false;
+        IsExplosion = false;
         DeleteDrop = false;
         DropDeleteTimer = 0;
 
-        hitBox = new Rectangle(dropX, dropY, width, height);
+        DropHitBox = new Rectangle(dropX, dropY, width, height);
+        ExplosiveHitBox = new Rectangle(2000,2000,0,0);
+
 
         outTexture = new Texture("para_ammo_barrel.png");
         AmmoDropOntheGroundTexture = new Texture("ammo_barrel.png");
@@ -42,21 +49,35 @@ public class AmmoDrop {
 
 
         if(freeze){
-            outTexture = AmmoDropOntheGroundTexture;
+            if(IsExplosion){
 
-            DropDeleteTimer += delta;
-            if(DropDeleteTimer >= 8f){
-                DeleteDrop = true;
+
+                DropDeleteTimer += delta;
+                if(DropDeleteTimer >= 7f) {
+                    DeleteDrop = true;
+                }
+
             }
+            else {
 
+                outTexture = AmmoDropOntheGroundTexture;
+
+                DropDeleteTimer += delta;
+                if (DropDeleteTimer >= 17f) {
+                    DeleteDrop = true;
+                }
+            }
         }
+
         else {
 
             Yspeed = DROP_MOVEMENT_SPEED;
             // updates bullets position;
             dropY += Yspeed * delta;
-            hitBox.x = dropX;
-            hitBox.y = dropY;
+            DropHitBox.x = dropX;
+            DropHitBox.y = dropY;
+            ExplosiveHitBox.x = dropX;
+            ExplosiveHitBox.y = dropY;
         }
 
 

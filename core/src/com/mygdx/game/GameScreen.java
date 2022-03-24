@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 
 
 class GameScreen implements Screen {
@@ -181,7 +180,7 @@ class GameScreen implements Screen {
         for(MapObject GroundIndex : Grounds){
             for(AmmoDrop DropIndex : AmmoDrops){
                 // freeze if the drop on ground
-                if(DropIndex.hitBox.overlaps(GroundIndex.hitBox)){
+                if(DropIndex.DropHitBox.overlaps(GroundIndex.hitBox)){
                     DropIndex.freeze = true;
                 }
             }
@@ -191,7 +190,7 @@ class GameScreen implements Screen {
         for(MapObject RadioActivePoolIndex : RadioActivePools) {
             for (Iterator<AmmoDrop> Iter = AmmoDrops.iterator(); Iter.hasNext(); ) {
                 AmmoDrop TempAmmoDrops = Iter.next();
-                if (TempAmmoDrops.hitBox.overlaps(RadioActivePoolIndex.hitBox) || TempAmmoDrops.DeleteDrop) {
+                if (TempAmmoDrops.DropHitBox.overlaps(RadioActivePoolIndex.hitBox) || TempAmmoDrops.DeleteDrop) {
                     Iter.remove();
                 }
             }
@@ -203,13 +202,18 @@ class GameScreen implements Screen {
                 Bullet TempBullets = BulletIter.next();
                 for (Iterator<AmmoDrop> AmmoIter = AmmoDrops.iterator(); AmmoIter.hasNext(); ) {
                     AmmoDrop TempAmmoDrops = AmmoIter.next();
-                    if (TempAmmoDrops.hitBox.overlaps(TempBullets.hitBox)) {
+                    if (TempAmmoDrops.DropHitBox.overlaps(TempBullets.hitBox)) {
+
+                        TempAmmoDrops.freeze = true;
+                        TempAmmoDrops.IsExplosion = true;
+
                         BulletIter.remove();
-                        AmmoIter.remove();
                     }
+
                 }
             }
         }
+
 
 
         // Spawns the drop in random X position every 15 sec.
