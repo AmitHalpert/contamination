@@ -290,7 +290,7 @@ public class Player {
             case Running:
                 // gun running animation
                 if(isPlayerHoldingGun && !isFacingLeft){
-                    outputTexture = player_running_gun_animation.getFrame(delta);
+                    outputTexture = player_running_gun_animation.getFrame(0.5f * delta);
 
                     player_running_animation.resetAnimation();
                     player_jumping_animation.resetAnimation();
@@ -300,7 +300,7 @@ public class Player {
                     flipped_player_running_animation.resetAnimation();
                 }
                 else if (isPlayerHoldingGun){
-                    outputTexture = flipped_player_running_gun_animation.getFrame(delta);
+                    outputTexture = flipped_player_running_gun_animation.getFrame(0.5f * delta);
 
                     player_running_gun_animation.resetAnimation();
                     player_running_animation.resetAnimation();
@@ -312,7 +312,7 @@ public class Player {
                 else
 
                 if(isFacingLeft){
-                    outputTexture = flipped_player_running_animation.getFrame(delta);
+                    outputTexture = flipped_player_running_animation.getFrame(0.5f * delta);
 
                     player_jumping_animation.resetAnimation();
                     player_idle_animation.resetAnimation();
@@ -321,7 +321,7 @@ public class Player {
                     idle_animation_time = 0;
                 }
                 else
-                    outputTexture = player_running_animation.getFrame(delta);
+                    outputTexture = player_running_animation.getFrame(0.5f * delta);
                 player_jumping_animation.resetAnimation();
                 player_idle_animation.resetAnimation();
                 idle_animation_time = 0;
@@ -331,7 +331,7 @@ public class Player {
             case Jumping:
 
                 if(isPlayerHoldingGun && !isFacingLeft){
-                    outputTexture = player_jumping_gun_animation.getFrame(delta);
+                    outputTexture = player_jumping_gun_animation.getFrame(0.5f * delta);
 
                     player_running_animation.resetAnimation();
                     player_idle_animation.resetAnimation();
@@ -339,7 +339,7 @@ public class Player {
                     flipped_player_idle_animation.resetAnimation();
                 }
                 else if (isPlayerHoldingGun){
-                    outputTexture = flipped_player_jumping_gun_animation.getFrame(delta);
+                    outputTexture = flipped_player_jumping_gun_animation.getFrame(0.5f * delta);
 
                     player_running_gun_animation.resetAnimation();
                     player_running_animation.resetAnimation();
@@ -352,7 +352,7 @@ public class Player {
 
                 if(isFacingLeft){
 
-                    outputTexture = flipped_player_jumping_animation.getFrame(delta);
+                    outputTexture = flipped_player_jumping_animation.getFrame(0.5f * delta);
 
                     player_running_animation.resetAnimation();
                     player_idle_animation.resetAnimation();
@@ -365,7 +365,7 @@ public class Player {
                 if (player_jumping_animation.currentFrame >= player_jumping_animation.frames.size - 2) {
                     outputTexture = player_jumping_animation.frames.get(player_jumping_animation.currentFrame);
                 } else {
-                    outputTexture = player_jumping_animation.getFrame(delta);
+                    outputTexture = player_jumping_animation.getFrame(0.5f * delta);
                 }
                 player_running_animation.resetAnimation();
                 player_idle_animation.resetAnimation();
@@ -376,7 +376,7 @@ public class Player {
 
                 if(isPlayerHoldingGun && !isFacingLeft){
 
-                    outputTexture = player_idle_gun_animation.getFrame(delta);
+                    outputTexture = player_idle_gun_animation.getFrame(0.5f * delta);
 
                     player_running_animation.resetAnimation();
                     player_jumping_animation.resetAnimation();
@@ -386,7 +386,7 @@ public class Player {
                     flipped_player_running_animation.resetAnimation();
                 }
                 else if (isPlayerHoldingGun){
-                    outputTexture = flipped_player_idle_gun_animation.getFrame(delta);
+                    outputTexture = flipped_player_idle_gun_animation.getFrame(0.5f * delta);
 
                     player_running_gun_animation.resetAnimation();
                     player_running_animation.resetAnimation();
@@ -398,7 +398,7 @@ public class Player {
                 else
 
                 if(isFacingLeft){
-                    outputTexture = flipped_player_idle_animation.getFrame(delta);
+                    outputTexture = flipped_player_idle_animation.getFrame(0.5f * delta);
 
                     flipped_player_running_animation.resetAnimation();
                     flipped_player_jumping_animation.resetAnimation();
@@ -409,7 +409,7 @@ public class Player {
                 else
 
                 if (idle_animation_time > 2f) {
-                    outputTexture = player_idle_animation.getFrame(delta);
+                    outputTexture = player_idle_animation.getFrame(0.5f * delta);
 
                     if (idle_animation_time > 3f) {
                         idle_animation_time = 0;

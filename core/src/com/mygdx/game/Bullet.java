@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
@@ -8,7 +9,7 @@ import java.util.Iterator;
 
 public class Bullet{
 
-    public static final int BULLET_MOVEMENT_SPEED = 50;
+    public static final int BULLET_MOVEMENT_SPEED = 5900;
 
     // bullet parameters
     double DirectionSpeed;
@@ -58,9 +59,11 @@ public class Bullet{
         Xspeed = DirectionSpeed;
 
         // updates bullets position;
-        bulletX += Xspeed;
+        bulletX += Xspeed * Gdx.graphics.getDeltaTime();
         hitBox.x = bulletX;
         hitBox.y = bulletY;
+
+        Xspeed = 0;
 
 
 
