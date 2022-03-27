@@ -31,9 +31,9 @@ public class Player {
     // Initializing players' final Variables
     public final float ANIMATIONS_TIME = 0.002f;
     public final float SHOOT_WAIT_TIME = 0.4f;
-    public final int MOVEMENT_SPEED = 600;
-    public final int JUMP_FORCE = 6;
-    public final float GRAVITATIONAL_FORCE = 0.08f;
+    public final int MOVEMENT_SPEED = 320;
+    public final int JUMP_FORCE = 7;
+    public final float GRAVITATIONAL_FORCE = 15f;
 
     // player characteristics
     float PlayerX, PlayerY;
@@ -267,7 +267,7 @@ public class Player {
                 IsPlayerFrozen = true;
                 dead_animation_time += delta;
                 if(dead_animation_time >= 0.04f) {
-                    outputTexture = player_dead_animation.getFrame(delta);
+                    outputTexture = player_dead_animation.getFrame(Gdx.graphics.getDeltaTime());
                     dead_animation_time = 0;
                     dead_elapsedTime += delta;
                 }
@@ -290,7 +290,7 @@ public class Player {
             case Running:
                 // gun running animation
                 if(isPlayerHoldingGun && !isFacingLeft){
-                    outputTexture = player_running_gun_animation.getFrame(ANIMATIONS_TIME);
+                    outputTexture = player_running_gun_animation.getFrame(delta);
 
                     player_running_animation.resetAnimation();
                     player_jumping_animation.resetAnimation();
@@ -300,7 +300,7 @@ public class Player {
                     flipped_player_running_animation.resetAnimation();
                 }
                 else if (isPlayerHoldingGun){
-                    outputTexture = flipped_player_running_gun_animation.getFrame(ANIMATIONS_TIME);
+                    outputTexture = flipped_player_running_gun_animation.getFrame(delta);
 
                     player_running_gun_animation.resetAnimation();
                     player_running_animation.resetAnimation();
@@ -447,11 +447,11 @@ public class Player {
 
         //Horizontal Player input
         if ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !GameScreen.isPaused && state != playerState.dead) {
-            Xspeed = -MOVEMENT_SPEED * delta;
+            Xspeed = -MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
             isFacingLeft = true;
         }
         else if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !GameScreen.isPaused && state != playerState.dead) {
-            Xspeed = MOVEMENT_SPEED * delta;
+            Xspeed = MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
             isFacingLeft = false;
         }
 
@@ -464,7 +464,7 @@ public class Player {
             }
 
         }
-        Yspeed -= GRAVITATIONAL_FORCE ;
+        Yspeed -= GRAVITATIONAL_FORCE * Gdx.graphics.getDeltaTime();
 
     }
 
@@ -507,11 +507,11 @@ public class Player {
 
         //Horizontal Player input
         if ((Gdx.input.isKeyPressed(Input.Keys.A)) && !(Gdx.input.isKeyPressed(Input.Keys.D)) && !GameScreen.isPaused && state != playerState.dead) {
-            Xspeed = -MOVEMENT_SPEED * delta;
+            Xspeed = -MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
             isFacingLeft = true;
         }
         else if ((Gdx.input.isKeyPressed(Input.Keys.D)) && !(Gdx.input.isKeyPressed(Input.Keys.A)) && !GameScreen.isPaused && state != playerState.dead) {
-            Xspeed = MOVEMENT_SPEED * delta;
+            Xspeed = MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
             isFacingLeft = false;
         }
 
@@ -523,7 +523,7 @@ public class Player {
                 Yspeed += JUMP_FORCE;
             }
         }
-        Yspeed -= GRAVITATIONAL_FORCE;
+        Yspeed -= GRAVITATIONAL_FORCE * Gdx.graphics.getDeltaTime();
 
     }
 
@@ -644,6 +644,9 @@ public class Player {
     }
 
     public void PlayerParametersHandling(){
+
+        // stops the player if he's now moving
+        Xspeed = 0;
 
         if(PlayerHealth > 3){
             PlayerHealth = 3;

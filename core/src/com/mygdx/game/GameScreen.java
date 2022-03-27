@@ -139,25 +139,30 @@ class GameScreen implements Screen {
         // Draws map
         game.batch.draw(background, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
         // Draws RadioActivePool Animation
-        game.batch.draw(RadioActivePoolAnimation.getFrame(0.002f), 569, 46, 284, 190);
-        game.batch.draw(RadioActivePoolAnimation.getFrame(0.002f), 1209, 200, 213, 190);
+        game.batch.draw(RadioActivePoolAnimation.getFrame(0.3f * deltaTime), 569, 46, 284, 190);
+        game.batch.draw(RadioActivePoolAnimation.getFrame(0.3f * deltaTime), 1209, 200, 213, 190);
+
+        // draws the ammo drops
+        for (AmmoDrop drops : AmmoDrops) {
+            game.batch.draw(drops.update(deltaTime), drops.dropX, drops.dropY, drops.width, drops.height);
+        }
 
         //////////
         // Players
         //////////
         // Draw the players
         for (Player players : Players) {
-            game.batch.draw(players.render(deltaTime, Grounds, WorldBorders, RadioActivePools), players.PlayerX, players.PlayerY, players.width, players.height);
+            game.batch.draw(players.render(Gdx.graphics.getDeltaTime(), Grounds, WorldBorders, RadioActivePools), players.PlayerX, players.PlayerY, players.width, players.height);
         }
         PlayersBulletCollisionHandling();
+
+        // spawn,collision for the AmmoDrop
+        AmmoDropCollision(deltaTime);
 
 
         //////////
         // Draw hierarchy
         //////////
-
-        // Draw,spawn,collision for the AmmoDrop
-        DrawAmmoDrop(deltaTime);
 
         // draw every player's bullets
         DrawPlayersBullets();
@@ -175,7 +180,7 @@ class GameScreen implements Screen {
         //###################
     }
 
-    public void DrawAmmoDrop(float delta){
+    public void AmmoDropCollision(float delta){
         // ammo drop collision handling with grounds
         for(MapObject GroundIndex : Grounds){
             for(AmmoDrop DropIndex : AmmoDrops){
@@ -200,8 +205,7 @@ class GameScreen implements Screen {
         for(Player playerIndex : Players) {
             for (Iterator<Bullet> BulletIter = playerIndex.getBullets().iterator(); BulletIter.hasNext(); ) {
                 Bullet TempBullets = BulletIter.next();
-                for (Iterator<AmmoDrop> AmmoIter = AmmoDrops.iterator(); AmmoIter.hasNext(); ) {
-                    AmmoDrop TempAmmoDrops = AmmoIter.next();
+                for (AmmoDrop TempAmmoDrops : AmmoDrops) {
                     if (TempAmmoDrops.DropHitBox.overlaps(TempBullets.hitBox)) {
 
                         TempAmmoDrops.freeze = true;
@@ -224,10 +228,6 @@ class GameScreen implements Screen {
             timeDrop = 0;
         }
 
-        // draws the ammo drops
-        for (AmmoDrop drops : AmmoDrops) {
-            game.batch.draw(drops.update(delta), drops.dropX, drops.dropY, drops.width, drops.height);
-        }
 
     }
 

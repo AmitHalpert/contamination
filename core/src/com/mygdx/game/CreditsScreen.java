@@ -84,7 +84,7 @@ public class CreditsScreen implements Screen {
         game.batch.begin();
 
 
-        game.batch.draw(CreditsText.getFrame(0.00005f),0,0,GameScreen.WORLD_WIDTH,GameScreen.WORLD_HEIGHT);
+        game.batch.draw(CreditsText.getFrame(0.005f * deltaTime),0,0,GameScreen.WORLD_WIDTH,GameScreen.WORLD_HEIGHT);
 
 
 
