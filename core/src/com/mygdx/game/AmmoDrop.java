@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -25,6 +28,11 @@ public class AmmoDrop {
     Texture ParaAmmoDropTexture;
     Texture outTexture;
 
+    Music ExplosionSound;
+
+
+
+
     public AmmoDrop(float x, float y){
         this.dropX = x;
         this.dropY = y;
@@ -43,6 +51,11 @@ public class AmmoDrop {
         outTexture = new Texture("para_ammo_barrel.png");
         AmmoDropOntheGroundTexture = new Texture("ammo_barrel.png");
         ParaAmmoDropTexture = new Texture("para_ammo_barrel.png");
+
+        ExplosionSound = Gdx.audio.newMusic(Gdx.files.internal("explosion-sound.wav"));
+        ExplosionSound.setVolume(0.2f);
+
+
     }
 
     public Texture update(float delta){
@@ -53,6 +66,7 @@ public class AmmoDrop {
                 width = 350;
                 height = 350;
                 outTexture = ExplosionAnimation.getFrame(0.8f * delta);
+                ExplosionSound.play();
                 DropDeleteTimer += delta;
                 if(DropDeleteTimer >= 0.6f) {
                     DeleteDrop = true;
