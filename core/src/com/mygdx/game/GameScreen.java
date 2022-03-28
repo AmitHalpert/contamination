@@ -178,7 +178,7 @@ class GameScreen implements Screen {
         for(MapObject RadioActivePoolIndex : RadioActivePools) {
             for (Iterator<AmmoDrop> Iter = AmmoDrops.iterator(); Iter.hasNext(); ) {
                 AmmoDrop TempAmmoDrops = Iter.next();
-                if (TempAmmoDrops.DropHitBox.overlaps(RadioActivePoolIndex.hitBox) || TempAmmoDrops.DeleteDrop) {
+                if (TempAmmoDrops.DropHitBox.overlaps(RadioActivePoolIndex.hitBox)) {
                     Iter.remove();
                 }
             }
@@ -205,6 +205,9 @@ class GameScreen implements Screen {
                 AmmoDrop AmmoDropsIndex = Iter.next();
                 if (AmmoDropsIndex.DropHitBox.overlaps(playerIndex.PlayerHitBox) && playerIndex.PlayerGunAmmo != 5 && !AmmoDropsIndex.IsExplosion) {
                     playerIndex.PlayerGunAmmo = 5;
+                    Iter.remove();
+                }
+                if(AmmoDropsIndex.DeleteDrop){
                     Iter.remove();
                 }
             }

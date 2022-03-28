@@ -38,7 +38,8 @@ public class AmmoDrop {
         DropHitBox = new Rectangle(dropX, dropY, width, height);
         ExplosiveHitBox = new Rectangle(dropX,dropY,400,400);
 
-
+        ExplosionAnimation = new ObjectAnimation();
+        ExplosionAnimation.loadAnimation("BarrelExplosion_",13);
         outTexture = new Texture("para_ammo_barrel.png");
         AmmoDropOntheGroundTexture = new Texture("ammo_barrel.png");
         ParaAmmoDropTexture = new Texture("para_ammo_barrel.png");
@@ -49,11 +50,13 @@ public class AmmoDrop {
         // freezes Drop. see in GameScreen AmmoDropCollision
         if(freeze){
             if(IsExplosion){
+                width = 350;
+                height = 350;
+                outTexture = ExplosionAnimation.getFrame(delta);
                 DropDeleteTimer += delta;
-                if(DropDeleteTimer >= 1f) {
+                if(DropDeleteTimer >= 0.6f) {
                     DeleteDrop = true;
                 }
-
             }
             else {
 
