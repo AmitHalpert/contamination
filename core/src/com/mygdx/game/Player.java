@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.Iterator;
 
 /**
- * The Player is not an abstract class, but It's trying to be, inside it there's two player:
+ * The Player is not an abstract class, but It's trying to be, inside it there's two players:
  * The Player class have global functions that affect every player,
  * And functions that created for each player purposely.
  *
@@ -36,7 +36,7 @@ public class Player {
     }
 
     // Initializing players' final Variables
-    public final float ANIMATIONS_TIME = 0.002f;
+    public final float ANIMATIONS_TIME = 0.5f;
     public final float SHOOT_WAIT_TIME = 0.4f;
     public final int MOVEMENT_SPEED = 320;
     public final int JUMP_FORCE = 7;
@@ -303,7 +303,7 @@ public class Player {
             case Running:
                 // gun running animation
                 if(isPlayerHoldingGun && !isFacingLeft){
-                    outputTexture = player_running_gun_animation.getFrame(0.5f * delta);
+                    outputTexture = player_running_gun_animation.getFrame(ANIMATIONS_TIME * delta);
 
                     player_running_animation.resetAnimation();
                     player_jumping_animation.resetAnimation();
@@ -313,7 +313,7 @@ public class Player {
                     flipped_player_running_animation.resetAnimation();
                 }
                 else if (isPlayerHoldingGun){
-                    outputTexture = flipped_player_running_gun_animation.getFrame(0.5f * delta);
+                    outputTexture = flipped_player_running_gun_animation.getFrame(ANIMATIONS_TIME * delta);
 
                     player_running_gun_animation.resetAnimation();
                     player_running_animation.resetAnimation();
@@ -325,7 +325,7 @@ public class Player {
                 else
 
                 if(isFacingLeft){
-                    outputTexture = flipped_player_running_animation.getFrame(0.5f * delta);
+                    outputTexture = flipped_player_running_animation.getFrame(ANIMATIONS_TIME * delta);
 
                     player_jumping_animation.resetAnimation();
                     player_idle_animation.resetAnimation();
@@ -334,7 +334,7 @@ public class Player {
                     idle_animation_time = 0;
                 }
                 else
-                    outputTexture = player_running_animation.getFrame(0.5f * delta);
+                    outputTexture = player_running_animation.getFrame(ANIMATIONS_TIME * delta);
                 player_jumping_animation.resetAnimation();
                 player_idle_animation.resetAnimation();
                 idle_animation_time = 0;
@@ -344,7 +344,7 @@ public class Player {
             case Jumping:
 
                 if(isPlayerHoldingGun && !isFacingLeft){
-                    outputTexture = player_jumping_gun_animation.getFrame(0.5f * delta);
+                    outputTexture = player_jumping_gun_animation.getFrame(ANIMATIONS_TIME * delta);
 
                     player_running_animation.resetAnimation();
                     player_idle_animation.resetAnimation();
@@ -352,7 +352,7 @@ public class Player {
                     flipped_player_idle_animation.resetAnimation();
                 }
                 else if (isPlayerHoldingGun){
-                    outputTexture = flipped_player_jumping_gun_animation.getFrame(0.5f * delta);
+                    outputTexture = flipped_player_jumping_gun_animation.getFrame(ANIMATIONS_TIME * delta);
 
                     player_running_gun_animation.resetAnimation();
                     player_running_animation.resetAnimation();
@@ -365,7 +365,7 @@ public class Player {
 
                 if(isFacingLeft){
 
-                    outputTexture = flipped_player_jumping_animation.getFrame(0.5f * delta);
+                    outputTexture = flipped_player_jumping_animation.getFrame(ANIMATIONS_TIME * delta);
 
                     player_running_animation.resetAnimation();
                     player_idle_animation.resetAnimation();
@@ -378,7 +378,7 @@ public class Player {
                 if (player_jumping_animation.currentFrame >= player_jumping_animation.frames.size - 2) {
                     outputTexture = player_jumping_animation.frames.get(player_jumping_animation.currentFrame);
                 } else {
-                    outputTexture = player_jumping_animation.getFrame(0.5f * delta);
+                    outputTexture = player_jumping_animation.getFrame(ANIMATIONS_TIME * delta);
                 }
                 player_running_animation.resetAnimation();
                 player_idle_animation.resetAnimation();
@@ -389,7 +389,7 @@ public class Player {
 
                 if(isPlayerHoldingGun && !isFacingLeft){
 
-                    outputTexture = player_idle_gun_animation.getFrame(0.5f * delta);
+                    outputTexture = player_idle_gun_animation.getFrame(ANIMATIONS_TIME * delta);
 
                     player_running_animation.resetAnimation();
                     player_jumping_animation.resetAnimation();
@@ -399,7 +399,7 @@ public class Player {
                     flipped_player_running_animation.resetAnimation();
                 }
                 else if (isPlayerHoldingGun){
-                    outputTexture = flipped_player_idle_gun_animation.getFrame(0.5f * delta);
+                    outputTexture = flipped_player_idle_gun_animation.getFrame(ANIMATIONS_TIME * delta);
 
                     player_running_gun_animation.resetAnimation();
                     player_running_animation.resetAnimation();
@@ -411,7 +411,7 @@ public class Player {
                 else
 
                 if(isFacingLeft){
-                    outputTexture = flipped_player_idle_animation.getFrame(0.5f * delta);
+                    outputTexture = flipped_player_idle_animation.getFrame(ANIMATIONS_TIME * delta);
 
                     flipped_player_running_animation.resetAnimation();
                     flipped_player_jumping_animation.resetAnimation();
@@ -422,7 +422,7 @@ public class Player {
                 else
 
                 if (idle_animation_time > 2f) {
-                    outputTexture = player_idle_animation.getFrame(0.5f * delta);
+                    outputTexture = player_idle_animation.getFrame(ANIMATIONS_TIME * delta);
 
                     if (idle_animation_time > 3f) {
                         idle_animation_time = 0;

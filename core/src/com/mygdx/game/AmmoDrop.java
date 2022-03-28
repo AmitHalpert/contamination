@@ -17,6 +17,7 @@ public class AmmoDrop {
     float dropX, dropY;
     boolean freeze;
     float DropDeleteTimer;
+    float ExplosionDropDeleteTimer;
     boolean DeleteDrop;
     boolean IsExplosion;
     Rectangle DropHitBox;
@@ -41,7 +42,7 @@ public class AmmoDrop {
         freeze = false;
         IsExplosion = false;
         DeleteDrop = false;
-        DropDeleteTimer = 0;
+        ExplosionDropDeleteTimer= 0;
 
         DropHitBox = new Rectangle(dropX, dropY, width, height);
         ExplosiveHitBox = new Rectangle(dropX,dropY,400,400);
@@ -67,8 +68,8 @@ public class AmmoDrop {
                 height = 350;
                 outTexture = ExplosionAnimation.getFrame(0.8f * delta);
                 ExplosionSound.play();
-                DropDeleteTimer += delta;
-                if(DropDeleteTimer >= 0.6f) {
+                ExplosionDropDeleteTimer += delta;
+                if(ExplosionDropDeleteTimer >= 0.6f) {
                     DeleteDrop = true;
                 }
             }
