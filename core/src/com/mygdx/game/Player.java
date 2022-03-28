@@ -10,9 +10,9 @@ import com.badlogic.gdx.utils.Array;
 import java.util.Iterator;
 
 /**
- * The Player is a WANNABE abstract class but inside it there's two player:
- * The Player class have "abstract" functions that can used to affect how many player you want,
- * And functions that created for each player purposely
+ * The Player is not an abstract class, but It's trying to be, inside it there's two player:
+ * The Player class have global functions that affect every player,
+ * And functions that created for each player purposely.
  *
  */
 public class Player {
@@ -27,7 +27,7 @@ public class Player {
 
 
     // the playerState is used to represent the current state the player is in through the GetPlayerState function.
-    // for example if playerState is Running the player animation will change to running through the
+    // for example if playerState is Running the player animation will change to running
     public enum playerState {
         Running,
         Jumping,
@@ -67,7 +67,7 @@ public class Player {
     Texture outputTexture;
     Texture playerTexture;
 
-    // music and SFX
+    // SFX
     final Sound gunshot;
 
 
@@ -94,30 +94,22 @@ public class Player {
     ObjectAnimation flipped_player_idle_gun_animation;
     ObjectAnimation flipped_player_jumping_gun_animation;
 
-    // creates enums
+    // creates the enums
     playerState state;
     PlayersController SelectedPlayer;
 
     public Player(float x, float y,PlayersController SelectedPlayer){
-
         this.PlayerX = x;
         this.PlayerY = y;
         this.SelectedPlayer = SelectedPlayer;
 
-
+        // Initializing player's characteristics
         PlayerGunAmmo = 5;
         PlayerHealth = 3;
         width = 170;
         height = 170;
         PlayerBounds = new Rectangle(x, y, width, height);
 
-
-        //set up gun parameters
-        TimeBetweenShots = 0;
-        bullets = new Array<>();
-        gunshot = Gdx.audio.newSound(Gdx.files.internal("gun1.wav"));
-
-        // initialize player's settings
         isFacingLeft = false;
         isPlayerHoldingGun = true;
         Collision = false;
@@ -126,6 +118,12 @@ public class Player {
         idle_animation_time = 0;
         dead_animation_time = 0;
         dead_elapsedTime = 0;
+
+
+        // Initializing gun parameters
+        TimeBetweenShots = 0;
+        bullets = new Array<>();
+        gunshot = Gdx.audio.newSound(Gdx.files.internal("gun1.wav"));
 
         ////
         // set up the players animations
@@ -214,7 +212,7 @@ public class Player {
         }
 
 
-        // default skin
+        // it is important to set the outputTexture to not be Null
         outputTexture = playerTexture;
     }
 
@@ -235,7 +233,9 @@ public class Player {
 
            }
 
-            // selects the correct functions for Player(color)
+
+
+            // selects the correct functions for the selected Player(color)
             switch (SelectedPlayer){
                 case Blue:
                     //Determine which (playerState) state the player will be.
@@ -572,24 +572,32 @@ public class Player {
         /////
         // Bullet collision
         /////
-        // Blue Player
-        Array<Bullet> bulletsB = GameScreen.Players.get(1).getBullets();
-        for (Iterator<Bullet> iterb = bulletsB.iterator(); iterb.hasNext(); ) {
-            Bullet bB = iterb.next();
-            if (bB.hitBox.overlaps(GameScreen.Players.get(0).PlayerHitBox)) {
-                GameScreen.Players.get(0).PlayerHealth--;
-                iterb.remove();
-            }
-        }
 
-        // Orange Player
-        Array<Bullet> bulletsY = GameScreen.Players.get(0).getBullets();
-        for (Iterator<Bullet> iter = bulletsY.iterator(); iter.hasNext(); ) {
-            Bullet bY = iter.next();
-            if (bY.hitBox.overlaps(GameScreen.Players.get(1).PlayerHitBox)) {
-                GameScreen.Players.get(1).PlayerHealth--;
-                iter.remove();
+        switch (SelectedPlayer) {
+            case Blue:
+                 // Blue Player
+               Array<Bullet> bulletsB = GameScreen.Players.get(1).getBullets();
+               for (Iterator<Bullet> iterb = bulletsB.iterator(); iterb.hasNext(); ) {
+                   Bullet bB = iterb.next();
+                   if (bB.hitBox.overlaps(GameScreen.Players.get(0).PlayerHitBox)) {
+                       GameScreen.Players.get(0).PlayerHealth--;
+                       iterb.remove();
+                }
             }
+            break;
+
+            case Orange:
+                 // Orange Player
+                 Array<Bullet> bulletsY = GameScreen.Players.get(0).getBullets();
+                 for (Iterator<Bullet> iter = bulletsY.iterator(); iter.hasNext(); ) {
+                     Bullet bY = iter.next();
+                     if (bY.hitBox.overlaps(GameScreen.Players.get(1).PlayerHitBox)) {
+                         GameScreen.Players.get(1).PlayerHealth--;
+                         iter.remove();
+                     }
+            }
+            break;
+
         }
 
 

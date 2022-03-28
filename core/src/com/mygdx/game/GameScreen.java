@@ -122,63 +122,45 @@ class GameScreen implements Screen {
     public void render(float deltaTime) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         deltaTime = Gdx.graphics.getDeltaTime();
-
-
-        //updates the camera
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
-
-        //###################
-        // BEGIN TO DRAW:
-        //###################
-        game.batch.begin();
-
-        //////////
-        // Map
-        //////////
-        // Draws map
-        game.batch.draw(background, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-        // Draws RadioActivePool Animation
-        game.batch.draw(RadioActivePoolAnimation.getFrame(0.3f * deltaTime), 569, 46, 284, 190);
-        game.batch.draw(RadioActivePoolAnimation.getFrame(0.3f * deltaTime), 1209, 200, 213, 190);
-
-        // draws the ammo drops
-        for (AmmoDrop drops : AmmoDrops) {
-            game.batch.draw(drops.update(deltaTime), drops.dropX, drops.dropY, drops.width, drops.height);
+        // Pauses everything that is delta time affected.
+        if(isPaused){
+            deltaTime = 0;
         }
 
-        //////////
-        // Players
-        //////////
-        // Draw the players
-        for (Player players : Players) {
-            game.batch.draw(players.render(Gdx.graphics.getDeltaTime(), Grounds, WorldBorders, RadioActivePools), players.PlayerX, players.PlayerY, players.width, players.height);
-        }
-        PlayersBulletCollisionHandling();
-
-        // spawn,collision for the AmmoDrop
+        // spawns AmmoDrop and collision
         AmmoDropCollision(deltaTime);
+
+        // removes bullet if touches something
+        PlayersBulletCollisionHandling();
 
 
         //////////
         // Draw hierarchy
         //////////
-
+        game.batch.begin();
+        // Draws map
+        game.batch.draw(background, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+        // Draws RadioActivePool Animation
+        game.batch.draw(RadioActivePoolAnimation.getFrame(0.3f * deltaTime), 569, 46, 284, 190);
+        game.batch.draw(RadioActivePoolAnimation.getFrame(0.3f * deltaTime), 1209, 200, 213, 190);
+        // draws the ammo drops
+        for (AmmoDrop drops : AmmoDrops) {
+            game.batch.draw(drops.update(deltaTime), drops.dropX, drops.dropY, drops.width, drops.height);
+        }
+        // Draw the players
+        for (Player players : Players) {
+            game.batch.draw(players.render(Gdx.graphics.getDeltaTime(), Grounds, WorldBorders, RadioActivePools), players.PlayerX, players.PlayerY, players.width, players.height);
+        }
         // draw every player's bullets
         DrawPlayersBullets();
-
         // draw and pauses the game
         MenuGUI();
-
         // draw health bars and HUD-players
         DrawPlayersHealthBarHUD();
-
-
         game.batch.end();
-        //###################
-        // END DRAW:
-        //###################
     }
 
     public void AmmoDropCollision(float delta){
@@ -222,7 +204,7 @@ class GameScreen implements Screen {
             for (Iterator<AmmoDrop> Iter = AmmoDrops.iterator(); Iter.hasNext(); ) {
                 AmmoDrop AmmoDropsIndex = Iter.next();
                 if (AmmoDropsIndex.DropHitBox.overlaps(playerIndex.PlayerHitBox) && playerIndex.PlayerGunAmmo != 5 && !AmmoDropsIndex.IsExplosion) {
-                    playerIndex.PlayerGunAmmo++;
+                    playerIndex.PlayerGunAmmo = 5;
                     Iter.remove();
                 }
             }

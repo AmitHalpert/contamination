@@ -46,13 +46,11 @@ public class AmmoDrop {
 
     public Texture update(float delta){
 
-
+        // freezes Drop. see in GameScreen AmmoDropCollision
         if(freeze){
-
-
             if(IsExplosion){
                 DropDeleteTimer += delta;
-                if(DropDeleteTimer >= 7f) {
+                if(DropDeleteTimer >= 1f) {
                     DeleteDrop = true;
                 }
 
@@ -60,14 +58,11 @@ public class AmmoDrop {
             else {
 
                 outTexture = AmmoDropOntheGroundTexture;
-
                 DropDeleteTimer += delta;
                 if (DropDeleteTimer >= 17f) {
                     DeleteDrop = true;
                 }
             }
-
-
         }
 
         else {

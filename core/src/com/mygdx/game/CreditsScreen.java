@@ -66,8 +66,6 @@ public class CreditsScreen implements Screen {
 
 
 
-
-
         if(Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)){
             dispose();
             game.setScreen(new MainMenuScreen(game));
@@ -75,7 +73,7 @@ public class CreditsScreen implements Screen {
 
         // timer to end the credits
         elapsedTime += deltaTime;
-        if(elapsedTime >= 95f){
+        if(elapsedTime >= 138f){
             CreditsMusic.stop();
             dispose();
             game.setScreen(new MainMenuScreen(game));
