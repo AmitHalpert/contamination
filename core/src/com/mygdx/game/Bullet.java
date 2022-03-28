@@ -31,7 +31,7 @@ public class Bullet{
         // changes the direction and sprite width
         if((IsPlayerFacingLeft && this.width > 0) || (!IsPlayerFacingLeft && this.width < 0)){
 
-            // changes the direction and sprite width
+            // changes the sprite width
             FlipBulletSprite(IsPlayerFacingLeft);
 
             // move left
@@ -80,9 +80,5 @@ public class Bullet{
             }
 
     }
-
-
-
-
 
 }

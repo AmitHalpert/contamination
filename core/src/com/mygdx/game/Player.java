@@ -9,18 +9,25 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.Iterator;
 
-
+/**
+ * The Player is a WANNABE abstract class but inside it there is two player:
+ * The Player class have "abstract" functions that can used to affect how many player you want,
+ * And functions that created for each player purposely
+ *
+ */
 public class Player {
 
 
-    // the number of players
+    // the PlayersController is used for managing a lot of player,
+    // and to make it easy to understand which player you are working with.
     public enum PlayersController{
         Blue,
         Orange
     }
 
 
-    // the player states
+    // the playerState is used to represent the current state the player is in through the GetPlayerState function.
+    // for example if playerState is Running the player animation will change to running through the
     public enum playerState {
         Running,
         Jumping,
@@ -225,6 +232,7 @@ public class Player {
            else{
                // teleports "removes" the PlayerHitBox if he is dead
                PlayerHitBox.x = 3000;
+
            }
 
             // selects the correct functions for Player(color)
@@ -255,8 +263,13 @@ public class Player {
             }
         }
 
+        // PlayerParametersHandling is used to set limits to parameters: gun-ammo,etc.
         PlayerParametersHandling();
 
+
+        //###################
+        // The animation switch:
+        //###################
 
         // checks which animation should play according to the Player's state
         // and outputs the animation
