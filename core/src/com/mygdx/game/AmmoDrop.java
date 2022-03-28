@@ -52,7 +52,7 @@ public class AmmoDrop {
             if(IsExplosion){
                 width = 350;
                 height = 350;
-                outTexture = ExplosionAnimation.getFrame(delta);
+                outTexture = ExplosionAnimation.getFrame(0.8f * delta);
                 DropDeleteTimer += delta;
                 if(DropDeleteTimer >= 0.6f) {
                     DeleteDrop = true;
