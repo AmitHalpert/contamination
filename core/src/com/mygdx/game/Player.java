@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.Iterator;
 
 /**
- * The Player is a WANNABE abstract class but inside it there is two player:
+ * The Player is a WANNABE abstract class but inside it there's two player:
  * The Player class have "abstract" functions that can used to affect how many player you want,
  * And functions that created for each player purposely
  *
@@ -568,24 +568,6 @@ public class Player {
 
     public void collisionHandling(float delta, Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
-
-        Array<AmmoDrop> TempAmmoDrops = GameScreen.GetAmmoDrops();
-        for(AmmoDrop DropIndex : TempAmmoDrops){
-            if(DropIndex.ExplosiveHitBox.overlaps(PlayerHitBox)){
-                if(DropIndex.IsExplosion) {
-                    PlayerHealth = 0;
-                }
-            }
-        }
-
-
-        for (Iterator<AmmoDrop> Iter = TempAmmoDrops.iterator(); Iter.hasNext(); ) {
-            AmmoDrop AmmoDropsIndex = Iter.next();
-            if (AmmoDropsIndex.DropHitBox.overlaps(PlayerHitBox) && PlayerGunAmmo != 5 && !AmmoDropsIndex.IsExplosion) {
-                PlayerGunAmmo++;
-                Iter.remove();
-            }
-        }
 
         /////
         // Bullet collision

@@ -1,7 +1,6 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 
 
@@ -37,7 +36,7 @@ public class AmmoDrop {
         DropDeleteTimer = 0;
 
         DropHitBox = new Rectangle(dropX, dropY, width, height);
-        ExplosiveHitBox = new Rectangle(2000,2000,0,0);
+        ExplosiveHitBox = new Rectangle(dropX,dropY,400,400);
 
 
         outTexture = new Texture("para_ammo_barrel.png");
@@ -49,9 +48,9 @@ public class AmmoDrop {
 
 
         if(freeze){
+
+
             if(IsExplosion){
-
-
                 DropDeleteTimer += delta;
                 if(DropDeleteTimer >= 7f) {
                     DeleteDrop = true;
@@ -67,6 +66,8 @@ public class AmmoDrop {
                     DeleteDrop = true;
                 }
             }
+
+
         }
 
         else {

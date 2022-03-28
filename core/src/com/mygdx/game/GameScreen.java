@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.Iterator;
 
 
+
 class GameScreen implements Screen {
 
     final contamination game;
@@ -47,7 +48,7 @@ class GameScreen implements Screen {
     static Array<Player> Players;
 
     //World objects
-    static Array<AmmoDrop> AmmoDrops;
+    Array<AmmoDrop> AmmoDrops;
     Array<MapObject> Grounds;
     Array<MapObject> WorldBorders;
     Array<MapObject> RadioActivePools;
@@ -181,7 +182,7 @@ class GameScreen implements Screen {
     }
 
     public void AmmoDropCollision(float delta){
-        // ammo drop collision handling with grounds
+        // ammo drop collision with grounds
         for(MapObject GroundIndex : Grounds){
             for(AmmoDrop DropIndex : AmmoDrops){
                 // freeze if the drop on ground
@@ -191,7 +192,7 @@ class GameScreen implements Screen {
             }
         }
 
-        // ammo drop collision handling with RadioActivePools
+        // ammo drop collision with RadioActivePools
         for(MapObject RadioActivePoolIndex : RadioActivePools) {
             for (Iterator<AmmoDrop> Iter = AmmoDrops.iterator(); Iter.hasNext(); ) {
                 AmmoDrop TempAmmoDrops = Iter.next();
@@ -201,19 +202,37 @@ class GameScreen implements Screen {
             }
         }
 
-        // removes Bullet and AmmoDrop if they touch each other it
+        // if bullet touches barrel:
+        // remove the bullet and the barrel explodes
         for(Player playerIndex : Players) {
             for (Iterator<Bullet> BulletIter = playerIndex.getBullets().iterator(); BulletIter.hasNext(); ) {
                 Bullet TempBullets = BulletIter.next();
                 for (AmmoDrop TempAmmoDrops : AmmoDrops) {
                     if (TempAmmoDrops.DropHitBox.overlaps(TempBullets.hitBox)) {
-
                         TempAmmoDrops.freeze = true;
                         TempAmmoDrops.IsExplosion = true;
-
                         BulletIter.remove();
                     }
+                }
+            }
+        }
 
+        // removes barrel and increase PlayerGunAmmo
+        for(Player playerIndex : Players) {
+            for (Iterator<AmmoDrop> Iter = AmmoDrops.iterator(); Iter.hasNext(); ) {
+                AmmoDrop AmmoDropsIndex = Iter.next();
+                if (AmmoDropsIndex.DropHitBox.overlaps(playerIndex.PlayerHitBox) && playerIndex.PlayerGunAmmo != 5 && !AmmoDropsIndex.IsExplosion) {
+                    playerIndex.PlayerGunAmmo++;
+                    Iter.remove();
+                }
+            }
+        }
+
+        // kill the player if he touches the Explosion
+        for(Player playerIndex : Players) {
+            for (AmmoDrop DropIndex : AmmoDrops) {
+                if (playerIndex.PlayerHitBox.overlaps(DropIndex.ExplosiveHitBox) && DropIndex.IsExplosion) {
+                    playerIndex.PlayerHealth = 0;
                 }
             }
         }
@@ -419,7 +438,7 @@ class GameScreen implements Screen {
 
     }
 
-    public static Array<AmmoDrop> GetAmmoDrops(){
+    public  Array<AmmoDrop> GetAmmoDrops(){
         return AmmoDrops;
     }
 
