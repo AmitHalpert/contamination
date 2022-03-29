@@ -72,7 +72,7 @@ public class AmmoDrop {
                 outTexture = ExplosionAnimation.getFrame(0.6f * delta);
                 ExplosionSound.play();
                 ExplosionDropDeleteTimer += delta;
-                if(ExplosionDropDeleteTimer >= 0.7f) {
+                if(ExplosionDropDeleteTimer >= 0.6f) {
                     DeleteDrop = true;
                 }
             }

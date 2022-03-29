@@ -42,6 +42,7 @@ public class GameScreen implements Screen {
     Viewport viewport;
 
     //graphics
+    ObjectAnimation AmmoNumbersTex;
     ObjectAnimation LeftPlayerHealthHUD;
     ObjectAnimation RightPlayerHealthHUD;
     ObjectAnimation RadioActivePoolAnimation;
@@ -99,6 +100,9 @@ public class GameScreen implements Screen {
         // RadioActive Pool
         RadioActivePoolAnimation = new ObjectAnimation();
         RadioActivePoolAnimation.loadAnimation("RadioActivePoolAnimation_",5);
+        // AmmoNumbers
+        AmmoNumbersTex = new ObjectAnimation();
+        AmmoNumbersTex.loadAnimation("num_",6);
 
         ////
         // Map Objects
@@ -118,7 +122,6 @@ public class GameScreen implements Screen {
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         deltaTime = 0;
         timeDrop = 0;
-
 
     }
 
@@ -234,7 +237,7 @@ public class GameScreen implements Screen {
 
         // Spawns the drop in random X position every 15 sec.
         timeDrop += delta;
-        if (timeDrop >= 2f) {
+        if (timeDrop >= 3f) {
             AmmoDrop drop = new AmmoDrop(MathUtils.random(0, 1900), 1920);
             AmmoDrops.add(drop);
             timeDrop = 0;
@@ -294,6 +297,28 @@ public class GameScreen implements Screen {
         game.batch.draw(Players.get(0).render(deltaTime, Grounds, WorldBorders, RadioActivePools), 1760,950,Players.get(0).width,Players.get(0).height);
 
 
+        switch (Players.get(0).PlayerGunAmmo){
+            case 5:
+                game.batch.draw(AmmoNumbersTex.getIndexFrame(5),1725,1012,30,33);
+                break;
+            case 4:
+                game.batch.draw(AmmoNumbersTex.getIndexFrame(4),1725,1012,30,33);
+                break;
+            case 3:
+                game.batch.draw(AmmoNumbersTex.getIndexFrame(3),1725,1012,30,33);
+                break;
+            case 2:
+                game.batch.draw(AmmoNumbersTex.getIndexFrame(2),1725,1012,30,33);
+                break;
+            case 1:
+                game.batch.draw(AmmoNumbersTex.getIndexFrame(1),1725,1012,30,33);
+                break;
+            case 0:
+                game.batch.draw(AmmoNumbersTex.getIndexFrame(0),1725,1012,30,33);
+                break;
+        }
+
+
 
 
         // orange player health bar
@@ -315,7 +340,30 @@ public class GameScreen implements Screen {
             default:
                 game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(3),-30,920,430,170);
         }
+
         game.batch.draw(Players.get(1).render(deltaTime, Grounds, WorldBorders, RadioActivePools), -10,950,Players.get(1).width,Players.get(1).height);
+
+        switch (Players.get(1).PlayerGunAmmo){
+            case 5:
+                game.batch.draw(AmmoNumbersTex.getIndexFrame(5),170,1012,30,33);
+                break;
+            case 4:
+                game.batch.draw(AmmoNumbersTex.getIndexFrame(4),170,1012,30,33);
+                break;
+            case 3:
+                game.batch.draw(AmmoNumbersTex.getIndexFrame(3),170,1012,30,33);
+                break;
+            case 2:
+                game.batch.draw(AmmoNumbersTex.getIndexFrame(2),170,1012,30,33);
+                break;
+            case 1:
+                game.batch.draw(AmmoNumbersTex.getIndexFrame(1),170,1012,30,33);
+                break;
+            case 0:
+                game.batch.draw(AmmoNumbersTex.getIndexFrame(0),170,1012,30,33);
+                break;
+        }
+
     }
 
     public void MenuGUI(){
