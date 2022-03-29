@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.Sprites;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
@@ -6,6 +6,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.Tools.ObjectAnimation;
+import com.mygdx.game.Tools.MapObject;
+import com.mygdx.game.Screens.GameScreen;
+import com.mygdx.game.Sprites.Objects.Bullet;
+import com.mygdx.game.Sprites.Objects.AmmoDrop;
 
 import java.util.Iterator;
 
@@ -43,19 +48,21 @@ public class Player {
     public final float GRAVITATIONAL_FORCE = 15f;
 
     // player characteristics
-    float PlayerX, PlayerY;
-    int PlayerHealth;
-    int width, height;
+    public float PlayerX;
+    public float PlayerY;
+    public int PlayerHealth;
+    public int width;
+    public int height;
     double Xspeed, Yspeed;
     boolean isFacingLeft;
     boolean Collision;
     boolean IsPlayerFrozen;
-    Rectangle PlayerHitBox;
+    public Rectangle PlayerHitBox;
     Rectangle PlayerBounds;
 
 
     // gun parameters
-    int PlayerGunAmmo;
+    public int PlayerGunAmmo;
     float TimeBetweenShots;
     boolean isPlayerHoldingGun;
     Array<Bullet> bullets;
@@ -218,7 +225,7 @@ public class Player {
 
 
 
-    public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
+    public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder, Array<MapObject> RadioActivePool) {
         // freezes everything
         if(!GameScreen.isPaused){
 

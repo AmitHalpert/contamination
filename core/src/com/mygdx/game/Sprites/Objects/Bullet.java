@@ -1,9 +1,10 @@
-package com.mygdx.game;
+package com.mygdx.game.Sprites.Objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.Tools.MapObject;
 
 import java.util.Iterator;
 
@@ -14,9 +15,11 @@ public class Bullet{
     // bullet parameters
     double DirectionSpeed;
     double Xspeed;
-    int width = 60 , height = 60;
-    float bulletX, bulletY;
-    Rectangle hitBox;
+    public int width = 60;
+    public int height = 60;
+    public float bulletX;
+    public float bulletY;
+    public Rectangle hitBox;
     Texture bulletTex;
     Texture bulletNotExisting;
     Texture outTexture;

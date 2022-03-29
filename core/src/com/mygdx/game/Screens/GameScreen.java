@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -12,19 +12,26 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.*;
+import com.mygdx.game.Sprites.Objects.AmmoDrop;
+import com.mygdx.game.Sprites.Objects.Bullet;
+import com.mygdx.game.Sprites.Player;
+import com.mygdx.game.Tools.MapObject;
+import com.mygdx.game.Tools.ObjectAnimation;
+
 
 import java.util.Iterator;
 
 
 
-class GameScreen implements Screen {
+public class GameScreen implements Screen {
 
     final contamination game;
 
     // Main menu features
     float deltaTime;
     boolean IsGUI;
-    static boolean isPaused;
+    public static boolean isPaused;
     float timeDrop;
 
     // SFX and music
@@ -46,7 +53,7 @@ class GameScreen implements Screen {
     static final int WORLD_HEIGHT = Gdx.graphics.getHeight();
 
     // The players Array
-    static Array<Player> Players;
+    public static Array<Player> Players;
 
     //World objects
     Array<AmmoDrop> AmmoDrops;

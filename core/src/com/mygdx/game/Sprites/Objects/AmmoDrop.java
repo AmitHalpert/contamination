@@ -1,10 +1,11 @@
-package com.mygdx.game;
+package com.mygdx.game.Sprites.Objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.Tools.ObjectAnimation;
 
 
 public class AmmoDrop {
@@ -13,15 +14,17 @@ public class AmmoDrop {
 
 
     double Yspeed;
-    int width = 120 , height = 120;
-    float dropX, dropY;
-    boolean freeze;
+    public int width = 120;
+    public int height = 120;
+    public float dropX;
+    public float dropY;
+    public boolean freeze;
     float DropDeleteTimer;
     float ExplosionDropDeleteTimer;
-    boolean DeleteDrop;
-    boolean IsExplosion;
-    Rectangle DropHitBox;
-    Rectangle ExplosiveHitBox;
+    public boolean DeleteDrop;
+    public boolean IsExplosion;
+    public Rectangle DropHitBox;
+    public Rectangle ExplosiveHitBox;
 
     // graphics
     ObjectAnimation ExplosionAnimation;
@@ -66,10 +69,10 @@ public class AmmoDrop {
             if(IsExplosion){
                 width = 350;
                 height = 350;
-                outTexture = ExplosionAnimation.getFrame(0.8f * delta);
+                outTexture = ExplosionAnimation.getFrame(0.6f * delta);
                 ExplosionSound.play();
                 ExplosionDropDeleteTimer += delta;
-                if(ExplosionDropDeleteTimer >= 0.6f) {
+                if(ExplosionDropDeleteTimer >= 0.7f) {
                     DeleteDrop = true;
                 }
             }

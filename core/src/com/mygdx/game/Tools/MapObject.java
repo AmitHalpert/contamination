@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.Tools;
 
 import com.badlogic.gdx.math.Rectangle;
 
@@ -9,7 +9,7 @@ public class MapObject {
     int width;
     int height;
 
-    Rectangle hitBox;
+    public Rectangle hitBox;
 
     public MapObject(float x, float y, int width, int height){
         this.x = x;

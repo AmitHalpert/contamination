@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.Tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 // animation for a game object
 public class ObjectAnimation {
     final float targetDelta = 0.05f; // is the target time for elapsedTime
-    int currentFrame; // current frame in the animation array
+    public int currentFrame; // current frame in the animation array
     float elapsedTime; // elapsed time since last frame change
-    Array<Texture> frames; // stores the frames of the animation
+    public Array<Texture> frames; // stores the frames of the animation
 
     public ObjectAnimation(){
         frames = new Array<Texture>();
