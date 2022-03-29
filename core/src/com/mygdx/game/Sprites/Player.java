@@ -118,7 +118,7 @@ public class Player {
         PlayerBounds = new Rectangle(x, y, width, height);
 
         isFacingLeft = false;
-        isPlayerHoldingGun = true;
+        isPlayerHoldingGun = false;
         Collision = false;
         IsPlayerFrozen = false;
         state = playerState.Idle;
@@ -167,7 +167,7 @@ public class Player {
                 flipped_player_jumping_animation = new ObjectAnimation();
                 flipped_player_jumping_animation.loadAnimation("flipped-Orange-Player-Jumping_", 1);
                 flipped_player_idle_animation = new ObjectAnimation();
-                flipped_player_idle_animation.loadAnimation("flipped-Orange-Player-idle_gun_", 1);
+                flipped_player_idle_animation.loadAnimation("flipped-Orange-Player-idle_", 1);
                 // player with a gun left animations
                 flipped_player_running_gun_animation = new ObjectAnimation();
                 flipped_player_running_gun_animation.loadAnimation("flipped-Orange-Player-Running-gun_", 4);
@@ -658,10 +658,16 @@ public class Player {
         // stops the player if he's now moving
         Xspeed = 0;
 
+        // if player don't have ammo set isPlayerHoldingGun to FALSE
+        // if the player have ammo set to TRUE
+        isPlayerHoldingGun = PlayerGunAmmo != 0;
+
+        // limit health
         if(PlayerHealth > 3){
             PlayerHealth = 3;
         }
 
+        // limit ammo
         if(PlayerGunAmmo > 5){
             PlayerGunAmmo = 5;
         }
