@@ -193,6 +193,9 @@ public class GameScreen implements Screen {
                 if (TempAmmoDrops.DropHitBox.overlaps(RadioActivePoolIndex.hitBox)) {
                     Iter.remove();
                 }
+                if(TempAmmoDrops.DeleteDrop){
+                    Iter.remove();
+                }
             }
         }
 
@@ -235,10 +238,9 @@ public class GameScreen implements Screen {
         }
 
 
-
-        // Spawns the drop in random X position every 15 sec.
+        // Spawns the drop in random X position every X time sec.
         timeDrop += delta;
-        if (timeDrop >= 3f) {
+        if (timeDrop >= 7f) {
             AmmoDrop drop = new AmmoDrop(MathUtils.random(0, 1900), 1920);
             AmmoDrops.add(drop);
             timeDrop = 0;

@@ -4,6 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.Texture;
 
+/**
+ * The purpose of ObjectAnimation is to replace TextureAtlas(.pack),
+ * by playing animations using only .PNGs,
+ */
+
 // animation for a game object
 public class ObjectAnimation {
     final float targetDelta = 0.05f; // is the target time for elapsedTime
@@ -12,7 +17,7 @@ public class ObjectAnimation {
     public Array<Texture> frames; // stores the frames of the animation
 
     public ObjectAnimation(){
-        frames = new Array<Texture>();
+        frames = new Array<>();
         currentFrame = 0;
         elapsedTime = 0;
     }
