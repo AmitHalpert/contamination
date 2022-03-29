@@ -18,6 +18,7 @@ import com.mygdx.game.Sprites.Objects.Bullet;
 import com.mygdx.game.Sprites.Player;
 import com.mygdx.game.Tools.MapObject;
 import com.mygdx.game.Tools.ObjectAnimation;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 
 import java.util.Iterator;
@@ -296,26 +297,27 @@ public class GameScreen implements Screen {
         }
         game.batch.draw(Players.get(0).render(deltaTime, Grounds, WorldBorders, RadioActivePools), 1760,950,Players.get(0).width,Players.get(0).height);
 
-
-        switch (Players.get(0).PlayerGunAmmo){
-            case 5:
-                game.batch.draw(AmmoNumbersTex.getIndexFrame(5),1725,1012,30,33);
-                break;
-            case 4:
-                game.batch.draw(AmmoNumbersTex.getIndexFrame(4),1725,1012,30,33);
-                break;
-            case 3:
-                game.batch.draw(AmmoNumbersTex.getIndexFrame(3),1725,1012,30,33);
-                break;
-            case 2:
-                game.batch.draw(AmmoNumbersTex.getIndexFrame(2),1725,1012,30,33);
-                break;
-            case 1:
-                game.batch.draw(AmmoNumbersTex.getIndexFrame(1),1725,1012,30,33);
-                break;
-            case 0:
-                game.batch.draw(AmmoNumbersTex.getIndexFrame(0),1725,1012,30,33);
-                break;
+        if(Players.get(0).PlayerHealth != 0) {
+            switch (Players.get(0).PlayerGunAmmo) {
+                case 5:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(5), 1725, 1012, 30, 33);
+                    break;
+                case 4:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(4), 1725, 1012, 30, 33);
+                    break;
+                case 3:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(3), 1725, 1012, 30, 33);
+                    break;
+                case 2:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(2), 1725, 1012, 30, 33);
+                    break;
+                case 1:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(1), 1725, 1012, 30, 33);
+                    break;
+                case 0:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(0), 1725, 1012, 30, 33);
+                    break;
+            }
         }
 
 
@@ -343,25 +345,27 @@ public class GameScreen implements Screen {
 
         game.batch.draw(Players.get(1).render(deltaTime, Grounds, WorldBorders, RadioActivePools), -10,950,Players.get(1).width,Players.get(1).height);
 
-        switch (Players.get(1).PlayerGunAmmo){
-            case 5:
-                game.batch.draw(AmmoNumbersTex.getIndexFrame(5),170,1012,30,33);
-                break;
-            case 4:
-                game.batch.draw(AmmoNumbersTex.getIndexFrame(4),170,1012,30,33);
-                break;
-            case 3:
-                game.batch.draw(AmmoNumbersTex.getIndexFrame(3),170,1012,30,33);
-                break;
-            case 2:
-                game.batch.draw(AmmoNumbersTex.getIndexFrame(2),170,1012,30,33);
-                break;
-            case 1:
-                game.batch.draw(AmmoNumbersTex.getIndexFrame(1),170,1012,30,33);
-                break;
-            case 0:
-                game.batch.draw(AmmoNumbersTex.getIndexFrame(0),170,1012,30,33);
-                break;
+        if(Players.get(1).PlayerHealth != 0) {
+            switch (Players.get(1).PlayerGunAmmo) {
+                case 5:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(5), 170, 1012, 30, 33);
+                    break;
+                case 4:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(4), 170, 1012, 30, 33);
+                    break;
+                case 3:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(3), 170, 1012, 30, 33);
+                    break;
+                case 2:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(2), 170, 1012, 30, 33);
+                    break;
+                case 1:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(1), 170, 1012, 30, 33);
+                    break;
+                case 0:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(0), 170, 1012, 30, 33);
+                    break;
+            }
         }
 
     }
