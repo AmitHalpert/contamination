@@ -102,8 +102,8 @@ public class Player {
     ObjectAnimation flipped_player_jumping_gun_animation;
 
     // creates the enums
-    playerState state;
-    PlayersController SelectedPlayer;
+    public playerState state;
+    public PlayersController SelectedPlayer;
 
     public Player(float x, float y,PlayersController SelectedPlayer){
         this.PlayerX = x;

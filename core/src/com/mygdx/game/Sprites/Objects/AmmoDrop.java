@@ -51,7 +51,7 @@ public class AmmoDrop {
         ExplosiveHitBox = new Rectangle(dropX,dropY,400,400);
 
         ExplosionAnimation = new ObjectAnimation();
-        ExplosionAnimation.loadAnimation("BarrelExplosion_",13);
+        ExplosionAnimation.loadAnimation("BarrelExplosion_",14);
         outTexture = new Texture("para_ammo_barrel.png");
         AmmoDropOntheGroundTexture = new Texture("ammo_barrel.png");
         ParaAmmoDropTexture = new Texture("para_ammo_barrel.png");
@@ -69,7 +69,7 @@ public class AmmoDrop {
             if(IsExplosion){
                 width = 350;
                 height = 350;
-                outTexture = ExplosionAnimation.getFrame(0.6f * delta);
+                outTexture = ExplosionAnimation.getFrame(0.8f * delta);
                 ExplosionSound.play();
                 ExplosionDropDeleteTimer += delta;
                 if(ExplosionDropDeleteTimer >= 0.6f) {

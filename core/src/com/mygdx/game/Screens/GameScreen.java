@@ -43,6 +43,8 @@ public class GameScreen implements Screen {
     Viewport viewport;
 
     //graphics
+    ObjectAnimation BluePlayerWinAnimation;
+    ObjectAnimation OrangePlayerWinAnimation;
     ObjectAnimation AmmoNumbersTex;
     ObjectAnimation LeftPlayerHealthHUD;
     ObjectAnimation RightPlayerHealthHUD;
@@ -90,8 +92,21 @@ public class GameScreen implements Screen {
         ////
         // graphics
         ////
-        guiMenu = new Texture("menugui.png");
+
+        // the map
         background = new Texture("genesis.png");
+
+        // paused game menu
+        guiMenu = new Texture("menugui.png");
+
+        //
+        OrangePlayerWinAnimation = new ObjectAnimation();
+        OrangePlayerWinAnimation.loadAnimation("ORANGE_PLAYER_WINS_",9);
+
+        BluePlayerWinAnimation = new ObjectAnimation();
+        BluePlayerWinAnimation.loadAnimation("BLUE_PLAYER_WINS_",11);
+
+
         // right health bar
         RightPlayerHealthHUD = new ObjectAnimation();
         RightPlayerHealthHUD.loadAnimation("right-player-health_",4);
@@ -142,6 +157,9 @@ public class GameScreen implements Screen {
             deltaTime = 0;
         }
 
+
+
+
         // spawns AmmoDrop and collision
         AmmoDropCollision(deltaTime);
 
@@ -172,6 +190,9 @@ public class GameScreen implements Screen {
         MenuGUI();
         // draw health bars and HUD-players
         DrawPlayersHealthBarHUD();
+
+        ShowWinnerPlayer(deltaTime);
+
         game.batch.end();
     }
 
@@ -482,6 +503,19 @@ public class GameScreen implements Screen {
 
         // create upper world border
         WorldBorders.add(new MapObject(-550,1200,3000,200));
+
+    }
+
+    public void ShowWinnerPlayer(float delta){
+
+
+        if(Players.get(0).state == Player.playerState.dead && Players.get(1).state != Player.playerState.dead) {
+            game.batch.draw(OrangePlayerWinAnimation.getFrame(delta), 1080 - 900 / 2f, 800, 700, 100);
+        }
+        if(Players.get(1).state == Player.playerState.dead && Players.get(0).state != Player.playerState.dead){
+            game.batch.draw(BluePlayerWinAnimation.getFrame(delta), 1080 - 900 / 2f, 800, 700, 100);
+        }
+
 
     }
 
