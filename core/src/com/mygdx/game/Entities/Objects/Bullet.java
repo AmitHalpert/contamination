@@ -1,12 +1,10 @@
-package com.mygdx.game.Sprites.Objects;
+package com.mygdx.game.Entities.Objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Tools.MapObject;
-
-import java.util.Iterator;
 
 public class Bullet{
 

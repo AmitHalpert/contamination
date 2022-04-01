@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
@@ -13,12 +12,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.*;
-import com.mygdx.game.Sprites.Objects.AmmoDrop;
-import com.mygdx.game.Sprites.Objects.Bullet;
-import com.mygdx.game.Sprites.Player;
+import com.mygdx.game.Entities.Objects.AmmoDrop;
+import com.mygdx.game.Entities.Objects.Bullet;
+import com.mygdx.game.Entities.Player;
 import com.mygdx.game.Tools.MapObject;
 import com.mygdx.game.Tools.ObjectAnimation;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 
 import java.util.Iterator;
@@ -82,17 +80,17 @@ public class GameScreen implements Screen {
         Players.add(new Player(400,500,Player.PlayersController.Orange));
 
 
-        ////
+        ////////////////////////
         // SFX
-        ////
+        ////////////////////////
         GameAmbience = Gdx.audio.newMusic(Gdx.files.internal("GameAmbience.mp3"));
         GameAmbience.setLooping(true);
         GameAmbience.setVolume(0.09f);
         GameAmbience.play();
 
-        ////
+        ////////////////////////
         // graphics
-        ////
+        ////////////////////////
 
         // the map
         background = new Texture("genesis.png");
@@ -124,9 +122,9 @@ public class GameScreen implements Screen {
         AmmoNumbersTex = new ObjectAnimation();
         AmmoNumbersTex.loadAnimation("num_",6);
 
-        ////
+        ////////////////////////
         // Map Objects
-        ////
+        ////////////////////////
         Grounds = new Array<>();
         WorldBorders = new Array<>();
         RadioActivePools = new Array<>();
@@ -172,26 +170,26 @@ public class GameScreen implements Screen {
         // Draw hierarchy
         ////////////////////////
         game.batch.begin();
-        // Draws map and map animations
+
+        // Draws map and the map animations
         DrawMap(deltaTime);
         // draws the ammo drops
         DrawAmmoDrops(deltaTime);
         // draw all the players
-        DrawPlayers(deltaTime);
+        DrawPlayers();
         // draw every player's bullets
         DrawPlayersBullets();
-        // draw and pauses the game
-        DrawMenu();
         // draw health bars and ammo amount for the player
         DrawPlayersHealthBarHUD();
         // shows which player won
         DrawWinnerPlayer(deltaTime);
+        // draw gui and pauses the game
+        DrawMenu();
+
+
 
         game.batch.end();
     }
-
-
-
 
 
 
@@ -208,7 +206,7 @@ public class GameScreen implements Screen {
         game.batch.draw(RadioActivePoolAnimation.getFrame(0.3f * deltaTime), 1209, 200, 213, 190);
     }
 
-    public void DrawPlayers(float deltaTime){
+    public void DrawPlayers(){
         for (Player players : Players) {
             game.batch.draw(players.render(Gdx.graphics.getDeltaTime(), Grounds, WorldBorders, RadioActivePools), players.PlayerX, players.PlayerY, players.width, players.height);
         }
@@ -574,12 +572,6 @@ public class GameScreen implements Screen {
 
     }
 
-
-
-
-    public  Array<AmmoDrop> GetAmmoDrops(){
-        return AmmoDrops;
-    }
 
     @Override
     public void resize(int width, int height) {

@@ -1,4 +1,4 @@
-package com.mygdx.game.Sprites;
+package com.mygdx.game.Entities;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
@@ -9,8 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Tools.ObjectAnimation;
 import com.mygdx.game.Tools.MapObject;
 import com.mygdx.game.Screens.GameScreen;
-import com.mygdx.game.Sprites.Objects.Bullet;
-import com.mygdx.game.Sprites.Objects.AmmoDrop;
+import com.mygdx.game.Entities.Objects.Bullet;
 
 import java.util.Iterator;
 
@@ -42,7 +41,7 @@ public class Player {
 
     // Initializing players' final Variables
     public final float ANIMATIONS_TIME = 0.5f;
-    public final float SHOOT_WAIT_TIME = 0.4f;
+    public final float SHOOT_WAIT_TIME = 0.1f;
     public final int MOVEMENT_SPEED = 320;
     public final int JUMP_FORCE = 7;
     public final float GRAVITATIONAL_FORCE = 15f;
@@ -59,7 +58,6 @@ public class Player {
     boolean IsPlayerFrozen;
     public Rectangle PlayerHitBox;
     Rectangle PlayerBounds;
-
 
     // gun parameters
     public int PlayerGunAmmo;
