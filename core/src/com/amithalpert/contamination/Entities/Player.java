@@ -16,8 +16,7 @@ import java.util.Iterator;
 /**
  * The Player is not an abstract class, but It's trying to be, inside it there's two players:
  * The Player class have global functions that affect every player,
- * And functions that created for each player purposely.
- *
+ * And functions that created for each player.
  */
 public class Player {
 
@@ -41,7 +40,7 @@ public class Player {
 
     // Initializing players' final Variables
     public final float ANIMATIONS_TIME = 0.5f;
-    public final float SHOOT_WAIT_TIME = 0.1f;
+    public final float SHOOT_WAIT_TIME = 0.01f;
     public final int MOVEMENT_SPEED = 320;
     public final int JUMP_FORCE = 7;
     public final float GRAVITATIONAL_FORCE = 15f;
@@ -55,7 +54,7 @@ public class Player {
     double Xspeed, Yspeed;
     boolean isFacingLeft;
     boolean Collision;
-    boolean IsPlayerFrozen;
+    public boolean IsPlayerFrozen;
     public Rectangle PlayerHitBox;
     Rectangle PlayerBounds;
 
@@ -76,9 +75,9 @@ public class Player {
     final Sound gunshot;
 
 
-    /////
+    ////////////////////////
     // types of the player animation and textures
-    ////
+    ////////////////////////
     Texture player_not_exiting;
     // create ObjectAnimation for every type of animation
     ObjectAnimation player_dead_animation;
@@ -130,9 +129,9 @@ public class Player {
         bullets = new Array<>();
         gunshot = Gdx.audio.newSound(Gdx.files.internal("gun1.wav"));
 
-        ////
+        ////////////////////////
         // set up the players animations
-        ////
+        ////////////////////////
         // detect Player according to the PlayersController enum and apply the animations
         switch (SelectedPlayer) {
 
@@ -228,12 +227,12 @@ public class Player {
         if(!GameScreen.isPaused){
 
 
-           if(state != playerState.dead ) {
+           if(state != playerState.dead) {
                // the player's Hit box for bullet collision
-               PlayerHitBox = new Rectangle(PlayerX + 40, PlayerY, width, height - 115);
+               PlayerHitBox = new Rectangle(PlayerX + 66, PlayerY, width, height - 115);
            }
            else{
-               // teleports "removes" the PlayerHitBox if he is dead
+               // teleports "removes" the PlayerHitBox if player is dead
                PlayerHitBox.x = 3000;
 
            }
@@ -257,7 +256,6 @@ public class Player {
                     break;
             }
 
-
             // Detects if the player touches A MapObject
             collisionHandling(delta,Ground,WorldBorder,RadioActivePool);
 
@@ -272,9 +270,9 @@ public class Player {
         PlayerParametersHandling();
 
 
-        //###################
+        ////////////////////////
         // The animation switch:
-        //###################
+        ////////////////////////
 
         // checks which animation should play according to the Player's state
         // and outputs the animation
@@ -618,7 +616,6 @@ public class Player {
         for (MapObject borders: WorldBorder) {
             if (PlayerBounds.overlaps(borders.hitBox)) {
                 Xspeed -= Xspeed;
-
             }
         }
 
@@ -655,7 +652,6 @@ public class Player {
             bullet = new Bullet(PlayerX + 50, PlayerY, false);
         }
 
-
         bullets.add(bullet);
     }
 
@@ -664,8 +660,9 @@ public class Player {
         // stops the player if he's now moving
         Xspeed = 0;
 
-        // if player don't have ammo set isPlayerHoldingGun to FALSE
-        // if the player have ammo set to TRUE
+
+        // if the player have ammo, diff from zero then true
+        // this statement is for the animation switch
         isPlayerHoldingGun = PlayerGunAmmo != 0;
 
         // limit health

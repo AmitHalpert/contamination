@@ -46,8 +46,8 @@ public class AmmoDrop {
         DeleteDrop = false;
         ExplosionDropDeleteTimer= 0;
 
+
         DropHitBox = new Rectangle(dropX, dropY, width, height);
-        ExplosiveHitBox = new Rectangle(dropX ,dropY,400,400);
 
         ExplosionAnimation = new ObjectAnimation();
         ExplosionAnimation.loadAnimation("BarrelExplosion_",14);
@@ -64,11 +64,10 @@ public class AmmoDrop {
     public Texture update(float delta){
 
 
-
+        ExplosiveHitBox = new Rectangle(dropX - 100 ,dropY,350,350);
         // freezes Drop. See in GameScreen AmmoDropCollision
         if(freeze){
             if(IsExplosion){
-
                 outTexture = ExplosionAnimation.getFrame(0.8f * delta);
                 ExplosionSound.play();
                 ExplosionDropDeleteTimer += delta;

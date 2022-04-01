@@ -74,7 +74,6 @@ public class GameScreen implements Screen {
         IsGUI = false;
         isPaused = false;
 
-
         // creates the players
         Players = new Array<>();
         Players.add(new Player(1500,400, Player.PlayersController.Blue));
@@ -86,7 +85,7 @@ public class GameScreen implements Screen {
         ////////////////////////
         GameAmbience = Gdx.audio.newMusic(Gdx.files.internal("GameAmbience.mp3"));
         GameAmbience.setLooping(true);
-        GameAmbience.setVolume(0.09f);
+        GameAmbience.setVolume(0.06f);
         GameAmbience.play();
 
         ////////////////////////
@@ -126,11 +125,11 @@ public class GameScreen implements Screen {
         ////////////////////////
         // Map Objects
         ////////////////////////
+        // Creates and places the map Objects
         Grounds = new Array<>();
         WorldBorders = new Array<>();
         RadioActivePools = new Array<>();
         AmmoDrops = new Array<>();
-        // Creates and places the map Objects
         createGrounds();
         createMapBorders();
         createRadioActivePools();
@@ -217,7 +216,7 @@ public class GameScreen implements Screen {
         // draws the ammo drops
         for (AmmoDrop drops : AmmoDrops) {
             if(drops.IsExplosion){
-                game.batch.draw(drops.update(deltaTime), drops.dropX - 100, drops.dropY, 350, 350);
+                game.batch.draw(drops.update(deltaTime), drops.dropX - 100, drops.dropY - 100, 350, 350);
             }
             else {
                 game.batch.draw(drops.update(deltaTime), drops.dropX, drops.dropY, drops.width, drops.height);
@@ -329,11 +328,13 @@ public class GameScreen implements Screen {
         else if(Gdx.input.isKeyJustPressed(Keys.ESCAPE) && IsGUI){
             IsGUI = false;
             isPaused = false;
+            GameAmbience.play();
         }
 
 
         if(IsGUI){
             isPaused = true;
+            GameAmbience.pause();
             game.batch.draw(guiMenu,MainMenuScreen.xCenter/2f+300f,MainMenuScreen.yCenter/2f+300f,400,400);
             //exit button
 
@@ -477,7 +478,7 @@ public class GameScreen implements Screen {
 
         // Spawns the drop in random X position every X time sec.
         timeDrop += delta;
-        if (timeDrop >= 7f) {
+        if (timeDrop >= 5.5f) {
             AmmoDrop drop = new AmmoDrop(MathUtils.random(0, 1900), 1920);
             AmmoDrops.add(drop);
             timeDrop = 0;
@@ -489,8 +490,22 @@ public class GameScreen implements Screen {
     public void PlayersBulletCollisionHandling(){
 
         // removes the bullet if it overlaps WorldBorder
+        for(Player playerIndex : Players) {
+            for (MapObject Borders : WorldBorders) {
+                Array<Bullet> Playerbullets = playerIndex.getBullets();
+                for (Iterator<Bullet> Iter = Playerbullets.iterator(); Iter.hasNext(); ) {
+                    Bullet TempBullet = Iter.next();
+                    if (TempBullet.hitBox.overlaps(Borders.hitBox)) {
+                        Iter.remove();
+                    }
+                }
+            }
+        }
+
+
+        /*
         for (MapObject Borders : WorldBorders) {
-            Array<Bullet> BluePlayerbullets = GameScreen.Players.get(0).getBullets();
+            Array<Bullet> BluePlayerbullets = Players.get(0).getBullets();
             for(Iterator<Bullet> BlueIter = BluePlayerbullets.iterator(); BlueIter.hasNext();){
                 Bullet TempBlueBullets = BlueIter.next();
                 if(TempBlueBullets.hitBox.overlaps(Borders.hitBox)){
@@ -499,9 +514,8 @@ public class GameScreen implements Screen {
             }
         }
 
-
         for (MapObject Borders : WorldBorders) {
-            Array<Bullet> YellowPlayerbullets = GameScreen.Players.get(1).getBullets();
+            Array<Bullet> YellowPlayerbullets = Players.get(1).getBullets();
             for(Iterator<Bullet> YellowIter = YellowPlayerbullets.iterator(); YellowIter.hasNext();){
                 Bullet TempYellowBullets = YellowIter.next();
                 if(TempYellowBullets.hitBox.overlaps(Borders.hitBox)){
@@ -509,8 +523,7 @@ public class GameScreen implements Screen {
                 }
             }
         }
-
-
+         */
     }
 
 
