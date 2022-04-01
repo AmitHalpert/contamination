@@ -43,6 +43,7 @@ public class GameScreen implements Screen {
     Viewport viewport;
 
     //graphics
+    Texture PressSpace;
     ObjectAnimation BluePlayerWinAnimation;
     ObjectAnimation OrangePlayerWinAnimation;
     ObjectAnimation AmmoNumbersTex;
@@ -99,12 +100,13 @@ public class GameScreen implements Screen {
         // paused game menu
         guiMenu = new Texture("menugui.png");
 
-        //
+        // Winner indicator
+        PressSpace = new Texture("press-space.png");
         OrangePlayerWinAnimation = new ObjectAnimation();
         OrangePlayerWinAnimation.loadAnimation("ORANGE_PLAYER_WINS_",9);
-
         BluePlayerWinAnimation = new ObjectAnimation();
         BluePlayerWinAnimation.loadAnimation("BLUE_PLAYER_WINS_",11);
+
 
 
         // right health bar
@@ -113,9 +115,11 @@ public class GameScreen implements Screen {
         // left health bar
         LeftPlayerHealthHUD = new ObjectAnimation();
         LeftPlayerHealthHUD.loadAnimation("left-player-health_",4);
+
         // RadioActive Pool
         RadioActivePoolAnimation = new ObjectAnimation();
         RadioActivePoolAnimation.loadAnimation("RadioActivePoolAnimation_",5);
+
         // AmmoNumbers
         AmmoNumbersTex = new ObjectAnimation();
         AmmoNumbersTex.loadAnimation("num_",6);
@@ -507,6 +511,17 @@ public class GameScreen implements Screen {
     }
 
     public void ShowWinnerPlayer(float delta){
+
+
+        for(Player playerindex : Players){
+            if(playerindex.state == Player.playerState.dead){
+                game.batch.draw(PressSpace, 1080 - 550 / 2f, 600, 300, 55);
+                // rematch the game
+                if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
+                    game.setScreen(new GameScreen(game));
+                }
+            }
+        }
 
 
         if(Players.get(0).state == Player.playerState.dead && Players.get(1).state != Player.playerState.dead) {
