@@ -1,10 +1,10 @@
-package com.mygdx.game.Entities.Objects;
+package com.amithalpert.contamination.Entities.Objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
-import com.mygdx.game.Tools.ObjectAnimation;
+import com.amithalpert.contamination.Tools.ObjectAnimation;
 
 
 public class AmmoDrop {

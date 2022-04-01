@@ -1,4 +1,4 @@
-package com.mygdx.game.Tools;
+package com.amithalpert.contamination.Tools;
 
 import com.badlogic.gdx.math.Rectangle;
 

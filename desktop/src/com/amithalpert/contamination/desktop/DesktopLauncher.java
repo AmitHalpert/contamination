@@ -1,10 +1,9 @@
-package com.mygdx.game.desktop;
+package com.amithalpert.contamination.desktop;
 
 
+import com.amithalpert.contamination.contamination;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.mygdx.game.contamination;
-
 
 
 public class DesktopLauncher {

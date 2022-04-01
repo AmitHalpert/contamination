@@ -1,5 +1,10 @@
-package com.mygdx.game.Screens;
+package com.amithalpert.contamination.Screens;
 
+import com.amithalpert.contamination.Entities.Objects.AmmoDrop;
+import com.amithalpert.contamination.Entities.Objects.Bullet;
+import com.amithalpert.contamination.Entities.Player;
+import com.amithalpert.contamination.Tools.MapObject;
+import com.amithalpert.contamination.contamination;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -11,12 +16,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.game.*;
-import com.mygdx.game.Entities.Objects.AmmoDrop;
-import com.mygdx.game.Entities.Objects.Bullet;
-import com.mygdx.game.Entities.Player;
-import com.mygdx.game.Tools.MapObject;
-import com.mygdx.game.Tools.ObjectAnimation;
+import com.amithalpert.contamination.*;
+import com.amithalpert.contamination.Tools.ObjectAnimation;
 
 
 import java.util.Iterator;

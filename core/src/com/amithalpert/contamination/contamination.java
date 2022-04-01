@@ -1,9 +1,9 @@
-package com.mygdx.game;
+package com.amithalpert.contamination;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.Screens.MainMenuScreen;
+import com.amithalpert.contamination.Screens.MainMenuScreen;
 
 
 

@@ -1,10 +1,10 @@
-package com.mygdx.game.Entities.Objects;
+package com.amithalpert.contamination.Entities.Objects;
 
+import com.amithalpert.contamination.Tools.MapObject;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.Tools.MapObject;
 
 public class Bullet{
 

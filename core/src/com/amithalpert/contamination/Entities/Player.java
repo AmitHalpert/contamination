@@ -1,15 +1,15 @@
-package com.mygdx.game.Entities;
+package com.amithalpert.contamination.Entities;
 
+import com.amithalpert.contamination.Entities.Objects.Bullet;
+import com.amithalpert.contamination.Tools.MapObject;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.Tools.ObjectAnimation;
-import com.mygdx.game.Tools.MapObject;
-import com.mygdx.game.Screens.GameScreen;
-import com.mygdx.game.Entities.Objects.Bullet;
+import com.amithalpert.contamination.Tools.ObjectAnimation;
+import com.amithalpert.contamination.Screens.GameScreen;
 
 import java.util.Iterator;
 

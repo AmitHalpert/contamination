@@ -1,4 +1,4 @@
-package com.mygdx.game.Tools;
+package com.amithalpert.contamination.Tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
