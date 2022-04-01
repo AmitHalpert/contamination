@@ -287,7 +287,7 @@ public class Player {
                 IsPlayerFrozen = true;
                 dead_animation_time += delta;
                 if(dead_animation_time >= 0.04f) {
-                    outputTexture = player_dead_animation.getFrame(Gdx.graphics.getDeltaTime());
+                    outputTexture = player_dead_animation.getFrame(delta);
                     dead_animation_time = 0;
                     dead_elapsedTime += delta;
                 }
@@ -649,7 +649,15 @@ public class Player {
     public void ShootBullets() {
         // creates a new bullet and add it to the array
         Bullet bullet;
-        bullet = new Bullet(PlayerX, PlayerY, isFacingLeft);
+
+        // check isFacingLeft and adjust where the bullet coming from.
+        if(isFacingLeft){
+            bullet = new Bullet(PlayerX + 220, PlayerY, true);
+        }else{
+            bullet = new Bullet(PlayerX + 50, PlayerY, false);
+        }
+
+
         bullets.add(bullet);
     }
 

@@ -161,9 +161,6 @@ public class GameScreen implements Screen {
             deltaTime = 0;
         }
 
-
-
-
         // spawns AmmoDrop and collision
         AmmoDropCollision(deltaTime);
 
@@ -171,34 +168,250 @@ public class GameScreen implements Screen {
         PlayersBulletCollisionHandling();
 
 
-        //////////
+        ////////////////////////
         // Draw hierarchy
-        //////////
+        ////////////////////////
         game.batch.begin();
-        // Draws map
+        // Draws map and map animations
+        DrawMap(deltaTime);
+        // draws the ammo drops
+        DrawAmmoDrops(deltaTime);
+        // draw all the players
+        DrawPlayers(deltaTime);
+        // draw every player's bullets
+        DrawPlayersBullets();
+        // draw and pauses the game
+        DrawMenu();
+        // draw health bars and ammo amount for the player
+        DrawPlayersHealthBarHUD();
+        // shows which player won
+        DrawWinnerPlayer(deltaTime);
+
+        game.batch.end();
+    }
+
+
+
+
+
+
+
+    ////////////////////////
+    // Draw functions
+    ////////////////////////
+
+    public void DrawMap(float deltaTime){
+        // draw map
         game.batch.draw(background, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
         // Draws RadioActivePool Animation
         game.batch.draw(RadioActivePoolAnimation.getFrame(0.3f * deltaTime), 569, 46, 284, 190);
         game.batch.draw(RadioActivePoolAnimation.getFrame(0.3f * deltaTime), 1209, 200, 213, 190);
-        // draws the ammo drops
-        for (AmmoDrop drops : AmmoDrops) {
-            game.batch.draw(drops.update(deltaTime), drops.dropX, drops.dropY, drops.width, drops.height);
-        }
-        // Draw the players
+    }
+
+    public void DrawPlayers(float deltaTime){
         for (Player players : Players) {
             game.batch.draw(players.render(Gdx.graphics.getDeltaTime(), Grounds, WorldBorders, RadioActivePools), players.PlayerX, players.PlayerY, players.width, players.height);
         }
-        // draw every player's bullets
-        DrawPlayersBullets();
-        // draw and pauses the game
-        MenuGUI();
-        // draw health bars and HUD-players
-        DrawPlayersHealthBarHUD();
-
-        ShowWinnerPlayer(deltaTime);
-
-        game.batch.end();
     }
+
+    public void DrawAmmoDrops(float deltaTime){
+        // draws the ammo drops
+        for (AmmoDrop drops : AmmoDrops) {
+            if(drops.IsExplosion){
+                game.batch.draw(drops.update(deltaTime), drops.dropX - 100, drops.dropY, 350, 350);
+            }
+            else {
+                game.batch.draw(drops.update(deltaTime), drops.dropX, drops.dropY, drops.width, drops.height);
+            }
+        }
+    }
+
+    public void DrawPlayersHealthBarHUD(){
+        // blue player health bar
+        switch (Players.get(0).PlayerHealth){
+            case 3:
+                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(0),1520,920,430,170);
+                break;
+
+            case 2:
+                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(1),1520,920,430,170);
+                break;
+
+            case 1:
+                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(2),1520,920,430,170);
+                break;
+            case 0:
+                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(3),1520,920,430,170);
+                break;
+            default:
+                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(3),1520,920,430,170);
+
+        }
+        game.batch.draw(Players.get(0).render(deltaTime, Grounds, WorldBorders, RadioActivePools), 1760,950,Players.get(0).width,Players.get(0).height);
+
+        if(Players.get(0).PlayerHealth != 0) {
+            switch (Players.get(0).PlayerGunAmmo) {
+                case 5:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(5), 1725, 1012, 30, 33);
+                    break;
+                case 4:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(4), 1725, 1012, 30, 33);
+                    break;
+                case 3:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(3), 1725, 1012, 30, 33);
+                    break;
+                case 2:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(2), 1725, 1012, 30, 33);
+                    break;
+                case 1:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(1), 1725, 1012, 30, 33);
+                    break;
+                case 0:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(0), 1725, 1012, 30, 33);
+                    break;
+            }
+        }
+
+
+
+
+        // orange player health bar
+        switch (Players.get(1).PlayerHealth){
+            case 3:
+                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(0),-30,920,430,170);
+                break;
+
+            case 2:
+                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(1),-30,920,430,170);
+                break;
+
+            case 1:
+                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(2),-30,920,430,170);
+                break;
+            case 0:
+                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(3),-30,920,430,170);
+                break;
+            default:
+                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(3),-30,920,430,170);
+        }
+
+        game.batch.draw(Players.get(1).render(deltaTime, Grounds, WorldBorders, RadioActivePools), -10,950,Players.get(1).width,Players.get(1).height);
+
+        if(Players.get(1).PlayerHealth != 0) {
+            switch (Players.get(1).PlayerGunAmmo) {
+                case 5:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(5), 170, 1012, 30, 33);
+                    break;
+                case 4:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(4), 170, 1012, 30, 33);
+                    break;
+                case 3:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(3), 170, 1012, 30, 33);
+                    break;
+                case 2:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(2), 170, 1012, 30, 33);
+                    break;
+                case 1:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(1), 170, 1012, 30, 33);
+                    break;
+                case 0:
+                    game.batch.draw(AmmoNumbersTex.getIndexFrame(0), 170, 1012, 30, 33);
+                    break;
+            }
+        }
+
+    }
+
+    public void DrawMenu(){
+
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) && !IsGUI) {
+            IsGUI = true;
+        }
+        else if(Gdx.input.isKeyJustPressed(Keys.ESCAPE) && IsGUI){
+            IsGUI = false;
+            isPaused = false;
+        }
+
+
+        if(IsGUI){
+            isPaused = true;
+            game.batch.draw(guiMenu,MainMenuScreen.xCenter/2f+300f,MainMenuScreen.yCenter/2f+300f,400,400);
+            //exit button
+
+
+            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 290 + 100 + 300 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 290 + 300){
+                if(Gdx.input.isTouched()){
+                    dispose();
+                    Gdx.app.exit();
+                }
+            }
+
+            // resume button
+            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 500 + 100 + 300  && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 530 + 300){
+                if(Gdx.input.isTouched()){
+                    isPaused = false;
+                    IsGUI = false;
+                }
+            }
+            // main menu button
+            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 400 + 100 + 300 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 400+40 + 300){
+                if(Gdx.input.justTouched()){
+                    GameAmbience.stop();
+                    dispose();
+                    game.setScreen(new MainMenuScreen(game));
+                    }
+                }
+            }
+        }
+
+    public void DrawPlayersBullets(){
+
+        // draws the blue's player bullets
+        Array<Bullet> Bluebullets = Players.get(0).getBullets();
+        for(Bullet BluebulletsIndex : Bluebullets){
+
+            game.batch.draw(BluebulletsIndex.update(deltaTime, Grounds, WorldBorders), BluebulletsIndex.bulletX, BluebulletsIndex.bulletY, BluebulletsIndex.width, BluebulletsIndex.height);
+        }
+
+
+        // draws the orange's player bullets
+        Array<Bullet> Orangebullets = Players.get(1).getBullets();
+        for(Bullet OrangebulletsIndex : Orangebullets){
+            game.batch.draw(OrangebulletsIndex.update(deltaTime, Grounds, WorldBorders),OrangebulletsIndex.bulletX,OrangebulletsIndex.bulletY,OrangebulletsIndex.width,OrangebulletsIndex.height);
+        }
+
+    }
+
+    public void DrawWinnerPlayer(float delta){
+
+        // if any player dies draw PressSpace
+        for(Player playerindex : Players){
+            if(playerindex.state == Player.playerState.dead){
+                game.batch.draw(PressSpace, 1080 - 550 / 2f, 600, 300, 55);
+                // rematch the game
+                if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
+                    game.setScreen(new GameScreen(game));
+                }
+            }
+        }
+
+
+        if(Players.get(0).state == Player.playerState.dead && Players.get(1).state != Player.playerState.dead) {
+            game.batch.draw(OrangePlayerWinAnimation.getFrame(delta), 1080 - 900 / 2f, 800, 700, 100);
+        }
+        if(Players.get(1).state == Player.playerState.dead && Players.get(0).state != Player.playerState.dead){
+            game.batch.draw(BluePlayerWinAnimation.getFrame(delta), 1080 - 900 / 2f, 800, 700, 100);
+        }
+
+
+    }
+
+
+
+
+    ////////////////////////
+    // Collision functions
+    ////////////////////////
 
     public void AmmoDropCollision(float delta){
         // ammo drop collision with grounds
@@ -301,161 +514,12 @@ public class GameScreen implements Screen {
 
     }
 
-    public void DrawPlayersHealthBarHUD(){
-        // blue player health bar
-        switch (Players.get(0).PlayerHealth){
-            case 3:
-                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(0),1520,920,430,170);
-                break;
-
-            case 2:
-                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(1),1520,920,430,170);
-                break;
-
-            case 1:
-                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(2),1520,920,430,170);
-                break;
-            case 0:
-                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(3),1520,920,430,170);
-                break;
-            default:
-                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(3),1520,920,430,170);
-
-        }
-        game.batch.draw(Players.get(0).render(deltaTime, Grounds, WorldBorders, RadioActivePools), 1760,950,Players.get(0).width,Players.get(0).height);
-
-        if(Players.get(0).PlayerHealth != 0) {
-            switch (Players.get(0).PlayerGunAmmo) {
-                case 5:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(5), 1725, 1012, 30, 33);
-                    break;
-                case 4:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(4), 1725, 1012, 30, 33);
-                    break;
-                case 3:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(3), 1725, 1012, 30, 33);
-                    break;
-                case 2:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(2), 1725, 1012, 30, 33);
-                    break;
-                case 1:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(1), 1725, 1012, 30, 33);
-                    break;
-                case 0:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(0), 1725, 1012, 30, 33);
-                    break;
-            }
-        }
 
 
 
-
-        // orange player health bar
-        switch (Players.get(1).PlayerHealth){
-            case 3:
-                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(0),-30,920,430,170);
-                break;
-
-            case 2:
-                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(1),-30,920,430,170);
-                break;
-
-            case 1:
-                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(2),-30,920,430,170);
-                break;
-            case 0:
-                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(3),-30,920,430,170);
-                break;
-            default:
-                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(3),-30,920,430,170);
-        }
-
-        game.batch.draw(Players.get(1).render(deltaTime, Grounds, WorldBorders, RadioActivePools), -10,950,Players.get(1).width,Players.get(1).height);
-
-        if(Players.get(1).PlayerHealth != 0) {
-            switch (Players.get(1).PlayerGunAmmo) {
-                case 5:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(5), 170, 1012, 30, 33);
-                    break;
-                case 4:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(4), 170, 1012, 30, 33);
-                    break;
-                case 3:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(3), 170, 1012, 30, 33);
-                    break;
-                case 2:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(2), 170, 1012, 30, 33);
-                    break;
-                case 1:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(1), 170, 1012, 30, 33);
-                    break;
-                case 0:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(0), 170, 1012, 30, 33);
-                    break;
-            }
-        }
-
-    }
-
-    public void MenuGUI(){
-
-        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) && !IsGUI) {
-            IsGUI = true;
-        }
-        else if(Gdx.input.isKeyJustPressed(Keys.ESCAPE) && IsGUI){
-            IsGUI = false;
-            isPaused = false;
-        }
-
-
-        if(IsGUI){
-            isPaused = true;
-            game.batch.draw(guiMenu,MainMenuScreen.xCenter/2f+300f,MainMenuScreen.yCenter/2f+300f,400,400);
-            //exit button
-
-
-            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 290 + 100 + 300 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 290 + 300){
-                if(Gdx.input.isTouched()){
-                    dispose();
-                    Gdx.app.exit();
-                }
-            }
-
-            // resume button
-            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 500 + 100 + 300  && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 530 + 300){
-                if(Gdx.input.isTouched()){
-                    isPaused = false;
-                    IsGUI = false;
-                }
-            }
-            // main menu button
-            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 400 + 100 + 300 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 400+40 + 300){
-                if(Gdx.input.justTouched()){
-                    GameAmbience.stop();
-                    dispose();
-                    game.setScreen(new MainMenuScreen(game));
-                    }
-                }
-            }
-        }
-
-    public void DrawPlayersBullets(){
-
-        // draws the blue's player bullets
-        Array<Bullet> Bluebullets = Players.get(0).getBullets();
-        for(Bullet BluebulletsIndex : Bluebullets){
-
-            game.batch.draw(BluebulletsIndex.update(deltaTime, Grounds, WorldBorders), BluebulletsIndex.bulletX, BluebulletsIndex.bulletY, BluebulletsIndex.width, BluebulletsIndex.height);
-        }
-
-
-        // draws the orange's player bullets
-        Array<Bullet> Orangebullets = Players.get(1).getBullets();
-        for(Bullet OrangebulletsIndex : Orangebullets){
-            game.batch.draw(OrangebulletsIndex.update(deltaTime, Grounds, WorldBorders),OrangebulletsIndex.bulletX,OrangebulletsIndex.bulletY,OrangebulletsIndex.width,OrangebulletsIndex.height);
-        }
-
-    }
+    ////////////////////////
+    // MapObject functions
+    ////////////////////////
 
     public void createRadioActivePools(){
         RadioActivePools.add(new MapObject(1260,5,90,200));
@@ -510,29 +574,8 @@ public class GameScreen implements Screen {
 
     }
 
-    public void ShowWinnerPlayer(float delta){
 
 
-        for(Player playerindex : Players){
-            if(playerindex.state == Player.playerState.dead){
-                game.batch.draw(PressSpace, 1080 - 550 / 2f, 600, 300, 55);
-                // rematch the game
-                if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
-                    game.setScreen(new GameScreen(game));
-                }
-            }
-        }
-
-
-        if(Players.get(0).state == Player.playerState.dead && Players.get(1).state != Player.playerState.dead) {
-            game.batch.draw(OrangePlayerWinAnimation.getFrame(delta), 1080 - 900 / 2f, 800, 700, 100);
-        }
-        if(Players.get(1).state == Player.playerState.dead && Players.get(0).state != Player.playerState.dead){
-            game.batch.draw(BluePlayerWinAnimation.getFrame(delta), 1080 - 900 / 2f, 800, 700, 100);
-        }
-
-
-    }
 
     public  Array<AmmoDrop> GetAmmoDrops(){
         return AmmoDrops;
