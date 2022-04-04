@@ -60,7 +60,7 @@ public class GameScreen implements Screen {
     public static Array<Player> Players;
 
     //World objects
-    LinkedList<AmmoDrop> AmmoDrops;
+    Array<AmmoDrop> AmmoDrops;
     Array<MapObject> Grounds;
     Array<MapObject> WorldBorders;
     Array<MapObject> RadioActivePools;
@@ -131,7 +131,7 @@ public class GameScreen implements Screen {
         Grounds = new Array<>();
         WorldBorders = new Array<>();
         RadioActivePools = new Array<>();
-        AmmoDrops = new LinkedList<>();
+        AmmoDrops = new Array<>();
         createGrounds();
         createMapBorders();
         createRadioActivePools();

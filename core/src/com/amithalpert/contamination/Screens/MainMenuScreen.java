@@ -36,9 +36,9 @@ public class MainMenuScreen implements Screen {
 
         isMusicPlaying = true;
 
+        background = new Texture("art.jpeg");
         ContaminationMusic = Gdx.audio.newMusic(Gdx.files.internal("MenuMusic.mp3"));
         text = new Texture("text-contamination.png");
-        background = new Texture("art.jpeg");
         playButton = new Texture("start.png");
         playButtonPressed = new Texture("pstart.png");
         exitButton = new Texture("exit.png");

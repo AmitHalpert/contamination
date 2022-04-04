@@ -3,6 +3,7 @@ package com.amithalpert.contamination.Entities;
 import com.amithalpert.contamination.Entities.Objects.Bullet;
 import com.amithalpert.contamination.Tools.MapObject;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
@@ -72,8 +73,8 @@ public class Player {
     Texture playerTexture;
 
     // SFX
-    final Sound DeathSound;
-    Sound gunshot;
+    Music PlayerDeathSound;
+    final Sound gunshot;
 
 
     ////////////////////////
@@ -123,13 +124,14 @@ public class Player {
         idle_animation_time = 0;
         dead_animation_time = 0;
         dead_elapsedTime = 0;
-        DeathSound = Gdx.audio.newSound(Gdx.files.internal("death-sound.mp3"));
+        PlayerDeathSound = Gdx.audio.newMusic(Gdx.files.internal("death-sound.mp3"));
+        PlayerDeathSound.setVolume(0.3f);
 
 
         // Initializing gun parameters
         TimeBetweenShots = 0;
         bullets = new Array<>();
-        gunshot = Gdx.audio.newSound(Gdx.files.internal("gun1.wav"));
+        gunshot = Gdx.audio.newSound(Gdx.files.internal("gun-shot-fx.wav"));
 
         ////////////////////////
         // set up the players animations
@@ -234,6 +236,7 @@ public class Player {
                PlayerHitBox = new Rectangle(PlayerX + 66, PlayerY, width, height - 115);
            }
            else{
+
                // teleports "removes" the PlayerHitBox if player is dead
                PlayerHitBox.x = 3000;
 
@@ -282,6 +285,7 @@ public class Player {
         switch (state) {
 
             case dead:
+                PlayerDeathSound.play();
                 IsPlayerFrozen = true;
                 dead_animation_time += delta;
                 if(dead_animation_time >= 0.04f) {
@@ -459,7 +463,7 @@ public class Player {
         if(Gdx.input.isKeyJustPressed(Input.Keys.N) && TimeBetweenShots >= SHOOT_WAIT_TIME && PlayerGunAmmo != 0 && state != playerState.dead){
             TimeBetweenShots = 0;
             PlayerGunAmmo--;
-            gunshot.play(0.01f);
+            gunshot.play(0.3f);
             ShootBullets();
         }
 
@@ -519,7 +523,7 @@ public class Player {
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) && TimeBetweenShots >= SHOOT_WAIT_TIME && PlayerGunAmmo != 0 && !GameScreen.isPaused && state != playerState.dead){
             TimeBetweenShots = 0;
             PlayerGunAmmo--;
-            gunshot.play(0.01f);
+            gunshot.play(0.3f);
             ShootBullets();
         }
 
@@ -685,7 +689,7 @@ public class Player {
     public void dispose(){
 
         gunshot.dispose();
-
+        PlayerDeathSound.dispose();
         player_dead_animation.dispose();
         player_running_animation.dispose();
         player_jumping_animation.dispose();

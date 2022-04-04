@@ -49,6 +49,9 @@ public class AmmoDrop {
 
         DropHitBox = new Rectangle(dropX, dropY, width, height);
 
+
+        ExplosionSound = Gdx.audio.newMusic(Gdx.files.internal("exp-fx.mp3"));
+
         ExplosionAnimation = new ObjectAnimation();
         ExplosionAnimation.loadAnimation("BarrelExplosion_",14);
         outTexture = new Texture("para_ammo_barrel.png");
@@ -66,6 +69,7 @@ public class AmmoDrop {
         // freezes Drop. See in GameScreen AmmoDropCollision
         if(freeze){
             if(IsExplosion){
+                ExplosionSound.play();
                 outTexture = ExplosionAnimation.getFrame(0.8f * delta);
                 ExplosionDropDeleteTimer += delta;
                 if(ExplosionDropDeleteTimer >= 0.6f) {
