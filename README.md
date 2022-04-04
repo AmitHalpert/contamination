@@ -12,7 +12,7 @@ This is a Java-based game that uses [LibGDX](https://libgdx.com) as its game fra
 ## How to run?
 
 You can download the **contamination** .jar file in [releases](https://github.com/AmitHalpert/contamination/releases).
-or you can build by yourself:
+or you can build it by yourself:
 
 In order to run and build the game you must execute the commands below:
 ```bash
