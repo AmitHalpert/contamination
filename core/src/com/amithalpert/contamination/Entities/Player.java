@@ -72,7 +72,8 @@ public class Player {
     Texture playerTexture;
 
     // SFX
-    final Sound gunshot;
+    final Sound DeathSound;
+    Sound gunshot;
 
 
     ////////////////////////
@@ -122,6 +123,7 @@ public class Player {
         idle_animation_time = 0;
         dead_animation_time = 0;
         dead_elapsedTime = 0;
+        DeathSound = Gdx.audio.newSound(Gdx.files.internal("death-sound.mp3"));
 
 
         // Initializing gun parameters
@@ -256,6 +258,7 @@ public class Player {
                     break;
             }
 
+
             // Detects if the player touches A MapObject
             collisionHandling(delta,Ground,WorldBorder,RadioActivePool);
 
@@ -279,7 +282,6 @@ public class Player {
         switch (state) {
 
             case dead:
-
                 IsPlayerFrozen = true;
                 dead_animation_time += delta;
                 if(dead_animation_time >= 0.04f) {
@@ -289,7 +291,7 @@ public class Player {
                 }
                 if(dead_elapsedTime >= 0.2f){
                     outputTexture = player_not_exiting;
-                    dispose();
+                    this.dispose();
                 }
 
                 player_idle_gun_animation.resetAnimation();
@@ -681,22 +683,24 @@ public class Player {
     }
 
     public void dispose(){
+
         gunshot.dispose();
+
         player_dead_animation.dispose();
         player_running_animation.dispose();
         player_jumping_animation.dispose();
         player_idle_animation.dispose();
-        player_idle_gun_animation.dispose();
-        player_jumping_gun_animation.dispose();
+        playerTexture.dispose();
         player_running_gun_animation.dispose();
+        player_jumping_gun_animation.dispose();
+        player_idle_gun_animation.dispose();
 
-        flipped_player_running_gun_animation.dispose();
-        flipped_player_jumping_gun_animation.dispose();
-        flipped_player_idle_gun_animation.dispose();
         flipped_player_running_animation.dispose();
         flipped_player_jumping_animation.dispose();
         flipped_player_idle_animation.dispose();
-
+        flipped_player_running_gun_animation.dispose();
+        flipped_player_jumping_gun_animation.dispose();
+        flipped_player_idle_gun_animation.dispose();
     }
 
 }

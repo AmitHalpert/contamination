@@ -55,8 +55,6 @@ public class AmmoDrop {
         AmmoDropOntheGroundTexture = new Texture("ammo_barrel.png");
         ParaAmmoDropTexture = new Texture("para_ammo_barrel.png");
 
-        ExplosionSound = Gdx.audio.newMusic(Gdx.files.internal("explosion-sound.wav"));
-        ExplosionSound.setVolume(0.2f);
 
 
     }
@@ -69,9 +67,10 @@ public class AmmoDrop {
         if(freeze){
             if(IsExplosion){
                 outTexture = ExplosionAnimation.getFrame(0.8f * delta);
-                ExplosionSound.play();
                 ExplosionDropDeleteTimer += delta;
                 if(ExplosionDropDeleteTimer >= 0.6f) {
+                    ExplosionDropDeleteTimer = 0;
+                    ExplosionDropDeleteTimer += delta;
                     DeleteDrop = true;
                 }
             }

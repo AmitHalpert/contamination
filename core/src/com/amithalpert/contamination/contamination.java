@@ -19,7 +19,6 @@ public class contamination extends Game {
 		this.setScreen(new MainMenuScreen(this));
 	}
 
-
 	@Override
 	public void render () {
 		super.render();

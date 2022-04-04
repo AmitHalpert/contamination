@@ -19,9 +19,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.amithalpert.contamination.*;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
 
-
 import java.util.Iterator;
-
+import java.util.LinkedList;
 
 
 public class GameScreen implements Screen {
@@ -43,6 +42,7 @@ public class GameScreen implements Screen {
 
     //graphics
     Texture PressSpace;
+    ObjectAnimation DrawAnimation;
     ObjectAnimation BluePlayerWinAnimation;
     ObjectAnimation OrangePlayerWinAnimation;
     ObjectAnimation AmmoNumbersTex;
@@ -53,14 +53,14 @@ public class GameScreen implements Screen {
     Texture guiMenu;
 
     // world parameters
-    static final int WORLD_WIDTH = Gdx.graphics.getWidth();
-    static final int WORLD_HEIGHT = Gdx.graphics.getHeight();
+    static final int WORLD_WIDTH = 1920;
+    static final int WORLD_HEIGHT = 1080;
 
     // The players Array
     public static Array<Player> Players;
 
     //World objects
-    Array<AmmoDrop> AmmoDrops;
+    LinkedList<AmmoDrop> AmmoDrops;
     Array<MapObject> Grounds;
     Array<MapObject> WorldBorders;
     Array<MapObject> RadioActivePools;
@@ -100,6 +100,8 @@ public class GameScreen implements Screen {
 
         // Winner indicator
         PressSpace = new Texture("press-space.png");
+        DrawAnimation = new ObjectAnimation();
+        DrawAnimation.loadAnimation("draw-animation_",17);
         OrangePlayerWinAnimation = new ObjectAnimation();
         OrangePlayerWinAnimation.loadAnimation("ORANGE_PLAYER_WINS_",9);
         BluePlayerWinAnimation = new ObjectAnimation();
@@ -129,7 +131,7 @@ public class GameScreen implements Screen {
         Grounds = new Array<>();
         WorldBorders = new Array<>();
         RadioActivePools = new Array<>();
-        AmmoDrops = new Array<>();
+        AmmoDrops = new LinkedList<>();
         createGrounds();
         createMapBorders();
         createRadioActivePools();
@@ -367,16 +369,13 @@ public class GameScreen implements Screen {
     public void DrawPlayersBullets(){
 
         // draws the blue's player bullets
-        Array<Bullet> Bluebullets = Players.get(0).getBullets();
-        for(Bullet BluebulletsIndex : Bluebullets){
-
+        for(Bullet BluebulletsIndex : Players.get(0).getBullets()){
             game.batch.draw(BluebulletsIndex.update(deltaTime, Grounds, WorldBorders), BluebulletsIndex.bulletX, BluebulletsIndex.bulletY, BluebulletsIndex.width, BluebulletsIndex.height);
         }
 
 
         // draws the orange's player bullets
-        Array<Bullet> Orangebullets = Players.get(1).getBullets();
-        for(Bullet OrangebulletsIndex : Orangebullets){
+        for(Bullet OrangebulletsIndex : Players.get(1).getBullets()){
             game.batch.draw(OrangebulletsIndex.update(deltaTime, Grounds, WorldBorders),OrangebulletsIndex.bulletX,OrangebulletsIndex.bulletY,OrangebulletsIndex.width,OrangebulletsIndex.height);
         }
 
@@ -396,13 +395,17 @@ public class GameScreen implements Screen {
         }
 
 
+
         if(Players.get(0).state == Player.playerState.dead && Players.get(1).state != Player.playerState.dead) {
             game.batch.draw(OrangePlayerWinAnimation.getFrame(delta), 1080 - 900 / 2f, 800, 700, 100);
         }
-        if(Players.get(1).state == Player.playerState.dead && Players.get(0).state != Player.playerState.dead){
+        else if(Players.get(1).state == Player.playerState.dead && Players.get(0).state != Player.playerState.dead){
             game.batch.draw(BluePlayerWinAnimation.getFrame(delta), 1080 - 900 / 2f, 800, 700, 100);
         }
-
+        else if(Players.get(1).state == Player.playerState.dead && Players.get(0).state == Player.playerState.dead){
+            // Draw, draw animation (both player lose)
+            game.batch.draw(DrawAnimation.getFrame(delta), 1080 - 450 / 2f, 800, 200, 100);
+        }
 
     }
 
@@ -465,7 +468,6 @@ public class GameScreen implements Screen {
                 }
             }
         }
-
         // kill the player if he touches the Explosion
         for(Player playerIndex : Players) {
             for (AmmoDrop DropIndex : AmmoDrops) {
@@ -474,16 +476,13 @@ public class GameScreen implements Screen {
                 }
             }
         }
-
-
         // Spawns the drop in random X position every X time sec.
         timeDrop += delta;
-        if (timeDrop >= 5.5f) {
+        if (timeDrop >= 5f) {
             AmmoDrop drop = new AmmoDrop(MathUtils.random(0, 1900), 1920);
             AmmoDrops.add(drop);
             timeDrop = 0;
         }
-
 
     }
 
@@ -502,28 +501,6 @@ public class GameScreen implements Screen {
             }
         }
 
-
-        /*
-        for (MapObject Borders : WorldBorders) {
-            Array<Bullet> BluePlayerbullets = Players.get(0).getBullets();
-            for(Iterator<Bullet> BlueIter = BluePlayerbullets.iterator(); BlueIter.hasNext();){
-                Bullet TempBlueBullets = BlueIter.next();
-                if(TempBlueBullets.hitBox.overlaps(Borders.hitBox)){
-                    BlueIter.remove();
-                }
-            }
-        }
-
-        for (MapObject Borders : WorldBorders) {
-            Array<Bullet> YellowPlayerbullets = Players.get(1).getBullets();
-            for(Iterator<Bullet> YellowIter = YellowPlayerbullets.iterator(); YellowIter.hasNext();){
-                Bullet TempYellowBullets = YellowIter.next();
-                if(TempYellowBullets.hitBox.overlaps(Borders.hitBox)){
-                    YellowIter.remove();
-                }
-            }
-        }
-         */
     }
 
 
@@ -533,7 +510,7 @@ public class GameScreen implements Screen {
     // MapObject functions
     ////////////////////////
 
-    public void createRadioActivePools(){
+    private void createRadioActivePools(){
         RadioActivePools.add(new MapObject(1260,5,90,200));
         RadioActivePools.add(new MapObject(610,-100,190,170));
     }
@@ -611,9 +588,16 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
 
+
         for(Player players : Players){
             players.dispose();
         }
+        DrawAnimation.dispose();
+        OrangePlayerWinAnimation.dispose();
+        BluePlayerWinAnimation.dispose();
+        AmmoNumbersTex.dispose();
+        BluePlayerWinAnimation.dispose();
+        PressSpace.dispose();
         RightPlayerHealthHUD.dispose();
         LeftPlayerHealthHUD.dispose();
         RadioActivePoolAnimation.dispose();
