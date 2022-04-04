@@ -3,10 +3,6 @@
 **contamination** is a 2D-shooter-platformer game with simple gameplay mechanics.  
 This is a Java-based game that uses [LibGDX](https://libgdx.com) as its game framework.
 
-# Installation
-
-- All releases for contamination can be found [here](https://github.com/AmitHalpert/contamination/releases)
-- Last build status: https://github.com/AmitHalpert/contamination/actions
 
 ## Build and runtime dependencies
 - **Important** update to the latest graphics driver
@@ -14,7 +10,11 @@ This is a Java-based game that uses [LibGDX](https://libgdx.com) as its game fra
 - JDK 8-15
 
 ## How to run?
-In order to run the game you must execute the commands below:
+
+You can download the **contamination** .jar file in [releases](https://github.com/AmitHalpert/contamination/releases).
+or you can build by yourself:
+
+In order to run and build the game you must execute the commands below:
 ```bash
 git clone https://github.com/AmitHalpert/contamination.git
 cd contamination
