@@ -53,8 +53,8 @@ public class GameScreen implements Screen {
     Texture guiMenu;
 
     // world parameters
-    static final int WORLD_WIDTH = 1920;
-    static final int WORLD_HEIGHT = 1080;
+    static final int WORLD_WIDTH = Gdx.graphics.getWidth();
+    static final int WORLD_HEIGHT = Gdx.graphics.getHeight();
 
     // The players Array
     public static Array<Player> Players;
