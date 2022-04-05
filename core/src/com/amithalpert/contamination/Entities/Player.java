@@ -43,7 +43,7 @@ public class Player {
     public final float ANIMATIONS_TIME = 0.5f;
     public final float SHOOT_WAIT_TIME = 0.01f;
     public final int MOVEMENT_SPEED = 320;
-    public final int JUMP_FORCE = 7;
+    public final int JUMP_FORCE = 1000;
     public final float GRAVITATIONAL_FORCE = 15f;
 
     // player characteristics
@@ -482,7 +482,7 @@ public class Player {
         if ((Gdx.input.isKeyJustPressed(Input.Keys.UP)) && !GameScreen.isPaused && state != playerState.dead) {
 
             if (Yspeed == -Yspeed) {
-                Yspeed += JUMP_FORCE;
+                Yspeed += JUMP_FORCE * Gdx.graphics.getDeltaTime();
             }
 
         }
@@ -542,7 +542,7 @@ public class Player {
         //vertical input
         if ((Gdx.input.isKeyJustPressed(Input.Keys.W)) && !GameScreen.isPaused && state != playerState.dead) {
             if (Yspeed == -Yspeed) {
-                Yspeed += JUMP_FORCE;
+                Yspeed += JUMP_FORCE * Gdx.graphics.getDeltaTime();
             }
         }
         Yspeed -= GRAVITATIONAL_FORCE * Gdx.graphics.getDeltaTime();
@@ -680,6 +680,10 @@ public class Player {
         if(PlayerGunAmmo > 5){
             PlayerGunAmmo = 5;
         }
+
+        if(Yspeed > 1005) Yspeed = 0;
+
+
     }
 
     public Array<Bullet> getBullets(){
