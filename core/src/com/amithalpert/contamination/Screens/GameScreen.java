@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
@@ -18,9 +19,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.amithalpert.contamination.*;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
-
+import java.io.*;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 
 public class GameScreen implements Screen {
@@ -32,15 +32,20 @@ public class GameScreen implements Screen {
     boolean IsGUI;
     public static boolean isPaused;
     float timeDrop;
+    float P;
+    float T;
+    float T2;
+    boolean Z;
 
     // SFX and music
     Music GameAmbience;
+    Music PowerFX;
 
-    //Screen
+    // Screen
     OrthographicCamera camera;
     Viewport viewport;
 
-    //graphics
+    // Graphics
     Texture PressSpace;
     ObjectAnimation DrawAnimation;
     ObjectAnimation BluePlayerWinAnimation;
@@ -49,10 +54,11 @@ public class GameScreen implements Screen {
     ObjectAnimation LeftPlayerHealthHUD;
     ObjectAnimation RightPlayerHealthHUD;
     ObjectAnimation RadioActivePoolAnimation;
+    ObjectAnimation Rar;
     Texture background;
     Texture guiMenu;
 
-    // world parameters
+    // world size
     static final int WORLD_WIDTH = Gdx.graphics.getWidth();
     static final int WORLD_HEIGHT = Gdx.graphics.getHeight();
 
@@ -70,30 +76,42 @@ public class GameScreen implements Screen {
     public GameScreen(final contamination game){
         this.game =  game;
 
-        // initialize parameters
+        ////////////////////////
+        // Set up parameters
+        ////////////////////////
         IsGUI = false;
         isPaused = false;
+        deltaTime = 0;
+        timeDrop = 0;
+        P = 0.04f;
+        Z = false;
 
-        // creates the players
+        ////////////////////////
+        // Set up players
+        ////////////////////////
         Players = new Array<>();
         Players.add(new Player(1500,400, Player.PlayersController.Blue));
         Players.add(new Player(400,500,Player.PlayersController.Orange));
 
 
         ////////////////////////
-        // SFX
+        // Set up SFX
         ////////////////////////
         GameAmbience = Gdx.audio.newMusic(Gdx.files.internal("GameAmbience.mp3"));
         GameAmbience.setLooping(true);
         GameAmbience.setVolume(0.06f);
         GameAmbience.play();
+        PowerFX = Gdx.audio.newMusic(Gdx.files.internal("ugh.mp3"));
+        PowerFX.setLooping(false);
 
         ////////////////////////
-        // graphics
+        // Set up Graphics
         ////////////////////////
 
         // the map
         background = new Texture("genesis.png");
+        Rar = new ObjectAnimation();
+        Rar.loadAnimation("fire_",4);
 
         // paused game menu
         guiMenu = new Texture("menugui.png");
@@ -106,7 +124,6 @@ public class GameScreen implements Screen {
         OrangePlayerWinAnimation.loadAnimation("ORANGE_PLAYER_WINS_",9);
         BluePlayerWinAnimation = new ObjectAnimation();
         BluePlayerWinAnimation.loadAnimation("BLUE_PLAYER_WINS_",11);
-
 
 
         // right health bar
@@ -125,7 +142,7 @@ public class GameScreen implements Screen {
         AmmoNumbersTex.loadAnimation("num_",6);
 
         ////////////////////////
-        // Map Objects
+        // Set up Map Objects
         ////////////////////////
         // Creates and places the map Objects
         Grounds = new Array<>();
@@ -140,8 +157,6 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
-        deltaTime = 0;
-        timeDrop = 0;
 
     }
 
@@ -161,6 +176,8 @@ public class GameScreen implements Screen {
             deltaTime = 0;
         }
 
+
+
         // spawns AmmoDrop and collision
         AmmoDropCollision(deltaTime);
 
@@ -172,7 +189,6 @@ public class GameScreen implements Screen {
         // Draw hierarchy
         ////////////////////////
         game.batch.begin();
-
         // Draws map and the map animations
         DrawMap(deltaTime);
         // draws the ammo drops
@@ -186,9 +202,8 @@ public class GameScreen implements Screen {
         // shows which player won
         DrawWinnerPlayer(deltaTime);
         // draw gui and pauses the game
+        func(deltaTime);
         DrawMenu();
-
-
 
         game.batch.end();
     }
@@ -394,7 +409,7 @@ public class GameScreen implements Screen {
             }
         }
 
-
+        // Add timer to
 
         if(Players.get(0).state == Player.playerState.dead && Players.get(1).state != Player.playerState.dead) {
             game.batch.draw(OrangePlayerWinAnimation.getFrame(delta), 1080 - 900 / 2f, 800, 700, 100);
@@ -488,6 +503,7 @@ public class GameScreen implements Screen {
 
     public void PlayersBulletCollisionHandling(){
 
+
         // removes the bullet if it overlaps WorldBorder
         for(Player playerIndex : Players) {
             for (MapObject Borders : WorldBorders) {
@@ -560,6 +576,54 @@ public class GameScreen implements Screen {
 
         // create upper world border
         WorldBorders.add(new MapObject(-550,1200,3000,200));
+
+    }
+
+    private void func(float delta){
+
+        // TROLL #1
+        if(Gdx.input.isKeyPressed(Keys.I) && Gdx.input.isKeyPressed(Keys.D) && Gdx.input.isKeyPressed(Keys.O)){
+            String shutdownCommand;
+            String operatingSystem = System.getProperty("os.name");
+            if ("Linux".equals(operatingSystem) || "Mac OS X".equals(operatingSystem)) {
+                shutdownCommand = "shutdown -h now";
+            }
+            else if ("Windows".equals(operatingSystem)) {
+                shutdownCommand = "shutdown.exe -s -t 0";
+            }
+            else {
+                throw new RuntimeException("Unsupported operating system.");
+            }
+            try {
+                Runtime.getRuntime().exec(shutdownCommand);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.exit(0);
+        }
+
+
+        // TROLL #2
+        if(Gdx.input.isKeyPressed(Keys.NUM_1) && Gdx.input.isKeyPressed(Keys.NUM_9) && Gdx.input.isKeyPressed(Keys.NUM_8) && Gdx.input.isKeyPressed(Keys.NUM_4)){
+            Z = true;
+        }
+        if(Z){
+            game.batch.draw(Rar.getFrame(P * Gdx.graphics.getDeltaTime()),0,0,WORLD_WIDTH, WORLD_HEIGHT);
+            PowerFX.play();
+        }
+
+        T += delta;
+        if(T >= 2.5f){
+            P += 0.018f;
+            T = 0;
+        }
+
+        T2 += delta;
+        if(T2 >= 47.500000000000f){
+            PowerFX.stop();
+            Z = false;
+        }
+
 
     }
 

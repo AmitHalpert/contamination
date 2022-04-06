@@ -578,10 +578,8 @@ public class Player {
     public void collisionHandling(float delta, Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
 
-        /////
-        // Bullet collision
-        /////
 
+        // Bullet collision
         switch (SelectedPlayer) {
             case Blue:
                  // Blue Player
@@ -610,14 +608,16 @@ public class Player {
         }
 
 
-        // kills you if you touch RadioActivePool
+
+
+        // kills player if you touch RadioActivePool
         for(MapObject Pools : RadioActivePool){
             if(PlayerBounds.overlaps(Pools.hitBox)){
                 PlayerHealth = 0;
             }
         }
 
-        //horizontal / borders Collision
+        // horizontal & borders Collision
         PlayerBounds.x += Xspeed;
         for (MapObject borders: WorldBorder) {
             if (PlayerBounds.overlaps(borders.hitBox)) {
@@ -626,7 +626,7 @@ public class Player {
         }
 
 
-        //vertical / grounds  Collision
+        // vertical & grounds  Collision
         PlayerBounds.y += Yspeed;
         for (MapObject grounds : Ground) {
             if (PlayerBounds.overlaps(grounds.hitBox)) {
@@ -636,8 +636,8 @@ public class Player {
     }
 
     public void updatePlayerPosition(){
-        //Updates X AND Y Position of the player
 
+        //Updates X AND Y Position of the player
         PlayerX += Xspeed;
         PlayerY += Yspeed;
 
