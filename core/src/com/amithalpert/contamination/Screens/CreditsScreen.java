@@ -13,10 +13,8 @@ public class CreditsScreen implements Screen {
 
     contamination game;
 
-
     float elapsedTime;
     float deltaTime;
-
 
     //SFX
     Music CreditsMusic;
@@ -36,7 +34,7 @@ public class CreditsScreen implements Screen {
         isMusicPlaying = true;
 
         CreditsText = new ObjectAnimation();
-        CreditsText.loadAnimation("creditsText_",14);
+        CreditsText.loadAnimation("creditsText_",7);
         BlankFrame = new Texture("creditsText_1.png");
 
 
@@ -67,7 +65,6 @@ public class CreditsScreen implements Screen {
         }
 
 
-
         if(Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)){
             dispose();
             game.setScreen(new MainMenuScreen(game));
@@ -75,19 +72,14 @@ public class CreditsScreen implements Screen {
 
         // timer to end the credits
         elapsedTime += deltaTime;
-        if(elapsedTime >= 138f){
+        if(elapsedTime >= 57f){
             CreditsMusic.stop();
             dispose();
             game.setScreen(new MainMenuScreen(game));
         }
 
         game.batch.begin();
-
-
-        game.batch.draw(CreditsText.getFrame(0.005f * deltaTime),0,0,GameScreen.WORLD_WIDTH,GameScreen.WORLD_HEIGHT);
-
-
-
+        game.batch.draw(CreditsText.getFrame(0.005f * Gdx.graphics.getDeltaTime()),0,0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         game.batch.end();
     }
 

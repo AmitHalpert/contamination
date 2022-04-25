@@ -11,10 +11,10 @@ public class AmmoDrop {
 
     public final int DROP_MOVEMENT_SPEED = -200;
 
-
     double Yspeed;
-    public int width = 120;
-    public int height = 120;
+
+    public final int width = 120;
+    public final int height = 120;
     public float dropX;
     public float dropY;
     public boolean freeze;
@@ -31,8 +31,7 @@ public class AmmoDrop {
     Texture ParaAmmoDropTexture;
     Texture outTexture;
 
-    Music ExplosionSound;
-
+    final Music ExplosionSound;
 
 
 

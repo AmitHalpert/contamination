@@ -43,7 +43,7 @@ public class Player {
     public final float ANIMATIONS_TIME = 0.5f;
     public final float SHOOT_WAIT_TIME = 0.01f;
     public final int MOVEMENT_SPEED = 320;
-    public final int JUMP_FORCE = 1000;
+    public final int JUMP_FORCE = 1050;
     public final float GRAVITATIONAL_FORCE = 15f;
 
     // player characteristics
@@ -538,7 +538,6 @@ public class Player {
         }
 
 
-
         //vertical input
         if ((Gdx.input.isKeyJustPressed(Input.Keys.W)) && !GameScreen.isPaused && state != playerState.dead) {
             if (Yspeed == -Yspeed) {
@@ -546,7 +545,6 @@ public class Player {
             }
         }
         Yspeed -= GRAVITATIONAL_FORCE * Gdx.graphics.getDeltaTime();
-
     }
 
     public void GetOrangePlayerState() {
@@ -578,7 +576,6 @@ public class Player {
     public void collisionHandling(float delta, Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
 
-
         // Bullet collision
         switch (SelectedPlayer) {
             case Blue:
@@ -606,8 +603,6 @@ public class Player {
             break;
 
         }
-
-
 
 
         // kills player if you touch RadioActivePool

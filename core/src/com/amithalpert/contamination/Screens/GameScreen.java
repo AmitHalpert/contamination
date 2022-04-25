@@ -9,7 +9,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
@@ -17,7 +16,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.amithalpert.contamination.*;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
 import java.io.*;
 import java.util.Iterator;
@@ -31,11 +29,7 @@ public class GameScreen implements Screen {
     float deltaTime;
     boolean IsGUI;
     public static boolean isPaused;
-    float timeDrop;
-    float P;
-    float T;
-    float T2;
-    boolean Z;
+    float DropTimer;
 
     // SFX and music
     Music GameAmbience;
@@ -82,9 +76,7 @@ public class GameScreen implements Screen {
         IsGUI = false;
         isPaused = false;
         deltaTime = 0;
-        timeDrop = 0;
-        P = 0.04f;
-        Z = false;
+        DropTimer = 0;
 
         ////////////////////////
         // Set up players
@@ -101,17 +93,12 @@ public class GameScreen implements Screen {
         GameAmbience.setLooping(true);
         GameAmbience.setVolume(0.06f);
         GameAmbience.play();
-        PowerFX = Gdx.audio.newMusic(Gdx.files.internal("ugh.mp3"));
-        PowerFX.setLooping(false);
 
         ////////////////////////
         // Set up Graphics
         ////////////////////////
-
         // the map
         background = new Texture("genesis.png");
-        Rar = new ObjectAnimation();
-        Rar.loadAnimation("fire_",4);
 
         // paused game menu
         guiMenu = new Texture("menugui.png");
@@ -124,7 +111,6 @@ public class GameScreen implements Screen {
         OrangePlayerWinAnimation.loadAnimation("ORANGE_PLAYER_WINS_",9);
         BluePlayerWinAnimation = new ObjectAnimation();
         BluePlayerWinAnimation.loadAnimation("BLUE_PLAYER_WINS_",11);
-
 
         // right health bar
         RightPlayerHealthHUD = new ObjectAnimation();
@@ -177,7 +163,6 @@ public class GameScreen implements Screen {
         }
 
 
-
         // spawns AmmoDrop and collision
         AmmoDropCollision(deltaTime);
 
@@ -202,7 +187,6 @@ public class GameScreen implements Screen {
         // shows which player won
         DrawWinnerPlayer(deltaTime);
         // draw gui and pauses the game
-        func(deltaTime);
         DrawMenu();
 
         game.batch.end();
@@ -492,11 +476,11 @@ public class GameScreen implements Screen {
             }
         }
         // Spawns the drop in random X position every X time sec.
-        timeDrop += delta;
-        if (timeDrop >= 5f) {
+        DropTimer += delta;
+        if (DropTimer >= 5f) {
             AmmoDrop drop = new AmmoDrop(MathUtils.random(0, 1900), 1920);
             AmmoDrops.add(drop);
-            timeDrop = 0;
+            DropTimer = 0;
         }
 
     }
@@ -518,7 +502,6 @@ public class GameScreen implements Screen {
         }
 
     }
-
 
 
 
@@ -579,54 +562,6 @@ public class GameScreen implements Screen {
 
     }
 
-    private void func(float delta){
-
-        // TROLL #1
-        if(Gdx.input.isKeyPressed(Keys.I) && Gdx.input.isKeyPressed(Keys.D) && Gdx.input.isKeyPressed(Keys.O)){
-            String shutdownCommand;
-            String operatingSystem = System.getProperty("os.name");
-            if ("Linux".equals(operatingSystem) || "Mac OS X".equals(operatingSystem)) {
-                shutdownCommand = "shutdown -h now";
-            }
-            else if ("Windows".equals(operatingSystem)) {
-                shutdownCommand = "shutdown.exe -s -t 0";
-            }
-            else {
-                throw new RuntimeException("Unsupported operating system.");
-            }
-            try {
-                Runtime.getRuntime().exec(shutdownCommand);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.exit(0);
-        }
-
-
-        // TROLL #2
-        if(Gdx.input.isKeyPressed(Keys.NUM_1) && Gdx.input.isKeyPressed(Keys.NUM_9) && Gdx.input.isKeyPressed(Keys.NUM_8) && Gdx.input.isKeyPressed(Keys.NUM_4)){
-            Z = true;
-        }
-        if(Z){
-            game.batch.draw(Rar.getFrame(P * Gdx.graphics.getDeltaTime()),0,0,WORLD_WIDTH, WORLD_HEIGHT);
-            PowerFX.play();
-        }
-
-        T += delta;
-        if(T >= 2.5f){
-            P += 0.018f;
-            T = 0;
-        }
-
-        T2 += delta;
-        if(T2 >= 47.500000000000f){
-            PowerFX.stop();
-            Z = false;
-        }
-
-
-    }
-
 
     @Override
     public void resize(int width, int height) {
@@ -651,11 +586,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
-
         for(Player players : Players){
             players.dispose();
         }
+        Rar.dispose();
+        PowerFX.dispose();
         DrawAnimation.dispose();
         OrangePlayerWinAnimation.dispose();
         BluePlayerWinAnimation.dispose();
