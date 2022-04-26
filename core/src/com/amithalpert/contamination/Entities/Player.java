@@ -15,7 +15,7 @@ import com.amithalpert.contamination.Screens.GameScreen;
 import java.util.Iterator;
 
 /**
- * The Player is not an abstract class, but It's trying to be, inside it there's two players:
+ * The Player is not an abstract class, but It's kinda trying to be, inside it there's two players:
  * The Player class have global functions that affect every player,
  * And functions that created for each player.
  */
@@ -30,8 +30,8 @@ public class Player {
     }
 
 
-    // the playerState is used to represent the current state the player is in through the GetPlayerState function.
-    // for example if playerState is Running the player animation will change to running
+    // the playerState is used to represent the current state of the player (check GetPlayerState function).
+    // for example if playerState is Running the player animation will change to running (check the animation switch)
     public enum playerState {
         Running,
         Jumping,
@@ -40,10 +40,13 @@ public class Player {
     }
 
     // Initializing players' final Variables
+    public final int PLAYER_WIDTH = 170;
+    public final int PLAYER_HEIGHT = 170;
+
     public final float ANIMATIONS_TIME = 0.5f;
     public final float SHOOT_WAIT_TIME = 0.01f;
     public final int MOVEMENT_SPEED = 320;
-    public final int JUMP_FORCE = 1000;
+    public final int JUMP_FORCE = 1050;
     public final float GRAVITATIONAL_FORCE = 15f;
 
     // player characteristics
@@ -54,7 +57,7 @@ public class Player {
     public int height;
     double Xspeed, Yspeed;
     boolean isFacingLeft;
-    boolean Collision;
+
     public boolean IsPlayerFrozen;
     public Rectangle PlayerHitBox;
     Rectangle PlayerBounds;
@@ -73,7 +76,7 @@ public class Player {
     Texture playerTexture;
 
     // SFX
-    Music PlayerDeathSound;
+    final Music PlayerDeathSound;
     final Sound gunshot;
 
 
@@ -112,13 +115,12 @@ public class Player {
         // Initializing player's characteristics
         PlayerGunAmmo = 5;
         PlayerHealth = 3;
-        width = 170;
-        height = 170;
+        width = PLAYER_WIDTH;
+        height = PLAYER_HEIGHT;
         PlayerBounds = new Rectangle(x, y, width, height);
 
         isFacingLeft = false;
         isPlayerHoldingGun = false;
-        Collision = false;
         IsPlayerFrozen = false;
         state = playerState.Idle;
         idle_animation_time = 0;
@@ -230,18 +232,10 @@ public class Player {
         // freezes everything
         if(!GameScreen.isPaused){
 
-
            if(state != playerState.dead) {
-               // the player's Hit box for bullet collision
+               // the player's Hitbox for bullet collision
                PlayerHitBox = new Rectangle(PlayerX + 66, PlayerY, width, height - 115);
            }
-           else{
-
-               // teleports "removes" the PlayerHitBox if player is dead
-               PlayerHitBox.x = 3000;
-
-           }
-
 
 
             // selects the correct functions for the selected Player(color)
@@ -272,7 +266,7 @@ public class Player {
             }
         }
 
-        // PlayerParametersHandling is used to set limits to parameters: gun-ammo,etc.
+        // PlayerParametersHandling is used to set limits to parameters.
         PlayerParametersHandling();
 
 
@@ -294,6 +288,9 @@ public class Player {
                     dead_elapsedTime += delta;
                 }
                 if(dead_elapsedTime >= 0.2f){
+                    // teleports "removes" the PlayerHitBox if player is dead
+                    PlayerHitBox.x = 3000;
+
                     outputTexture = player_not_exiting;
                     this.dispose();
                 }
@@ -538,7 +535,6 @@ public class Player {
         }
 
 
-
         //vertical input
         if ((Gdx.input.isKeyJustPressed(Input.Keys.W)) && !GameScreen.isPaused && state != playerState.dead) {
             if (Yspeed == -Yspeed) {
@@ -546,11 +542,9 @@ public class Player {
             }
         }
         Yspeed -= GRAVITATIONAL_FORCE * Gdx.graphics.getDeltaTime();
-
     }
 
     public void GetOrangePlayerState() {
-
 
         // checks if the player is moving up or down
         if (Yspeed > 0) {
@@ -574,15 +568,13 @@ public class Player {
         }
     }
 
-
     public void collisionHandling(float delta, Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
-
 
 
         // Bullet collision
         switch (SelectedPlayer) {
             case Blue:
-                 // Blue Player
+               // Blue Player
                Array<Bullet> bulletsB = GameScreen.Players.get(1).getBullets();
                for (Iterator<Bullet> iterb = bulletsB.iterator(); iterb.hasNext(); ) {
                    Bullet bB = iterb.next();
@@ -608,14 +600,13 @@ public class Player {
         }
 
 
-
-
         // kills player if you touch RadioActivePool
         for(MapObject Pools : RadioActivePool){
             if(PlayerBounds.overlaps(Pools.hitBox)){
                 PlayerHealth = 0;
             }
         }
+
 
         // horizontal & borders Collision
         PlayerBounds.x += Xspeed;
@@ -627,6 +618,8 @@ public class Player {
 
 
         // vertical & grounds  Collision
+
+
         PlayerBounds.y += Yspeed;
         for (MapObject grounds : Ground) {
             if (PlayerBounds.overlaps(grounds.hitBox)) {
@@ -662,10 +655,8 @@ public class Player {
     }
 
     public void PlayerParametersHandling(){
-
-        // stops the player if he's now moving
+        // stops the player when he's not moving
         Xspeed = 0;
-
 
         // if the player have ammo, diff from zero then true
         // this statement is for the animation switch
@@ -681,8 +672,8 @@ public class Player {
             PlayerGunAmmo = 5;
         }
 
-        if(Yspeed > 1005) Yspeed = 0;
-
+        // limit the jump force
+        if(Yspeed >= 1050) Yspeed = 1050;
 
     }
 

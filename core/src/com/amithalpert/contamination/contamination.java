@@ -30,5 +30,4 @@ public class contamination extends Game {
 		font.dispose();
 	}
 
-
 }
