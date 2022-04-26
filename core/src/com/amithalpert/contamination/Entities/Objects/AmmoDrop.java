@@ -34,7 +34,6 @@ public class AmmoDrop {
     final Music ExplosionSound;
 
 
-
     public AmmoDrop(float x, float y){
         this.dropX = x;
         this.dropY = y;

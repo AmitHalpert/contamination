@@ -33,7 +33,6 @@ public class GameScreen implements Screen {
 
     // SFX and music
     Music GameAmbience;
-    Music PowerFX;
 
     // Screen
     OrthographicCamera camera;
@@ -48,7 +47,6 @@ public class GameScreen implements Screen {
     ObjectAnimation LeftPlayerHealthHUD;
     ObjectAnimation RightPlayerHealthHUD;
     ObjectAnimation RadioActivePoolAnimation;
-    ObjectAnimation Rar;
     Texture background;
     Texture guiMenu;
 
@@ -339,11 +337,13 @@ public class GameScreen implements Screen {
             game.batch.draw(guiMenu,MainMenuScreen.xCenter/2f+300f,MainMenuScreen.yCenter/2f+300f,400,400);
             //exit button
 
-
+            // exit
             if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 290 + 100 + 300 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 290 + 300){
                 if(Gdx.input.isTouched()){
+
+                    GameAmbience.stop();
                     dispose();
-                    Gdx.app.exit();
+                    game.setScreen(new MainMenuScreen(game));
                 }
             }
 
@@ -354,12 +354,10 @@ public class GameScreen implements Screen {
                     IsGUI = false;
                 }
             }
-            // main menu button
+            // options
             if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 400 + 100 + 300 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 400+40 + 300){
                 if(Gdx.input.justTouched()){
-                    GameAmbience.stop();
-                    dispose();
-                    game.setScreen(new MainMenuScreen(game));
+
                     }
                 }
             }
@@ -501,6 +499,7 @@ public class GameScreen implements Screen {
             }
         }
 
+
     }
 
 
@@ -589,8 +588,7 @@ public class GameScreen implements Screen {
         for(Player players : Players){
             players.dispose();
         }
-        Rar.dispose();
-        PowerFX.dispose();
+
         DrawAnimation.dispose();
         OrangePlayerWinAnimation.dispose();
         BluePlayerWinAnimation.dispose();

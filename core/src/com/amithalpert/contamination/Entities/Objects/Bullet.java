@@ -56,7 +56,6 @@ public class Bullet{
     public Texture update(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder) {
 
 
-
         Xspeed = DirectionSpeed;
 
         // updates bullets position;
@@ -65,7 +64,6 @@ public class Bullet{
         hitBox.y = bulletY;
 
         Xspeed = 0;
-
 
 
         return outTexture;
