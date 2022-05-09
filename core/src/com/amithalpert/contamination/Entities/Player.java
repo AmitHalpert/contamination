@@ -16,7 +16,7 @@ import com.amithalpert.contamination.Screens.GameScreen;
 import java.util.Iterator;
 
 /**
- * The Player is not an abstract class, but It's kinda trying to be, inside it there's two players:
+ * The Player is build like one player but inside it there's two players:
  * The Player class have global functions that affect every player,
  * And functions that created for each player.
  */
@@ -32,7 +32,7 @@ public class Player {
 
 
     // the playerState is used to represent the current state of the player (check GetPlayerState function).
-    // for example if playerState is Running the player animation will change to running (check the animation switch)
+    // for example if playerState is set to Running the player animation will change to running (check the animation switch)
     public enum playerState {
         Running,
         Jumping,
@@ -233,6 +233,7 @@ public class Player {
         // freezes everything
         if(!GameScreen.isPaused){
 
+           // if the player is dead remove his Hitbox.
            if(state != playerState.dead) {
                // the player's Hitbox for bullet collision
                PlayerHitBox = new Rectangle(PlayerX + 66, PlayerY, width, height - 115);
@@ -654,7 +655,7 @@ public class Player {
     }
 
     public void PlayerParametersHandling(){
-        // stops the player when he's not moving
+        // stops the player horizontally when he's not moving left or right
         Xspeed = 0;
 
         // if the player have ammo, diff from zero then true

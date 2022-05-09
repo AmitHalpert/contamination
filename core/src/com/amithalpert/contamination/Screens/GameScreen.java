@@ -12,9 +12,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
@@ -59,6 +63,10 @@ public class GameScreen implements Screen {
     public static Array<Player> Players;
 
     //World objects
+
+    TiledMap tiledMap;
+    OrthogonalTiledMapRenderer tiledMapRenderer;
+
     Array<Pool> Pools;
     Array<AmmoDrop> AmmoDrops;
     Array<MapObject> Grounds;
@@ -135,14 +143,29 @@ public class GameScreen implements Screen {
         AmmoDrops = new Array<>();
         Pools = new Array<>();
 
+
+
+        // Camera and viewport
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
+
+
+
+
+
+
+        camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
+
+
+        tiledMap = new TmxMapLoader().load("desert.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
+
         createGrounds();
         createMapBorders();
         createRadioActivePools();
 
-        // Camera and viewport
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
-        viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
+
 
     }
 
@@ -155,7 +178,8 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         deltaTime = Gdx.graphics.getDeltaTime();
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+        tiledMapRenderer.setView(camera);
+        tiledMapRenderer.render();
 
         // Pauses everything that is delta time affected.
         if(isPaused){
@@ -175,7 +199,7 @@ public class GameScreen implements Screen {
         ////////////////////////
         game.batch.begin();
         // Draws map and the map animations
-        DrawMap(deltaTime);
+
         // draws the ammo drops
         DrawAmmoDrops(deltaTime);
         // draw all the players
@@ -395,7 +419,7 @@ public class GameScreen implements Screen {
             }
         }
 
-        // Add timer to
+        // Add timer //
 
         if(Players.get(0).state == Player.playerState.dead && Players.get(1).state != Player.playerState.dead) {
             game.batch.draw(OrangePlayerWinAnimation.getFrame(delta), 1080 - 900 / 2f, 800, 700, 100);
@@ -416,8 +440,6 @@ public class GameScreen implements Screen {
     ////////////////////////
     // Collision functions
     ////////////////////////
-
-
 
     public void AmmoDropCollision(float delta){
         // ammo drop collision with grounds
@@ -490,8 +512,6 @@ public class GameScreen implements Screen {
     }
 
     public void PlayersBulletCollisionHandling(){
-
-
         // removes the bullet if it overlaps WorldBorder
         for(Player playerIndex : Players) {
             for (MapObject Borders : WorldBorders) {
@@ -515,9 +535,7 @@ public class GameScreen implements Screen {
     ////////////////////////
 
     private void createRadioActivePools(){
-
         Pools.add(new Pool(1260,30));
-
     }
 
     private void createGrounds(){

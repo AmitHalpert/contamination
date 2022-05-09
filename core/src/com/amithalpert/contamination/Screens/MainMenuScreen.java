@@ -46,7 +46,7 @@ public class MainMenuScreen implements Screen {
         creditsButton = new Texture("credits.png");
         creditsButtonPressed = new Texture("pcredits.png");
         ContaminationMusic.setLooping(true);
-        ContaminationMusic.play();
+
     }
 
     @Override
