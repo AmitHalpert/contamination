@@ -1,6 +1,7 @@
 package com.amithalpert.contamination.Screens;
 
 import com.amithalpert.contamination.Entities.Objects.AmmoDrop;
+import com.amithalpert.contamination.Entities.Objects.Pool;
 import com.amithalpert.contamination.Entities.Objects.Bullet;
 import com.amithalpert.contamination.Entities.Player;
 import com.amithalpert.contamination.Tools.MapObject;
@@ -58,10 +59,10 @@ public class GameScreen implements Screen {
     public static Array<Player> Players;
 
     //World objects
+    Array<Pool> Pools;
     Array<AmmoDrop> AmmoDrops;
     Array<MapObject> Grounds;
     Array<MapObject> WorldBorders;
-    Array<MapObject> RadioActivePools;
 
 
 
@@ -131,8 +132,9 @@ public class GameScreen implements Screen {
         // Creates and places the map Objects
         Grounds = new Array<>();
         WorldBorders = new Array<>();
-        RadioActivePools = new Array<>();
         AmmoDrops = new Array<>();
+        Pools = new Array<>();
+
         createGrounds();
         createMapBorders();
         createRadioActivePools();
@@ -186,7 +188,6 @@ public class GameScreen implements Screen {
         DrawWinnerPlayer(deltaTime);
         // draw gui and pauses the game
         DrawMenu();
-
         game.batch.end();
     }
 
@@ -200,15 +201,18 @@ public class GameScreen implements Screen {
     public void DrawMap(float deltaTime){
         // draw map
         game.batch.draw(background, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-        // Draws RadioActivePool Animation
-        game.batch.draw(RadioActivePoolAnimation.getFrame(0.3f * deltaTime), 569, 46, 284, 190);
-        game.batch.draw(RadioActivePoolAnimation.getFrame(0.3f * deltaTime), 1209, 200, 213, 190);
+
+
+        for(Pool pools : Pools){
+            game.batch.draw(pools.update(deltaTime),1209,200,213,200);
+        }
     }
 
     public void DrawPlayers(){
         for (Player players : Players) {
-            game.batch.draw(players.render(Gdx.graphics.getDeltaTime(), Grounds, WorldBorders, RadioActivePools), players.PlayerX, players.PlayerY, players.width, players.height);
+            game.batch.draw(players.render(Gdx.graphics.getDeltaTime(), Grounds, WorldBorders, Pools), players.PlayerX, players.PlayerY, players.width, players.height);
         }
+
     }
 
     public void DrawAmmoDrops(float deltaTime){
@@ -244,7 +248,7 @@ public class GameScreen implements Screen {
                 game.batch.draw(RightPlayerHealthHUD.getIndexFrame(3),1520,920,430,170);
 
         }
-        game.batch.draw(Players.get(0).render(deltaTime, Grounds, WorldBorders, RadioActivePools), 1760,950,Players.get(0).width,Players.get(0).height);
+        game.batch.draw(Players.get(0).render(deltaTime, Grounds, WorldBorders, Pools), 1760,950,Players.get(0).width,Players.get(0).height);
 
         if(Players.get(0).PlayerHealth != 0) {
             switch (Players.get(0).PlayerGunAmmo) {
@@ -292,7 +296,7 @@ public class GameScreen implements Screen {
                 game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(3),-30,920,430,170);
         }
 
-        game.batch.draw(Players.get(1).render(deltaTime, Grounds, WorldBorders, RadioActivePools), -10,950,Players.get(1).width,Players.get(1).height);
+        game.batch.draw(Players.get(1).render(deltaTime, Grounds, WorldBorders, Pools), -10,950,Players.get(1).width,Players.get(1).height);
 
         if(Players.get(1).PlayerHealth != 0) {
             switch (Players.get(1).PlayerGunAmmo) {
@@ -413,6 +417,8 @@ public class GameScreen implements Screen {
     // Collision functions
     ////////////////////////
 
+
+
     public void AmmoDropCollision(float delta){
         // ammo drop collision with grounds
         for(MapObject GroundIndex : Grounds){
@@ -425,10 +431,10 @@ public class GameScreen implements Screen {
         }
 
         // ammo drop collision with RadioActivePools
-        for(MapObject RadioActivePoolIndex : RadioActivePools) {
+        for(Pool RadioActivePoolIndex : Pools) {
             for (Iterator<AmmoDrop> Iter = AmmoDrops.iterator(); Iter.hasNext(); ) {
                 AmmoDrop TempAmmoDrops = Iter.next();
-                if (TempAmmoDrops.DropHitBox.overlaps(RadioActivePoolIndex.hitBox)) {
+                if (TempAmmoDrops.DropHitBox.overlaps(RadioActivePoolIndex.PoolHitBox)) {
                     Iter.remove();
                 }
                 if(TempAmmoDrops.DeleteDrop){
@@ -509,8 +515,9 @@ public class GameScreen implements Screen {
     ////////////////////////
 
     private void createRadioActivePools(){
-        RadioActivePools.add(new MapObject(1260,5,90,200));
-        RadioActivePools.add(new MapObject(610,-100,190,170));
+
+        Pools.add(new Pool(1260,30));
+
     }
 
     private void createGrounds(){

@@ -1,6 +1,7 @@
 package com.amithalpert.contamination.Entities;
 
 import com.amithalpert.contamination.Entities.Objects.Bullet;
+import com.amithalpert.contamination.Entities.Objects.Pool;
 import com.amithalpert.contamination.Tools.MapObject;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
@@ -55,7 +56,7 @@ public class Player {
     public int PlayerHealth;
     public int width;
     public int height;
-    double Xspeed, Yspeed;
+    public double Xspeed, Yspeed;
     boolean isFacingLeft;
 
     public boolean IsPlayerFrozen;
@@ -117,7 +118,7 @@ public class Player {
         PlayerHealth = 3;
         width = PLAYER_WIDTH;
         height = PLAYER_HEIGHT;
-        PlayerBounds = new Rectangle(x, y, width, height);
+        PlayerBounds = new Rectangle(PlayerX, PlayerY, width, height);
 
         isFacingLeft = false;
         isPlayerHoldingGun = false;
@@ -228,7 +229,7 @@ public class Player {
 
 
 
-    public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder, Array<MapObject> RadioActivePool) {
+    public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder, Array<Pool> RadioActivePool) {
         // freezes everything
         if(!GameScreen.isPaused){
 
@@ -568,7 +569,7 @@ public class Player {
         }
     }
 
-    public void collisionHandling(float delta, Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
+    public void collisionHandling(float delta, Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<Pool> RadioActivePool) {
 
 
         // Bullet collision
@@ -601,8 +602,8 @@ public class Player {
 
 
         // kills player if you touch RadioActivePool
-        for(MapObject Pools : RadioActivePool){
-            if(PlayerBounds.overlaps(Pools.hitBox)){
+        for(Pool pools : RadioActivePool){
+            if(PlayerBounds.overlaps(pools.PoolHitBox)){
                 PlayerHealth = 0;
             }
         }
@@ -618,8 +619,6 @@ public class Player {
 
 
         // vertical & grounds  Collision
-
-
         PlayerBounds.y += Yspeed;
         for (MapObject grounds : Ground) {
             if (PlayerBounds.overlaps(grounds.hitBox)) {
@@ -674,7 +673,6 @@ public class Player {
 
         // limit the jump force
         if(Yspeed >= 1050) Yspeed = 1050;
-
     }
 
     public Array<Bullet> getBullets(){
