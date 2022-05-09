@@ -12,6 +12,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -35,6 +36,10 @@ public class GameScreen implements Screen {
     boolean IsGUI;
     public static boolean isPaused;
     float DropTimer;
+
+
+
+    public static final float PPM = 100;
 
     // SFX and music
     Music GameAmbience;
@@ -76,6 +81,16 @@ public class GameScreen implements Screen {
 
     public GameScreen(final contamination game){
         this.game =  game;
+
+
+        // Camera and viewport
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 30, 20);
+        camera.update();
+
+        tiledMap = new TmxMapLoader().load("desert.tmx");
+
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / 16f);
 
         ////////////////////////
         // Set up parameters
@@ -142,24 +157,6 @@ public class GameScreen implements Screen {
         WorldBorders = new Array<>();
         AmmoDrops = new Array<>();
         Pools = new Array<>();
-
-
-
-        // Camera and viewport
-        camera = new OrthographicCamera();
-        viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
-
-
-
-
-
-
-        camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
-
-
-        tiledMap = new TmxMapLoader().load("desert.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
         createGrounds();
         createMapBorders();
