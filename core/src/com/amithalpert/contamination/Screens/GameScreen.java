@@ -1,5 +1,6 @@
 package com.amithalpert.contamination.Screens;
 
+import com.amithalpert.contamination.Entities.Gamer;
 import com.amithalpert.contamination.Entities.Objects.AmmoDrop;
 import com.amithalpert.contamination.Entities.Objects.Pool;
 import com.amithalpert.contamination.Entities.Objects.Bullet;
@@ -13,6 +14,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -21,8 +25,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
 
 import java.util.Iterator;
@@ -33,8 +35,12 @@ public class GameScreen implements Screen {
     final contamination game;
 
 
-    private World world;
-    private Box2DDebugRenderer box2DDebugRenderer;
+    private SpriteBatch batch;
+    private  World world;
+    private  Box2DDebugRenderer box2DDebugRenderer;
+
+
+    private Gamer gamer;
 
     // Main menu features
     float deltaTime;
@@ -48,7 +54,6 @@ public class GameScreen implements Screen {
 
     // Screen
     OrthographicCamera camera;
-    Viewport viewport;
 
     // Graphics
     Texture PressSpace;
@@ -63,15 +68,14 @@ public class GameScreen implements Screen {
     Texture guiMenu;
 
     // world size
-    static final float WORLD_WIDTH = Gdx.graphics.getWidth();
-    static final float WORLD_HEIGHT = Gdx.graphics.getHeight();
+    static final int WORLD_WIDTH = Gdx.graphics.getWidth();
+    static final int WORLD_HEIGHT = Gdx.graphics.getHeight();
 
     // The players Array
     public static Array<Player> Players;
 
     // tiled map
-
-    private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
+    private OrthogonalTiledMapRenderer Renderer;
     private TileMapHelper tileMapHelper;
 
     //map objects
@@ -84,32 +88,27 @@ public class GameScreen implements Screen {
 
 
 
+
     public GameScreen(final contamination game){
         this.game =  game;
-
 
         ////////////////////////
         // Renderers
         ////////////////////////
         // Camera and viewport
         camera = new OrthographicCamera();
-        camera.update();
-        viewport = new FitViewport(480 / 16f, 320 /16f, camera);
-        // tilemap
-        this.tileMapHelper = new TileMapHelper(this);
-        this.orthogonalTiledMapRenderer = tileMapHelper.setupMap();
+        camera.setToOrtho(false, 480, 320);
+        batch = new SpriteBatch();
 
         ////////////////////////
         // box2d
         ////////////////////////
-        this.world = new World(new Vector2(0, 0), false);
-        this.box2DDebugRenderer = new Box2DDebugRenderer();
+        world = new World(new Vector2(0,-9f), false);
+        box2DDebugRenderer = new Box2DDebugRenderer();
 
-
-
-        // set up the tiled map
-        camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
-
+        // tilemap
+        this.tileMapHelper = new TileMapHelper(this);
+        this.Renderer = tileMapHelper.setupMap();
 
 
         ////////////////////////
@@ -124,8 +123,8 @@ public class GameScreen implements Screen {
         // Set up players
         ////////////////////////
         Players = new Array<>();
-        Players.add(new Player(viewport.getWorldWidth() / 2,viewport.getWorldHeight() / 2, Player.PlayersController.Blue));
         Players.add(new Player(400,500,Player.PlayersController.Orange));
+        Players.add(new Player(400,500,Player.PlayersController.Blue));
 
 
         ////////////////////////
@@ -186,7 +185,11 @@ public class GameScreen implements Screen {
 
     private void update(){
         world.step(1 / 60f, 6, 2);
+        cameraUpdate();
+
         game.batch.setProjectionMatrix(camera.combined);
+        Renderer.setView(camera);
+
         if(Gdx.input.isKeyPressed(Keys.L)){
             dispose();
             Gdx.app.exit();
@@ -195,20 +198,24 @@ public class GameScreen implements Screen {
     }
 
     private void cameraUpdate(){
-        camera.position.set(new Vector3(0, 0, 0));
+        Vector3 position = camera.position;
+        position.x = Math.round(gamer.getBody().getPosition().x * 16f * 10) / 10f;
+        position.y = Math.round(gamer.getBody().getPosition().y * 16f * 10) / 10f;
+        camera.position.set(position);
+
+
         camera.update();
     }
+
 
     @Override
     public void render(float deltaTime) {
         this.update();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         deltaTime = Gdx.graphics.getDeltaTime();
-        camera.update();
-        orthogonalTiledMapRenderer.setView(camera);
-        orthogonalTiledMapRenderer.render();
-        game.batch.setProjectionMatrix(camera.combined);
 
+
+        Renderer.render();
 
 
         // Pauses everything that is delta time affected.
@@ -217,33 +224,15 @@ public class GameScreen implements Screen {
         }
 
 
-        // spawns AmmoDrop and collision
-        AmmoDropCollision(deltaTime);
-
-        // removes bullet if touches something
-        PlayersBulletCollisionHandling();
-
 
         ////////////////////////
         // Draw hierarchy
         ////////////////////////
         game.batch.begin();
-        // draws the ammo drops
-        DrawAmmoDrops(deltaTime);
-        // draw all the players
-        DrawPlayers();
-        // draw every player's bullets
-        DrawPlayersBullets();
-        // draw health bars and ammo amount for the player
-        DrawPlayersHealthBarHUD();
-        // shows which player won
-        DrawWinnerPlayer(deltaTime);
-        // draw gui and pauses the game
-        DrawMenu();
-        // draw FPS
 
 
         game.batch.end();
+
         box2DDebugRenderer.render(world, camera.combined.scl(16f));
     }
 
@@ -622,9 +611,12 @@ public class GameScreen implements Screen {
         return world;
     }
 
+    public void setPlayer(Gamer gamer){
+        this.gamer = gamer;
+    }
+
     @Override
     public void resize(int width, int height) {
-        viewport.update(width , height);
     }
 
 
