@@ -12,11 +12,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -38,9 +42,6 @@ public class GameScreen implements Screen {
     float DropTimer;
 
 
-
-    public static final float PPM = 100;
-
     // SFX and music
     Music GameAmbience;
 
@@ -61,16 +62,18 @@ public class GameScreen implements Screen {
     Texture guiMenu;
 
     // world size
-    static final int WORLD_WIDTH = Gdx.graphics.getWidth();
-    static final int WORLD_HEIGHT = Gdx.graphics.getHeight();
+    static final float WORLD_WIDTH = Gdx.graphics.getWidth();
+    static final float WORLD_HEIGHT = Gdx.graphics.getHeight();
 
     // The players Array
     public static Array<Player> Players;
 
-    //World objects
-
+    // tiled map
     TiledMap tiledMap;
     OrthogonalTiledMapRenderer tiledMapRenderer;
+
+    //map objects
+
 
     Array<Pool> Pools;
     Array<AmmoDrop> AmmoDrops;
@@ -83,14 +86,18 @@ public class GameScreen implements Screen {
         this.game =  game;
 
 
+        ////////////////////////
+        // Renderers
+        ////////////////////////
         // Camera and viewport
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 30, 20);
         camera.update();
 
+        // set up the tiled map
         tiledMap = new TmxMapLoader().load("desert.tmx");
-
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / 16f);
+
 
         ////////////////////////
         // Set up parameters
@@ -104,8 +111,8 @@ public class GameScreen implements Screen {
         // Set up players
         ////////////////////////
         Players = new Array<>();
-        Players.add(new Player(1500,400, Player.PlayersController.Blue));
-        Players.add(new Player(400,500,Player.PlayersController.Orange));
+        Players.add(new Player(1500,400, Player.PlayersController.Blue, tiledMap));
+        Players.add(new Player(400,500,Player.PlayersController.Orange, tiledMap));
 
 
         ////////////////////////
@@ -149,6 +156,7 @@ public class GameScreen implements Screen {
         AmmoNumbersTex = new ObjectAnimation();
         AmmoNumbersTex.loadAnimation("num_",6);
 
+
         ////////////////////////
         // Set up Map Objects
         ////////////////////////
@@ -157,13 +165,6 @@ public class GameScreen implements Screen {
         WorldBorders = new Array<>();
         AmmoDrops = new Array<>();
         Pools = new Array<>();
-
-        createGrounds();
-        createMapBorders();
-        createRadioActivePools();
-
-
-
     }
 
     @Override
@@ -195,8 +196,6 @@ public class GameScreen implements Screen {
         // Draw hierarchy
         ////////////////////////
         game.batch.begin();
-        // Draws map and the map animations
-
         // draws the ammo drops
         DrawAmmoDrops(deltaTime);
         // draw all the players
@@ -209,6 +208,9 @@ public class GameScreen implements Screen {
         DrawWinnerPlayer(deltaTime);
         // draw gui and pauses the game
         DrawMenu();
+        // draw FPS
+        game.font.draw(game.batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
+
         game.batch.end();
     }
 

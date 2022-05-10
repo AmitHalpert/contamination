@@ -8,6 +8,10 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
@@ -40,6 +44,7 @@ public class Player {
         dead
     }
 
+
     // Initializing players' final Variables
     public final int PLAYER_WIDTH = 170;
     public final int PLAYER_HEIGHT = 170;
@@ -50,6 +55,8 @@ public class Player {
     public final int JUMP_FORCE = 1050;
     public final float GRAVITATIONAL_FORCE = 15f;
 
+    private Array<Rectangle> tiles = new Array<Rectangle>();
+
     // player characteristics
     public float PlayerX;
     public float PlayerY;
@@ -58,6 +65,7 @@ public class Player {
     public int height;
     public double Xspeed, Yspeed;
     boolean isFacingLeft;
+
 
     public boolean IsPlayerFrozen;
     public Rectangle PlayerHitBox;
@@ -107,11 +115,17 @@ public class Player {
     // creates the enums
     public playerState state;
     public PlayersController SelectedPlayer;
+    public TiledMap map;
 
-    public Player(float x, float y,PlayersController SelectedPlayer){
+    public Player(float x, float y, PlayersController SelectedPlayer, TiledMap map){
         this.PlayerX = x;
         this.PlayerY = y;
         this.SelectedPlayer = SelectedPlayer;
+        this.map = map;
+
+
+        TiledMapTileLayer collisionObjectLayer = (TiledMapTileLayer)map.getLayers().get(1);
+        MapObjects objects = collisionObjectLayer.getObjects();
 
         // Initializing player's characteristics
         PlayerGunAmmo = 5;
@@ -572,7 +586,6 @@ public class Player {
 
     public void collisionHandling(float delta, Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<Pool> RadioActivePool) {
 
-
         // Bullet collision
         switch (SelectedPlayer) {
             case Blue:
@@ -602,31 +615,58 @@ public class Player {
         }
 
 
-        // kills player if you touch RadioActivePool
-        for(Pool pools : RadioActivePool){
-            if(PlayerBounds.overlaps(pools.PoolHitBox)){
-                PlayerHealth = 0;
+        // vertical & grounds  Collision
+
+        int startX, startY, endX, endY;
+        if (Yspeed > 0) {
+            startY = endY = (int)(PlayerY + height + Yspeed);
+        } else {
+            startY = endY = (int)(PlayerY + Yspeed);
+        }
+        startX = (int)(PlayerX);
+        endX = (int)(PlayerX + width);
+        getTiles(startX, startY, endX, endY, tiles);
+        PlayerBounds.y += Yspeed;
+        for (Rectangle tile : tiles) {
+            if (PlayerBounds.overlaps(tile)) {
+
+                if (Yspeed > 0) {
+                    PlayerY = tile.y - height;
+
+                } else {
+                    PlayerY = tile.y + tile.height;
+                }
+                Yspeed = -Yspeed;
+
             }
         }
 
 
         // horizontal & borders Collision
         PlayerBounds.x += Xspeed;
-        for (MapObject borders: WorldBorder) {
-            if (PlayerBounds.overlaps(borders.hitBox)) {
-                Xspeed -= Xspeed;
-            }
-        }
 
-
-        // vertical & grounds  Collision
-        PlayerBounds.y += Yspeed;
-        for (MapObject grounds : Ground) {
-            if (PlayerBounds.overlaps(grounds.hitBox)) {
-                Yspeed -= Yspeed;
+        // kills player if you touch RadioActivePool
+        for(Pool pools : RadioActivePool){
+            if(PlayerBounds.overlaps(pools.PoolHitBox)){
+                PlayerHealth = 0;
             }
         }
     }
+
+    private void getTiles (int startX, int startY, int endX, int endY, Array<Rectangle> tiles) {
+        TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get("blocked");
+        for (int y = startY; y <= endY; y++) {
+            for (int x = startX; x <= endX; x++) {
+                TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+                if (cell != null) {
+                    Rectangle rect = new Rectangle();
+                    rect.set(x, y, 1, 1);
+                    tiles.add(rect);
+                }
+            }
+        }
+    }
+
 
     public void updatePlayerPosition(){
 
