@@ -55,7 +55,7 @@ public class Player {
     public final int JUMP_FORCE = 1050;
     public final float GRAVITATIONAL_FORCE = 15f;
 
-    private Array<Rectangle> tiles = new Array<Rectangle>();
+    public Array<Rectangle> tiles = new Array<Rectangle>();
 
     // player characteristics
     public float PlayerX;
@@ -133,6 +133,7 @@ public class Player {
         width = PLAYER_WIDTH;
         height = PLAYER_HEIGHT;
         PlayerBounds = new Rectangle(PlayerX, PlayerY, width, height);
+        tiles = new Array<>();
 
         isFacingLeft = false;
         isPlayerHoldingGun = false;
@@ -625,19 +626,11 @@ public class Player {
         }
         startX = (int)(PlayerX);
         endX = (int)(PlayerX + width);
-        getTiles(startX, startY, endX, endY, tiles);
+        getTiles(tiles);
         PlayerBounds.y += Yspeed;
         for (Rectangle tile : tiles) {
-            if (PlayerBounds.overlaps(tile)) {
-
-                if (Yspeed > 0) {
-                    PlayerY = tile.y - height;
-
-                } else {
-                    PlayerY = tile.y + tile.height;
-                }
-                Yspeed = -Yspeed;
-
+            if (PlayerHitBox.overlaps(tile)) {
+                Yspeed = 0;
             }
         }
 
@@ -653,17 +646,11 @@ public class Player {
         }
     }
 
-    private void getTiles (int startX, int startY, int endX, int endY, Array<Rectangle> tiles) {
-        TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get("blocked");
-        for (int y = startY; y <= endY; y++) {
-            for (int x = startX; x <= endX; x++) {
-                TiledMapTileLayer.Cell cell = layer.getCell(x, y);
-                if (cell != null) {
-                    Rectangle rect = new Rectangle();
-                    rect.set(x, y, 1, 1);
-                    tiles.add(rect);
-                }
-            }
+    private void getTiles (Array<Rectangle> tiles) {
+        for(com.badlogic.gdx.maps.MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            tiles.add(rect);
+
         }
     }
 
