@@ -8,14 +8,17 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
 import com.amithalpert.contamination.Screens.GameScreen;
+
 
 import java.util.Iterator;
 
@@ -25,6 +28,8 @@ import java.util.Iterator;
  * And functions that created for each player.
  */
 public class Player {
+
+
 
 
     // the PlayersController is used for managing a lot of player,
@@ -46,16 +51,16 @@ public class Player {
 
 
     // Initializing players' final Variables
-    public final int PLAYER_WIDTH = 170;
-    public final int PLAYER_HEIGHT = 170;
+    public final int PLAYER_WIDTH = 3;
+    public final int PLAYER_HEIGHT = 3;
 
     public final float ANIMATIONS_TIME = 0.5f;
     public final float SHOOT_WAIT_TIME = 0.01f;
-    public final int MOVEMENT_SPEED = 320;
-    public final int JUMP_FORCE = 1050;
-    public final float GRAVITATIONAL_FORCE = 15f;
+    public final int MOVEMENT_SPEED = 20;
+    public final int JUMP_FORCE = 50;
+    public final float GRAVITATIONAL_FORCE = 0.1f;
 
-    public Array<Rectangle> tiles = new Array<Rectangle>();
+    public Array<Rectangle> tiles;
 
     // player characteristics
     public float PlayerX;
@@ -124,8 +129,6 @@ public class Player {
         this.map = map;
 
 
-        TiledMapTileLayer collisionObjectLayer = (TiledMapTileLayer)map.getLayers().get(1);
-        MapObjects objects = collisionObjectLayer.getObjects();
 
         // Initializing player's characteristics
         PlayerGunAmmo = 5;
@@ -616,27 +619,22 @@ public class Player {
         }
 
 
-        // vertical & grounds  Collision
 
-        int startX, startY, endX, endY;
-        if (Yspeed > 0) {
-            startY = endY = (int)(PlayerY + height + Yspeed);
-        } else {
-            startY = endY = (int)(PlayerY + Yspeed);
-        }
-        startX = (int)(PlayerX);
-        endX = (int)(PlayerX + width);
         getTiles(tiles);
+        // vertical & grounds  Collision
         PlayerBounds.y += Yspeed;
         for (Rectangle tile : tiles) {
             if (PlayerHitBox.overlaps(tile)) {
-                Yspeed = 0;
+                System.out.printf("awdawdawdaw");
             }
         }
 
 
         // horizontal & borders Collision
         PlayerBounds.x += Xspeed;
+
+
+
 
         // kills player if you touch RadioActivePool
         for(Pool pools : RadioActivePool){
@@ -646,11 +644,13 @@ public class Player {
         }
     }
 
-    private void getTiles (Array<Rectangle> tiles) {
-        for(com.badlogic.gdx.maps.MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            tiles.add(rect);
 
+
+
+    private void getTiles (Array<Rectangle> tiles) {
+        for(RectangleMapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = object.getRectangle();
+            tiles.add(rect);
         }
     }
 

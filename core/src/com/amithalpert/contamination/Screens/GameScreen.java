@@ -91,12 +91,17 @@ public class GameScreen implements Screen {
         ////////////////////////
         // Camera and viewport
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 30, 20);
         camera.update();
+        viewport = new FitViewport(480 / 16f, 320 /16f, camera);
+
+
 
         // set up the tiled map
-        tiledMap = new TmxMapLoader().load("desert.tmx");
+        tiledMap = new TmxMapLoader().load("test2.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / 16f);
+
+        camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
+
 
 
         ////////////////////////
@@ -111,7 +116,7 @@ public class GameScreen implements Screen {
         // Set up players
         ////////////////////////
         Players = new Array<>();
-        Players.add(new Player(1500,400, Player.PlayersController.Blue, tiledMap));
+        Players.add(new Player(viewport.getWorldWidth() / 2,viewport.getWorldHeight() / 2, Player.PlayersController.Blue, tiledMap));
         Players.add(new Player(400,500,Player.PlayersController.Orange, tiledMap));
 
 
@@ -178,6 +183,9 @@ public class GameScreen implements Screen {
         camera.update();
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
+        game.batch.setProjectionMatrix(camera.combined);
+
+
 
         // Pauses everything that is delta time affected.
         if(isPaused){
@@ -209,7 +217,7 @@ public class GameScreen implements Screen {
         // draw gui and pauses the game
         DrawMenu();
         // draw FPS
-        game.font.draw(game.batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
+
 
         game.batch.end();
     }
@@ -588,7 +596,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        viewport.update(width , height);
     }
 
 
