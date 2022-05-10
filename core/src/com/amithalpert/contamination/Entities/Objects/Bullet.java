@@ -1,6 +1,6 @@
 package com.amithalpert.contamination.Entities.Objects;
 
-import com.amithalpert.contamination.Tools.MapObject;
+import com.amithalpert.contamination.Tools.MapBorder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -53,7 +53,7 @@ public class Bullet{
 
     }
 
-    public Texture update(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder) {
+    public Texture update(float delta, Array<MapBorder> Ground, Array<MapBorder> WorldBorder) {
 
 
         Xspeed = DirectionSpeed;

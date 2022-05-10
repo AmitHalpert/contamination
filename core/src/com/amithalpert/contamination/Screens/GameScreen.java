@@ -4,7 +4,8 @@ import com.amithalpert.contamination.Entities.Objects.AmmoDrop;
 import com.amithalpert.contamination.Entities.Objects.Pool;
 import com.amithalpert.contamination.Entities.Objects.Bullet;
 import com.amithalpert.contamination.Entities.Player;
-import com.amithalpert.contamination.Tools.MapObject;
+import com.amithalpert.contamination.Tools.MapBorder;
+import com.amithalpert.contamination.Tools.TileMapHelper;
 import com.amithalpert.contamination.contamination;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -12,28 +13,28 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
-import java.io.*;
+
 import java.util.Iterator;
 
 
 public class GameScreen implements Screen {
 
     final contamination game;
+
+
+    private World world;
+    private Box2DDebugRenderer box2DDebugRenderer;
 
     // Main menu features
     float deltaTime;
@@ -69,16 +70,17 @@ public class GameScreen implements Screen {
     public static Array<Player> Players;
 
     // tiled map
-    TiledMap tiledMap;
-    OrthogonalTiledMapRenderer tiledMapRenderer;
+
+    private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
+    private TileMapHelper tileMapHelper;
 
     //map objects
 
 
     Array<Pool> Pools;
     Array<AmmoDrop> AmmoDrops;
-    Array<MapObject> Grounds;
-    Array<MapObject> WorldBorders;
+    Array<MapBorder> Grounds;
+    Array<MapBorder> WorldBorders;
 
 
 
@@ -93,13 +95,19 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.update();
         viewport = new FitViewport(480 / 16f, 320 /16f, camera);
+        // tilemap
+        this.tileMapHelper = new TileMapHelper(this);
+        this.orthogonalTiledMapRenderer = tileMapHelper.setupMap();
+
+        ////////////////////////
+        // box2d
+        ////////////////////////
+        this.world = new World(new Vector2(0, 0), false);
+        this.box2DDebugRenderer = new Box2DDebugRenderer();
 
 
 
         // set up the tiled map
-        tiledMap = new TmxMapLoader().load("test2.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / 16f);
-
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
 
@@ -116,8 +124,8 @@ public class GameScreen implements Screen {
         // Set up players
         ////////////////////////
         Players = new Array<>();
-        Players.add(new Player(viewport.getWorldWidth() / 2,viewport.getWorldHeight() / 2, Player.PlayersController.Blue, tiledMap));
-        Players.add(new Player(400,500,Player.PlayersController.Orange, tiledMap));
+        Players.add(new Player(viewport.getWorldWidth() / 2,viewport.getWorldHeight() / 2, Player.PlayersController.Blue));
+        Players.add(new Player(400,500,Player.PlayersController.Orange));
 
 
         ////////////////////////
@@ -176,13 +184,29 @@ public class GameScreen implements Screen {
     public void show() {
     }
 
+    private void update(){
+        world.step(1 / 60f, 6, 2);
+        game.batch.setProjectionMatrix(camera.combined);
+        if(Gdx.input.isKeyPressed(Keys.L)){
+            dispose();
+            Gdx.app.exit();
+        }
+
+    }
+
+    private void cameraUpdate(){
+        camera.position.set(new Vector3(0, 0, 0));
+        camera.update();
+    }
+
     @Override
     public void render(float deltaTime) {
+        this.update();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         deltaTime = Gdx.graphics.getDeltaTime();
         camera.update();
-        tiledMapRenderer.setView(camera);
-        tiledMapRenderer.render();
+        orthogonalTiledMapRenderer.setView(camera);
+        orthogonalTiledMapRenderer.render();
         game.batch.setProjectionMatrix(camera.combined);
 
 
@@ -220,6 +244,7 @@ public class GameScreen implements Screen {
 
 
         game.batch.end();
+        box2DDebugRenderer.render(world, camera.combined.scl(16f));
     }
 
 
@@ -450,7 +475,7 @@ public class GameScreen implements Screen {
 
     public void AmmoDropCollision(float delta){
         // ammo drop collision with grounds
-        for(MapObject GroundIndex : Grounds){
+        for(MapBorder GroundIndex : Grounds){
             for(AmmoDrop DropIndex : AmmoDrops){
                 // freeze if the drop on ground
                 if(DropIndex.DropHitBox.overlaps(GroundIndex.hitBox)){
@@ -521,7 +546,7 @@ public class GameScreen implements Screen {
     public void PlayersBulletCollisionHandling(){
         // removes the bullet if it overlaps WorldBorder
         for(Player playerIndex : Players) {
-            for (MapObject Borders : WorldBorders) {
+            for (MapBorder Borders : WorldBorders) {
                 Array<Bullet> Playerbullets = playerIndex.getBullets();
                 for (Iterator<Bullet> Iter = Playerbullets.iterator(); Iter.hasNext(); ) {
                     Bullet TempBullet = Iter.next();
@@ -550,15 +575,15 @@ public class GameScreen implements Screen {
         // environment Grounds
         ////
         //left rock
-        Grounds.add(new MapObject(50,10,89,330));
+        Grounds.add(new MapBorder(50,10,89,330));
         // middle rock
-        Grounds.add(new MapObject(1067,-12,70,320));
+        Grounds.add(new MapBorder(1067,-12,70,320));
         // right rock
-        Grounds.add(new MapObject(1495,-12,70,320));
+        Grounds.add(new MapBorder(1495,-12,70,320));
         // right Ground
-        Grounds.add(new MapObject(920,-39,1200,224));
+        Grounds.add(new MapBorder(920,-39,1200,224));
         // left Ground
-        Grounds.add(new MapObject(50,-39,455,224));
+        Grounds.add(new MapBorder(50,-39,455,224));
     }
 
     private void createMapBorders(){
@@ -568,31 +593,34 @@ public class GameScreen implements Screen {
         ////
 
         //left rock
-        WorldBorders.add(new MapObject(-435,-37,580,375));
+        WorldBorders.add(new MapBorder(-435,-37,580,375));
         // middle(left) rock
-        WorldBorders.add(new MapObject(1065,-37,75,345));
+        WorldBorders.add(new MapBorder(1065,-37,75,345));
         // inner middle left RadioActivePool
-        WorldBorders.add(new MapObject(359,-115,150,295));
+        WorldBorders.add(new MapBorder(359,-115,150,295));
         // inner middle right RadioActivePool
-        WorldBorders.add(new MapObject(918,-115,100,295));
+        WorldBorders.add(new MapBorder(918,-115,100,295));
         // right rock
-        WorldBorders.add(new MapObject(1495,-39,74,345));
+        WorldBorders.add(new MapBorder(1495,-39,74,345));
 
         ////
         // WORLD BOUNDS
         ////
 
         // create left world border
-        WorldBorders.add(new MapObject(-650,200,580,3000));
+        WorldBorders.add(new MapBorder(-650,200,580,3000));
 
         // create right world border
-        WorldBorders.add(new MapObject(1989,200,500,1200));
+        WorldBorders.add(new MapBorder(1989,200,500,1200));
 
         // create upper world border
-        WorldBorders.add(new MapObject(-550,1200,3000,200));
+        WorldBorders.add(new MapBorder(-550,1200,3000,200));
 
     }
 
+    public World getWorld() {
+        return world;
+    }
 
     @Override
     public void resize(int width, int height) {

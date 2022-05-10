@@ -2,7 +2,7 @@ package com.amithalpert.contamination.Tools;
 
 import com.badlogic.gdx.math.Rectangle;
 
-public class MapObject {
+public class MapBorder {
 
     float x;
     float y;
@@ -11,7 +11,7 @@ public class MapObject {
 
     public Rectangle hitBox;
 
-    public MapObject(float x, float y, int width, int height){
+    public MapBorder(float x, float y, int width, int height){
         this.x = x;
         this.y = y;
         this.width = width;

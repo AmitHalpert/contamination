@@ -2,18 +2,12 @@ package com.amithalpert.contamination.Entities;
 
 import com.amithalpert.contamination.Entities.Objects.Bullet;
 import com.amithalpert.contamination.Entities.Objects.Pool;
-import com.amithalpert.contamination.Tools.MapObject;
+import com.amithalpert.contamination.Tools.MapBorder;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
@@ -60,7 +54,6 @@ public class Player {
     public final int JUMP_FORCE = 50;
     public final float GRAVITATIONAL_FORCE = 0.1f;
 
-    public Array<Rectangle> tiles;
 
     // player characteristics
     public float PlayerX;
@@ -120,13 +113,11 @@ public class Player {
     // creates the enums
     public playerState state;
     public PlayersController SelectedPlayer;
-    public TiledMap map;
 
-    public Player(float x, float y, PlayersController SelectedPlayer, TiledMap map){
+    public Player(float x, float y, PlayersController SelectedPlayer){
         this.PlayerX = x;
         this.PlayerY = y;
         this.SelectedPlayer = SelectedPlayer;
-        this.map = map;
 
 
 
@@ -136,7 +127,7 @@ public class Player {
         width = PLAYER_WIDTH;
         height = PLAYER_HEIGHT;
         PlayerBounds = new Rectangle(PlayerX, PlayerY, width, height);
-        tiles = new Array<>();
+
 
         isFacingLeft = false;
         isPlayerHoldingGun = false;
@@ -247,7 +238,7 @@ public class Player {
 
 
 
-    public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder, Array<Pool> RadioActivePool) {
+    public Texture render(float delta, Array<MapBorder> Ground, Array<MapBorder> WorldBorder, Array<Pool> RadioActivePool) {
         // freezes everything
         if(!GameScreen.isPaused){
 
@@ -588,7 +579,7 @@ public class Player {
         }
     }
 
-    public void collisionHandling(float delta, Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<Pool> RadioActivePool) {
+    public void collisionHandling(float delta, Array<MapBorder> Ground, Array<MapBorder> WorldBorder, Array<Pool> RadioActivePool) {
 
         // Bullet collision
         switch (SelectedPlayer) {
@@ -620,14 +611,10 @@ public class Player {
 
 
 
-        getTiles(tiles);
+
         // vertical & grounds  Collision
         PlayerBounds.y += Yspeed;
-        for (Rectangle tile : tiles) {
-            if (PlayerHitBox.overlaps(tile)) {
-                System.out.printf("awdawdawdaw");
-            }
-        }
+
 
 
         // horizontal & borders Collision
@@ -644,15 +631,6 @@ public class Player {
         }
     }
 
-
-
-
-    private void getTiles (Array<Rectangle> tiles) {
-        for(RectangleMapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = object.getRectangle();
-            tiles.add(rect);
-        }
-    }
 
 
     public void updatePlayerPosition(){
