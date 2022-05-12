@@ -103,7 +103,7 @@ public class GameScreen implements Screen {
         ////////////////////////
         // box2d
         ////////////////////////
-        world = new World(new Vector2(0,-9f), false);
+        world = new World(new Vector2(0,-25f), false);
         box2DDebugRenderer = new Box2DDebugRenderer();
 
         // tilemap
@@ -189,6 +189,8 @@ public class GameScreen implements Screen {
 
         game.batch.setProjectionMatrix(camera.combined);
         Renderer.setView(camera);
+
+        gamer.update();
 
         if(Gdx.input.isKeyPressed(Keys.L)){
             dispose();
