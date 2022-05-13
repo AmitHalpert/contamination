@@ -35,6 +35,9 @@ public class GameScreen implements Screen {
     final contamination game;
 
 
+    Texture Tex;
+
+
     private SpriteBatch batch;
     private  World world;
     private  Box2DDebugRenderer box2DDebugRenderer;
@@ -68,8 +71,9 @@ public class GameScreen implements Screen {
     Texture guiMenu;
 
     // world size
-    static final int WORLD_WIDTH = Gdx.graphics.getWidth();
-    static final int WORLD_HEIGHT = Gdx.graphics.getHeight();
+    static final float WORLD_WIDTH = Gdx.graphics.getWidth();
+    static final float WORLD_HEIGHT = Gdx.graphics.getHeight();
+
 
     // The players Array
     public static Array<Player> Players;
@@ -110,6 +114,9 @@ public class GameScreen implements Screen {
         this.tileMapHelper = new TileMapHelper(this);
         this.Renderer = tileMapHelper.setupMap();
 
+
+
+        Tex = new Texture("player_idle_1.png");
 
         ////////////////////////
         // Set up parameters
@@ -225,7 +232,7 @@ public class GameScreen implements Screen {
             deltaTime = 0;
         }
 
-
+        gamer.update();
 
         ////////////////////////
         // Draw hierarchy
@@ -233,9 +240,14 @@ public class GameScreen implements Screen {
         game.batch.begin();
 
 
+        game.batch.draw(gamer.render(deltaTime),(gamer.getBody().getPosition().x * 16) - (50 / 2f), gamer.getBody().getPosition().y * 16 - (gamer.getHeight() / 2f) -12,50,59);
+
+
         game.batch.end();
 
-        box2DDebugRenderer.render(world, camera.combined.scl(16f));
+
+
+
     }
 
 
@@ -245,15 +257,6 @@ public class GameScreen implements Screen {
     // Draw functions
     ////////////////////////
 
-    public void DrawMap(float deltaTime){
-        // draw map
-        game.batch.draw(background, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-
-
-        for(Pool pools : Pools){
-            game.batch.draw(pools.update(deltaTime),1209,200,213,200);
-        }
-    }
 
     public void DrawPlayers(){
         for (Player players : Players) {
@@ -273,6 +276,7 @@ public class GameScreen implements Screen {
             }
         }
     }
+
 
     public void DrawPlayersHealthBarHUD(){
         // blue player health bar
@@ -551,64 +555,6 @@ public class GameScreen implements Screen {
 
     }
 
-
-
-    ////////////////////////
-    // MapObject functions
-    ////////////////////////
-
-    private void createRadioActivePools(){
-        Pools.add(new Pool(1260,30));
-    }
-
-    private void createGrounds(){
-        ////
-        // environment Grounds
-        ////
-        //left rock
-        Grounds.add(new MapBorder(50,10,89,330));
-        // middle rock
-        Grounds.add(new MapBorder(1067,-12,70,320));
-        // right rock
-        Grounds.add(new MapBorder(1495,-12,70,320));
-        // right Ground
-        Grounds.add(new MapBorder(920,-39,1200,224));
-        // left Ground
-        Grounds.add(new MapBorder(50,-39,455,224));
-    }
-
-    private void createMapBorders(){
-
-        ////
-        // environment bounds
-        ////
-
-        //left rock
-        WorldBorders.add(new MapBorder(-435,-37,580,375));
-        // middle(left) rock
-        WorldBorders.add(new MapBorder(1065,-37,75,345));
-        // inner middle left RadioActivePool
-        WorldBorders.add(new MapBorder(359,-115,150,295));
-        // inner middle right RadioActivePool
-        WorldBorders.add(new MapBorder(918,-115,100,295));
-        // right rock
-        WorldBorders.add(new MapBorder(1495,-39,74,345));
-
-        ////
-        // WORLD BOUNDS
-        ////
-
-        // create left world border
-        WorldBorders.add(new MapBorder(-650,200,580,3000));
-
-        // create right world border
-        WorldBorders.add(new MapBorder(1989,200,500,1200));
-
-        // create upper world border
-        WorldBorders.add(new MapBorder(-550,1200,3000,200));
-
-    }
-
     public World getWorld() {
         return world;
     }
@@ -619,6 +565,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+
     }
 
 

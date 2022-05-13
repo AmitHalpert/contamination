@@ -28,7 +28,7 @@ public class TileMapHelper {
     }
 
     public OrthogonalTiledMapRenderer setupMap(){
-        tiledMap = new TmxMapLoader().load("test4.tmx");
+        tiledMap = new TmxMapLoader().load("test5.tmx");
         parseMapObjects(tiledMap.getLayers().get("ground").getObjects());
         return new OrthogonalTiledMapRenderer(tiledMap);
     }
@@ -66,12 +66,12 @@ public class TileMapHelper {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         Body body = gameScreen.getWorld().createBody(bodyDef);
-        Shape shape = createPolyGonShape(polygonMapObject);
+        Shape shape = createPolyGonshape(polygonMapObject);
         body.createFixture(shape, 1000);
         shape.dispose();
     }
 
-    private Shape createPolyGonShape(PolygonMapObject polygonMapObject) {
+    private Shape createPolyGonshape(PolygonMapObject polygonMapObject) {
         float[] vertices = polygonMapObject.getPolygon().getTransformedVertices();
         Vector2[] worldVertices = new Vector2[vertices.length / 2];
 
