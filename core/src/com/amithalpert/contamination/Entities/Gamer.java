@@ -1,5 +1,6 @@
 package com.amithalpert.contamination.Entities;
 
+import com.amithalpert.contamination.Entities.Objects.Bullet;
 import com.amithalpert.contamination.Tools.GameEntity;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
 import com.badlogic.gdx.Gdx;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Array;
 
 public class Gamer extends GameEntity {
 
@@ -23,7 +25,7 @@ public class Gamer extends GameEntity {
     }
 
 
-
+    private Array<Bullet> bullets;
     private boolean isFacingLeft;
     private int jumpCounter;
 
@@ -48,10 +50,14 @@ public class Gamer extends GameEntity {
         this.speed = 4f;
         this.jumpCounter = 0;
         this.isFacingLeft = false;
+        this.bullets = new Array<>();
+        this.state = playerState.Idle;
 
 
 
-        // Graphics
+        ////////////////////////
+        // types of the player animations and textures
+        ////////////////////////
         
         // player with a gun right animations
         player_running_gun_animation = new ObjectAnimation();
@@ -70,8 +76,6 @@ public class Gamer extends GameEntity {
         flipped_player_idle_gun_animation.loadAnimation("flipped_player_idle_gun_", 1);
         
         outputTexture = new Texture("player_idle_1.png");
-
-        state = playerState.Idle;
     }
 
     @Override
@@ -102,6 +106,15 @@ public class Gamer extends GameEntity {
                 }
                 break;
 
+            case Jumping:
+                if(isFacingLeft){
+                    outputTexture = flipped_player_jumping_gun_animation.getFrame(delta);
+                }
+                else {
+                    outputTexture = player_jumping_gun_animation.getFrame(delta);
+                }
+                break;
+
             case Idle:
                 if(isFacingLeft){
                     outputTexture = flipped_player_idle_gun_animation.getFrame(delta);
@@ -121,10 +134,15 @@ public class Gamer extends GameEntity {
 
     private void handleUserInput(){
         velX = 0;
-        if(Gdx.input.isKeyPressed(Input.Keys.D)){
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)){
+            ShootBullets();
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A)){
             velX = 1;
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.A)){
+        if(Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)){
             velX = -1;
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.W) && jumpCounter < 1){
@@ -140,33 +158,55 @@ public class Gamer extends GameEntity {
         }
 
 
-        body.setLinearVelocity(velX * speed, body.getLinearVelocity().y < 25 ? body.getLinearVelocity().y : 25);
+        body.setLinearVelocity(velX * speed, body.getLinearVelocity().y);
+    }
+
+
+    private void ShootBullets() {
+        // creates a new bullet and add it to the array
+        Bullet bullet;
+
+        // check isFacingLeft and adjust where the bullet coming from.
+        if(isFacingLeft){
+            bullet = new Bullet((body.getPosition().x  * 16) - (20 / 2f), body.getPosition().y * 16 - (15  / 2f), true);
+        }else{
+            bullet = new Bullet((body.getPosition().x * 16) - (20 / 2f), body.getPosition().y * 16 - (15 / 2f), false);
+        }
+
+        bullets.add(bullet);
     }
 
 
 
     private void getPlayerState(){
 
-        if(velX != 0){
-            if(velY == 0) {
-                state = playerState.Running;
-            }
-            if(velX < 0){
-                isFacingLeft = true;
-            }
-            else {
-                isFacingLeft = false;
-            }
+        // check if the player is jumping
+        if(body.getLinearVelocity().y != 0){
+            state = playerState.Jumping;
         }
 
-        else{
+        else if(body.getLinearVelocity().y == 0){
             state = playerState.Idle;
+        }
 
+        // check if the player is moving left or right
+        if(velX != 0){
+            if(velY == 0 && state != playerState.Jumping) {
+                state = playerState.Running;
+            }
+            isFacingLeft = velX < 0;
+        }
+
+        else if(state == playerState.Running){
+            state = playerState.Idle;
         }
 
     }
 
 
+    public Array<Bullet> getBullets(){
+        return bullets;
+    }
 
 
 

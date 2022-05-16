@@ -8,13 +8,13 @@ import com.badlogic.gdx.utils.Array;
 
 public class Bullet{
 
-    public static final int BULLET_MOVEMENT_SPEED = 5900;
+    public static final int BULLET_MOVEMENT_SPEED = 2000;
 
     // bullet parameters
     double DirectionSpeed;
     double Xspeed;
-    public int width = 60;
-    public int height = 60;
+    public int width = 20;
+    public int height = 15;
     public float bulletX;
     public float bulletY;
     public Rectangle hitBox;
@@ -27,7 +27,7 @@ public class Bullet{
 
         this.bulletX = x;
         this.bulletY = y;
-        hitBox = new Rectangle(bulletX, bulletY, width+43, height);
+        hitBox = new Rectangle(bulletX, bulletY, width, height);
 
         // changes the direction and sprite width
         if((IsPlayerFacingLeft && this.width > 0) || (!IsPlayerFacingLeft && this.width < 0)){
@@ -53,7 +53,7 @@ public class Bullet{
 
     }
 
-    public Texture update(float delta, Array<MapBorder> Ground, Array<MapBorder> WorldBorder) {
+    public Texture update(float delta) {
 
 
         Xspeed = DirectionSpeed;
@@ -71,11 +71,11 @@ public class Bullet{
 
     public void FlipBulletSprite(boolean IsPlayerFacingLeft){
         width = width * -1;
-        bulletX = bulletX + width +43 * -1;
+        bulletX = bulletX + width * -1;
 
             if (IsPlayerFacingLeft) {
-            hitBox.width = (hitBox.width + 43 * -1) / 1.3f;
-            hitBox.x = hitBox.x + hitBox.width + 43 * -1;
+            hitBox.width = (hitBox.width * -1) / 1.3f;
+            hitBox.x = hitBox.x + hitBox.width * -1;
             }
 
     }

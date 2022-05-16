@@ -35,7 +35,6 @@ public class GameScreen implements Screen {
     final contamination game;
 
 
-    Texture Tex;
 
 
     private SpriteBatch batch;
@@ -114,9 +113,6 @@ public class GameScreen implements Screen {
         this.tileMapHelper = new TileMapHelper(this);
         this.Renderer = tileMapHelper.setupMap();
 
-
-
-        Tex = new Texture("player_idle_1.png");
 
         ////////////////////////
         // Set up parameters
@@ -209,7 +205,7 @@ public class GameScreen implements Screen {
     private void cameraUpdate(){
         Vector3 position = camera.position;
         position.x = Math.round(gamer.getBody().getPosition().x * 16f * 10) / 10f;
-        position.y = Math.round(gamer.getBody().getPosition().y * 16f * 10) / 10f;
+        position.y = Math.round(gamer.getBody().getPosition().y + 10 * 16f * 10) / 10f;
         camera.position.set(position);
 
 
@@ -239,15 +235,15 @@ public class GameScreen implements Screen {
         ////////////////////////
         game.batch.begin();
 
-
         game.batch.draw(gamer.render(deltaTime),(gamer.getBody().getPosition().x * 16) - (50 / 2f), gamer.getBody().getPosition().y * 16 - (gamer.getHeight() / 2f) -12,50,59);
 
+        for(Bullet bulletIndex : gamer.getBullets()){
+            game.batch.draw(bulletIndex.update(deltaTime), bulletIndex.bulletX, bulletIndex.bulletY - 2, bulletIndex.width, bulletIndex.height);
+        }
 
         game.batch.end();
 
-
-
-
+        box2DDebugRenderer.render(world, camera.combined.scl(16f));
     }
 
 
@@ -256,14 +252,6 @@ public class GameScreen implements Screen {
     ////////////////////////
     // Draw functions
     ////////////////////////
-
-
-    public void DrawPlayers(){
-        for (Player players : Players) {
-            game.batch.draw(players.render(Gdx.graphics.getDeltaTime(), Grounds, WorldBorders, Pools), players.PlayerX, players.PlayerY, players.width, players.height);
-        }
-
-    }
 
     public void DrawAmmoDrops(float deltaTime){
         // draws the ammo drops
@@ -276,7 +264,6 @@ public class GameScreen implements Screen {
             }
         }
     }
-
 
     public void DrawPlayersHealthBarHUD(){
         // blue player health bar
@@ -420,16 +407,7 @@ public class GameScreen implements Screen {
 
     public void DrawPlayersBullets(){
 
-        // draws the blue's player bullets
-        for(Bullet BluebulletsIndex : Players.get(0).getBullets()){
-            game.batch.draw(BluebulletsIndex.update(deltaTime, Grounds, WorldBorders), BluebulletsIndex.bulletX, BluebulletsIndex.bulletY, BluebulletsIndex.width, BluebulletsIndex.height);
-        }
 
-
-        // draws the orange's player bullets
-        for(Bullet OrangebulletsIndex : Players.get(1).getBullets()){
-            game.batch.draw(OrangebulletsIndex.update(deltaTime, Grounds, WorldBorders),OrangebulletsIndex.bulletX,OrangebulletsIndex.bulletY,OrangebulletsIndex.width,OrangebulletsIndex.height);
-        }
 
     }
 
