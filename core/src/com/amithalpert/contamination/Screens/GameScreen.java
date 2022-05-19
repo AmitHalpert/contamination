@@ -1,12 +1,12 @@
 package com.amithalpert.contamination.Screens;
 
-import com.amithalpert.contamination.Entities.Gamer;
+import com.amithalpert.contamination.Entities.Player;
 import com.amithalpert.contamination.Entities.Objects.AmmoDrop;
 import com.amithalpert.contamination.Entities.Objects.Pool;
 import com.amithalpert.contamination.Entities.Objects.Bullet;
-import com.amithalpert.contamination.Entities.Player;
 import com.amithalpert.contamination.Tools.MapBorder;
 import com.amithalpert.contamination.Tools.TileMapHelper;
+import com.amithalpert.contamination.Tools.WorldContactListener;
 import com.amithalpert.contamination.contamination;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -15,10 +15,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -26,8 +23,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
-
-import java.util.Iterator;
 
 
 public class GameScreen implements Screen {
@@ -42,7 +37,7 @@ public class GameScreen implements Screen {
     private  Box2DDebugRenderer box2DDebugRenderer;
 
 
-    private Gamer gamer;
+    private Player player;
 
     // Main menu features
     float deltaTime;
@@ -74,8 +69,6 @@ public class GameScreen implements Screen {
     static final float WORLD_HEIGHT = Gdx.graphics.getHeight();
 
 
-    // The players Array
-    public static Array<Player> Players;
 
     // tiled map
     private OrthogonalTiledMapRenderer Renderer;
@@ -114,6 +107,11 @@ public class GameScreen implements Screen {
         this.Renderer = tileMapHelper.setupMap();
 
 
+        // ContactListener for collision
+        world.setContactListener(new WorldContactListener());
+
+
+
         ////////////////////////
         // Set up parameters
         ////////////////////////
@@ -125,9 +123,6 @@ public class GameScreen implements Screen {
         ////////////////////////
         // Set up players
         ////////////////////////
-        Players = new Array<>();
-        Players.add(new Player(400,500,Player.PlayersController.Orange));
-        Players.add(new Player(400,500,Player.PlayersController.Blue));
 
 
         ////////////////////////
@@ -193,7 +188,7 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         Renderer.setView(camera);
 
-        gamer.update();
+        player.update();
 
         if(Gdx.input.isKeyPressed(Keys.L)){
             dispose();
@@ -204,8 +199,8 @@ public class GameScreen implements Screen {
 
     private void cameraUpdate(){
         Vector3 position = camera.position;
-        position.x = Math.round(gamer.getBody().getPosition().x * 16f * 10) / 10f;
-        position.y = Math.round(gamer.getBody().getPosition().y + 10 * 16f * 10) / 10f;
+        position.x = Math.round(player.getBody().getPosition().x * 16f * 10) / 10f;
+        position.y = Math.round(player.getBody().getPosition().y + 10 * 16f * 10) / 10f;
         camera.position.set(position);
 
 
@@ -228,16 +223,16 @@ public class GameScreen implements Screen {
             deltaTime = 0;
         }
 
-        gamer.update();
+        player.update();
 
         ////////////////////////
         // Draw hierarchy
         ////////////////////////
         game.batch.begin();
 
-        game.batch.draw(gamer.render(deltaTime),(gamer.getBody().getPosition().x * 16) - (50 / 2f), gamer.getBody().getPosition().y * 16 - (gamer.getHeight() / 2f) -12,50,59);
+        game.batch.draw(player.render(deltaTime),(player.getBody().getPosition().x * 16) - (50 / 2f), player.getBody().getPosition().y * 16 - (player.getHeight() / 2f) -12,50,59);
 
-        for(Bullet bulletIndex : gamer.getBullets()){
+        for(Bullet bulletIndex : player.getBullets()){
             game.batch.draw(bulletIndex.update(deltaTime), bulletIndex.bulletX, bulletIndex.bulletY - 2, bulletIndex.width, bulletIndex.height);
         }
 
@@ -265,101 +260,6 @@ public class GameScreen implements Screen {
         }
     }
 
-    public void DrawPlayersHealthBarHUD(){
-        // blue player health bar
-        switch (Players.get(0).PlayerHealth){
-            case 3:
-                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(0),1520,920,430,170);
-                break;
-
-            case 2:
-                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(1),1520,920,430,170);
-                break;
-
-            case 1:
-                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(2),1520,920,430,170);
-                break;
-            case 0:
-                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(3),1520,920,430,170);
-                break;
-            default:
-                game.batch.draw(RightPlayerHealthHUD.getIndexFrame(3),1520,920,430,170);
-
-        }
-        game.batch.draw(Players.get(0).render(deltaTime, Grounds, WorldBorders, Pools), 1760,950,Players.get(0).width,Players.get(0).height);
-
-        if(Players.get(0).PlayerHealth != 0) {
-            switch (Players.get(0).PlayerGunAmmo) {
-                case 5:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(5), 1725, 1012, 30, 33);
-                    break;
-                case 4:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(4), 1725, 1012, 30, 33);
-                    break;
-                case 3:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(3), 1725, 1012, 30, 33);
-                    break;
-                case 2:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(2), 1725, 1012, 30, 33);
-                    break;
-                case 1:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(1), 1725, 1012, 30, 33);
-                    break;
-                case 0:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(0), 1725, 1012, 30, 33);
-                    break;
-            }
-        }
-
-
-
-
-        // orange player health bar
-        switch (Players.get(1).PlayerHealth){
-            case 3:
-                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(0),-30,920,430,170);
-                break;
-
-            case 2:
-                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(1),-30,920,430,170);
-                break;
-
-            case 1:
-                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(2),-30,920,430,170);
-                break;
-            case 0:
-                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(3),-30,920,430,170);
-                break;
-            default:
-                game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(3),-30,920,430,170);
-        }
-
-        game.batch.draw(Players.get(1).render(deltaTime, Grounds, WorldBorders, Pools), -10,950,Players.get(1).width,Players.get(1).height);
-
-        if(Players.get(1).PlayerHealth != 0) {
-            switch (Players.get(1).PlayerGunAmmo) {
-                case 5:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(5), 170, 1012, 30, 33);
-                    break;
-                case 4:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(4), 170, 1012, 30, 33);
-                    break;
-                case 3:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(3), 170, 1012, 30, 33);
-                    break;
-                case 2:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(2), 170, 1012, 30, 33);
-                    break;
-                case 1:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(1), 170, 1012, 30, 33);
-                    break;
-                case 0:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(0), 170, 1012, 30, 33);
-                    break;
-            }
-        }
-
-    }
 
     public void DrawMenu(){
 
@@ -405,140 +305,15 @@ public class GameScreen implements Screen {
             }
         }
 
-    public void DrawPlayersBullets(){
 
 
-
-    }
-
-    public void DrawWinnerPlayer(float delta){
-
-        // if any player dies draw PressSpace
-        for(Player playerindex : Players){
-            if(playerindex.state == Player.playerState.dead){
-                game.batch.draw(PressSpace, 1080 - 550 / 2f, 600, 300, 55);
-                // rematch the game
-                if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
-                    game.setScreen(new GameScreen(game));
-                }
-            }
-        }
-
-        // Add timer //
-
-        if(Players.get(0).state == Player.playerState.dead && Players.get(1).state != Player.playerState.dead) {
-            game.batch.draw(OrangePlayerWinAnimation.getFrame(delta), 1080 - 900 / 2f, 800, 700, 100);
-        }
-        else if(Players.get(1).state == Player.playerState.dead && Players.get(0).state != Player.playerState.dead){
-            game.batch.draw(BluePlayerWinAnimation.getFrame(delta), 1080 - 900 / 2f, 800, 700, 100);
-        }
-        else if(Players.get(1).state == Player.playerState.dead && Players.get(0).state == Player.playerState.dead){
-            // Draw, draw animation (both player lose)
-            game.batch.draw(DrawAnimation.getFrame(delta), 1080 - 450 / 2f, 800, 200, 100);
-        }
-
-    }
-
-
-
-
-    ////////////////////////
-    // Collision functions
-    ////////////////////////
-
-    public void AmmoDropCollision(float delta){
-        // ammo drop collision with grounds
-        for(MapBorder GroundIndex : Grounds){
-            for(AmmoDrop DropIndex : AmmoDrops){
-                // freeze if the drop on ground
-                if(DropIndex.DropHitBox.overlaps(GroundIndex.hitBox)){
-                    DropIndex.freeze = true;
-                }
-            }
-        }
-
-        // ammo drop collision with RadioActivePools
-        for(Pool RadioActivePoolIndex : Pools) {
-            for (Iterator<AmmoDrop> Iter = AmmoDrops.iterator(); Iter.hasNext(); ) {
-                AmmoDrop TempAmmoDrops = Iter.next();
-                if (TempAmmoDrops.DropHitBox.overlaps(RadioActivePoolIndex.PoolHitBox)) {
-                    Iter.remove();
-                }
-                if(TempAmmoDrops.DeleteDrop){
-                    Iter.remove();
-                }
-            }
-        }
-
-        // if bullet touches barrel:
-        // remove the bullet and the barrel explodes
-        for(Player playerIndex : Players) {
-            for (Iterator<Bullet> BulletIter = playerIndex.getBullets().iterator(); BulletIter.hasNext(); ) {
-                Bullet TempBullets = BulletIter.next();
-                for (AmmoDrop TempAmmoDrops : AmmoDrops) {
-                    if (TempAmmoDrops.DropHitBox.overlaps(TempBullets.hitBox)) {
-                        TempAmmoDrops.freeze = true;
-                        TempAmmoDrops.IsExplosion = true;
-                        BulletIter.remove();
-                    }
-                }
-            }
-        }
-
-        // removes barrel and increase PlayerGunAmmo
-        for(Player playerIndex : Players) {
-            for (Iterator<AmmoDrop> Iter = AmmoDrops.iterator(); Iter.hasNext(); ) {
-                AmmoDrop AmmoDropsIndex = Iter.next();
-                if (AmmoDropsIndex.DropHitBox.overlaps(playerIndex.PlayerHitBox) && playerIndex.PlayerGunAmmo != 5 && !AmmoDropsIndex.IsExplosion) {
-                    playerIndex.PlayerGunAmmo = 5;
-                    Iter.remove();
-                }
-                if(AmmoDropsIndex.DeleteDrop){
-                    Iter.remove();
-                }
-            }
-        }
-        // kill the player if he touches the Explosion
-        for(Player playerIndex : Players) {
-            for (AmmoDrop DropIndex : AmmoDrops) {
-                if (playerIndex.PlayerHitBox.overlaps(DropIndex.ExplosiveHitBox) && DropIndex.IsExplosion) {
-                    playerIndex.PlayerHealth = 0;
-                }
-            }
-        }
-        // Spawns the drop in random X position every X time sec.
-        DropTimer += delta;
-        if (DropTimer >= 5f) {
-            AmmoDrop drop = new AmmoDrop(MathUtils.random(0, 1900), 1920);
-            AmmoDrops.add(drop);
-            DropTimer = 0;
-        }
-
-    }
-
-    public void PlayersBulletCollisionHandling(){
-        // removes the bullet if it overlaps WorldBorder
-        for(Player playerIndex : Players) {
-            for (MapBorder Borders : WorldBorders) {
-                Array<Bullet> Playerbullets = playerIndex.getBullets();
-                for (Iterator<Bullet> Iter = Playerbullets.iterator(); Iter.hasNext(); ) {
-                    Bullet TempBullet = Iter.next();
-                    if (TempBullet.hitBox.overlaps(Borders.hitBox)) {
-                        Iter.remove();
-                    }
-                }
-            }
-        }
-
-
-    }
 
     public World getWorld() {
         return world;
     }
 
-    public void setPlayer(Gamer gamer){
-        this.gamer = gamer;
+    public void setPlayer(Player player){
+        this.player = player;
     }
 
     @Override
@@ -564,9 +339,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        for(Player players : Players){
-            players.dispose();
-        }
+
 
         DrawAnimation.dispose();
         OrangePlayerWinAnimation.dispose();

@@ -1,6 +1,6 @@
 package com.amithalpert.contamination.Tools;
 
-import com.amithalpert.contamination.Entities.Gamer;
+import com.amithalpert.contamination.Entities.Player;
 import com.amithalpert.contamination.Screens.GameScreen;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -54,7 +54,7 @@ public class TileMapHelper {
                             false,
                             gameScreen.getWorld()
                     );
-                    gameScreen.setPlayer(new Gamer(rectangle.getWidth(), rectangle.getHeight(), body));
+                    gameScreen.setPlayer(new Player(rectangle.getWidth(), rectangle.getHeight(), body));
                 }
             }
         }
