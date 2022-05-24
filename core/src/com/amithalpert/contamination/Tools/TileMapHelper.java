@@ -28,7 +28,7 @@ public class TileMapHelper {
     }
 
     public OrthogonalTiledMapRenderer setupMap(){
-        tiledMap = new TmxMapLoader().load("test5.tmx");
+        tiledMap = new TmxMapLoader().load("thedesert.tmx");
         parseMapObjects(tiledMap.getLayers().get("ground").getObjects());
         return new OrthogonalTiledMapRenderer(tiledMap);
     }
@@ -44,7 +44,7 @@ public class TileMapHelper {
                 Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
                 String rectangleName = mapObject.getName();
 
-                if(rectangleName.equals("gamer")){
+                if(rectangleName.equals("player")){
                     Body body = BodyHelper.createBody(
                             rectangle.getX() + rectangle.getWidth() / 2,
                             rectangle.getY() + rectangle.getHeight() / 2,

@@ -146,7 +146,7 @@ public class Player extends GameEntity {
             velX = -1;
         }
 
-        System.out.printf("\n " + onGround);
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.W) && onGround){
             float force = body.getMass() * 18;
             body.setLinearVelocity(body.getLinearVelocity().x,0);
