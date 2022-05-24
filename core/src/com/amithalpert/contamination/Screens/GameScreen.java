@@ -1,12 +1,11 @@
 package com.amithalpert.contamination.Screens;
 
+import com.amithalpert.contamination.Entities.Objects.Bullet;
 import com.amithalpert.contamination.Entities.Player;
 import com.amithalpert.contamination.Entities.Objects.AmmoDrop;
 import com.amithalpert.contamination.Entities.Objects.Pool;
-import com.amithalpert.contamination.Entities.Objects.Bullet;
-import com.amithalpert.contamination.Tools.MapBorder;
-import com.amithalpert.contamination.Tools.TileMapHelper;
-import com.amithalpert.contamination.Tools.WorldContactListener;
+import com.amithalpert.contamination.Entities.Objects.BulletOld;
+import com.amithalpert.contamination.Tools.*;
 import com.amithalpert.contamination.contamination;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -22,7 +21,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
-import com.amithalpert.contamination.Tools.ObjectAnimation;
 
 
 public class GameScreen implements Screen {
@@ -33,11 +31,12 @@ public class GameScreen implements Screen {
 
 
     private SpriteBatch batch;
-    private  World world;
+    private static World world;
     private  Box2DDebugRenderer box2DDebugRenderer;
 
 
-    private Player player;
+    private static Player player;
+    private Bullet bullet;
 
     // Main menu features
     float deltaTime;
@@ -75,8 +74,6 @@ public class GameScreen implements Screen {
     private TileMapHelper tileMapHelper;
 
     //map objects
-
-
     Array<Pool> Pools;
     Array<AmmoDrop> AmmoDrops;
     Array<MapBorder> Grounds;
@@ -105,6 +102,10 @@ public class GameScreen implements Screen {
         // tilemap
         this.tileMapHelper = new TileMapHelper(this);
         this.Renderer = tileMapHelper.setupMap();
+
+        this.bullet = new Bullet(40,100, false);
+
+
 
 
         // ContactListener for collision
@@ -189,6 +190,7 @@ public class GameScreen implements Screen {
         Renderer.setView(camera);
 
         player.update();
+        bullet.update();
 
         if(Gdx.input.isKeyPressed(Keys.L)){
             dispose();
@@ -230,9 +232,9 @@ public class GameScreen implements Screen {
         ////////////////////////
         game.batch.begin();
 
-        game.batch.draw(player.render(deltaTime),(player.getBody().getPosition().x * 16) - (50 / 2f), player.getBody().getPosition().y * 16 - (player.getHeight() / 2f) -12,50,59);
+        game.batch.draw(player.render(deltaTime),player.getBody().getPosition().x * 16 - (50 / 2f), player.getBody().getPosition().y * 16 - (player.getHeight() / 2f) -13,50,59);
 
-        for(Bullet bulletIndex : player.getBullets()){
+        for(BulletOld bulletIndex : player.getBullets()){
             game.batch.draw(bulletIndex.update(deltaTime), bulletIndex.bulletX, bulletIndex.bulletY - 2, bulletIndex.width, bulletIndex.height);
         }
 
@@ -306,15 +308,18 @@ public class GameScreen implements Screen {
         }
 
 
-
-
-    public World getWorld() {
+    public static World getWorld() {
         return world;
     }
 
     public void setPlayer(Player player){
         this.player = player;
     }
+
+    public static Player getPlayer() {
+        return player;
+    }
+
 
     @Override
     public void resize(int width, int height) {
@@ -339,7 +344,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
 
         DrawAnimation.dispose();
         OrangePlayerWinAnimation.dispose();

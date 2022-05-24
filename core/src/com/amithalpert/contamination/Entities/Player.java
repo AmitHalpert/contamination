@@ -1,6 +1,6 @@
 package com.amithalpert.contamination.Entities;
 
-import com.amithalpert.contamination.Entities.Objects.Bullet;
+import com.amithalpert.contamination.Entities.Objects.BulletOld;
 import com.amithalpert.contamination.Tools.GameEntity;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
 import com.badlogic.gdx.Gdx;
@@ -22,7 +22,9 @@ public class Player extends GameEntity {
         dead
     }
 
-    private Array<Bullet> bullets;
+
+    public boolean onGround;
+    private Array<BulletOld> bullets;
     private boolean isFacingLeft;
     private int jumpCounter;
 
@@ -48,6 +50,7 @@ public class Player extends GameEntity {
         this.speed = 4f;
         this.jumpCounter = 0;
         this.isFacingLeft = false;
+        this.onGround = false;
         this.bullets = new Array<>();
         this.state = playerState.Idle;
 
@@ -80,7 +83,6 @@ public class Player extends GameEntity {
     public void update() {
         x = body.getPosition().x * 16f;
         y = body.getPosition().y * 16f;
-
 
 
         handleUserInput();
@@ -143,7 +145,9 @@ public class Player extends GameEntity {
         if(Gdx.input.isKeyPressed(Input.Keys.A) && !Gdx.input.isKeyPressed(Input.Keys.D)){
             velX = -1;
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.W) && jumpCounter < 1){
+
+        System.out.printf("\n " + onGround);
+        if(Gdx.input.isKeyJustPressed(Input.Keys.W) && onGround){
             float force = body.getMass() * 18;
             body.setLinearVelocity(body.getLinearVelocity().x,0);
             body.applyLinearImpulse(new Vector2(0, force), body.getPosition(),true);
@@ -162,13 +166,13 @@ public class Player extends GameEntity {
 
     private void ShootBullets() {
         // creates a new bullet and add it to the array
-        Bullet bullet;
+        BulletOld bullet;
 
         // check isFacingLeft and adjust where the bullet coming from.
         if(isFacingLeft){
-            bullet = new Bullet((body.getPosition().x  * 16) - (20 / 2f), body.getPosition().y * 16 - (15  / 2f), true);
+            bullet = new BulletOld((body.getPosition().x  * 16) - (20 / 2f), body.getPosition().y * 16 - (15  / 2f), true);
         }else{
-            bullet = new Bullet((body.getPosition().x * 16) - (20 / 2f), body.getPosition().y * 16 - (15 / 2f), false);
+            bullet = new BulletOld((body.getPosition().x * 16) - (20 / 2f), body.getPosition().y * 16 - (15 / 2f), false);
         }
 
         bullets.add(bullet);
@@ -202,7 +206,7 @@ public class Player extends GameEntity {
     }
 
 
-    public Array<Bullet> getBullets(){
+    public Array<BulletOld> getBullets(){
         return bullets;
     }
 

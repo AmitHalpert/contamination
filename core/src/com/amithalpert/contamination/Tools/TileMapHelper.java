@@ -33,7 +33,6 @@ public class TileMapHelper {
         return new OrthogonalTiledMapRenderer(tiledMap);
     }
 
-
     private void parseMapObjects(MapObjects mapObjects){
         for(MapObject mapObject : mapObjects){
 
@@ -51,6 +50,7 @@ public class TileMapHelper {
                             rectangle.getY() + rectangle.getHeight() / 2,
                             rectangle.getWidth(),
                             rectangle.getHeight(),
+                            0,
                             false,
                             gameScreen.getWorld()
                     );
@@ -68,6 +68,7 @@ public class TileMapHelper {
         Body body = gameScreen.getWorld().createBody(bodyDef);
         Shape shape = createPolyGonshape(polygonMapObject);
         body.createFixture(shape, 1000);
+        body.setUserData("immovable");
         shape.dispose();
     }
 
