@@ -56,12 +56,9 @@ public class AmmoDrop {
         AmmoDropOntheGroundTexture = new Texture("ammo_barrel.png");
         ParaAmmoDropTexture = new Texture("para_ammo_barrel.png");
 
-
-
     }
 
     public Texture update(float delta){
-
 
         ExplosiveHitBox = new Rectangle(dropX - 100 ,dropY,350,350);
         // freezes Drop. See in GameScreen AmmoDropCollision

@@ -1,5 +1,6 @@
 package com.amithalpert.contamination.Screens;
 
+import com.amithalpert.contamination.Entities.Enemy;
 import com.amithalpert.contamination.Entities.Objects.AmmoDrop;
 import com.amithalpert.contamination.Entities.Objects.Bullet;
 import com.amithalpert.contamination.Entities.Player;
@@ -57,6 +58,8 @@ public class GameScreen implements Screen {
     // The players Array
     public static Array<Player> Players;
 
+    Enemy enemy;
+
     //World objects
     Array<AmmoDrop> AmmoDrops;
     Array<MapObject> Grounds;
@@ -79,6 +82,9 @@ public class GameScreen implements Screen {
         ////////////////////////
         // Set up players
         ////////////////////////
+
+        enemy = new Enemy(1500, 400);
+
         Players = new Array<>();
         Players.add(new Player(1500,400, Player.PlayersController.Blue));
         Players.add(new Player(400,500,Player.PlayersController.Orange));
@@ -209,6 +215,9 @@ public class GameScreen implements Screen {
         for (Player players : Players) {
             game.batch.draw(players.render(Gdx.graphics.getDeltaTime(), Grounds, WorldBorders, RadioActivePools), players.PlayerX, players.PlayerY, players.width, players.height);
         }
+
+        game.batch.draw(enemy.render(Gdx.graphics.getDeltaTime(),Grounds, WorldBorders, RadioActivePools), enemy.EnemyX, enemy.EnemyY, enemy.PLAYER_WIDTH, enemy.height);
+
     }
 
     public void DrawAmmoDrops(float deltaTime){
