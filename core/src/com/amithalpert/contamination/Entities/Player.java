@@ -47,7 +47,7 @@ public class Player extends GameEntity {
     public Player(float width, float height, Body body){
         super(width, height, body);
         body.setUserData("player");
-        this.speed = 4f;
+        this.speed = 7f;
         this.jumpCounter = 0;
         this.isFacingLeft = false;
         this.onGround = false;
@@ -147,8 +147,8 @@ public class Player extends GameEntity {
         }
 
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.W) && onGround){
-            float force = body.getMass() * 18;
+        if(Gdx.input.isKeyJustPressed(Input.Keys.W) && onGround && state != playerState.Jumping){
+            float force = body.getMass() * 25;
             body.setLinearVelocity(body.getLinearVelocity().x,0);
             body.applyLinearImpulse(new Vector2(0, force), body.getPosition(),true);
             jumpCounter ++;

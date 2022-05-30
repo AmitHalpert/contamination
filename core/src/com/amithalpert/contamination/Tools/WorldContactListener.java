@@ -13,6 +13,8 @@ public class WorldContactListener implements ContactListener {
 
         Fixture fA = contact.getFixtureA();
         Fixture fB = contact.getFixtureB();
+
+
         if(fA.getBody() != null && fB.getBody() != null){
             if(fA.getBody().getUserData().equals("player") && fB.getBody().getUserData().equals("immovable")){
                 GameScreen.getPlayer().onGround = true;
@@ -26,6 +28,9 @@ public class WorldContactListener implements ContactListener {
 
         Fixture fA = contact.getFixtureA();
         Fixture fB = contact.getFixtureB();
+
+
+
         if(fA.getBody() != null && fB.getBody() != null){
             if(fA.getBody().getUserData().equals("player") && fB.getBody().getUserData().equals("immovable")){
                 GameScreen.getPlayer().onGround = false;

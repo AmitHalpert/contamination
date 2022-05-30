@@ -22,12 +22,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
 
+import static com.amithalpert.contamination.Tools.constants.PPM;
+
 
 public class GameScreen implements Screen {
 
     final contamination game;
-
-
 
 
     private SpriteBatch batch;
@@ -39,10 +39,10 @@ public class GameScreen implements Screen {
     private Bullet bullet;
 
     // Main menu features
-    float deltaTime;
-    boolean IsGUI;
+    private float deltaTime;
+    private boolean IsGUI;
     public static boolean isPaused;
-    float DropTimer;
+    private float DropTimer;
 
 
     // SFX and music
@@ -68,7 +68,6 @@ public class GameScreen implements Screen {
     static final float WORLD_HEIGHT = Gdx.graphics.getHeight();
 
 
-
     // tiled map
     private OrthogonalTiledMapRenderer Renderer;
     private TileMapHelper tileMapHelper;
@@ -76,9 +75,6 @@ public class GameScreen implements Screen {
     //map objects
     Array<Pool> Pools;
     Array<AmmoDrop> AmmoDrops;
-    Array<MapBorder> Grounds;
-    Array<MapBorder> WorldBorders;
-
 
 
 
@@ -94,9 +90,9 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
 
         ////////////////////////
-        // box2d
+        // Tiled map and box2d
         ////////////////////////
-        world = new World(new Vector2(0,-25f), false);
+        world = new World(new Vector2(0,-65f), false);
         box2DDebugRenderer = new Box2DDebugRenderer();
 
         // tilemap
@@ -106,11 +102,8 @@ public class GameScreen implements Screen {
         this.bullet = new Bullet(40,100, false);
 
 
-
-
-        // ContactListener for collision
+        // ContactListener for b2d bodies collision
         world.setContactListener(new WorldContactListener());
-
 
 
         ////////////////////////
@@ -120,10 +113,6 @@ public class GameScreen implements Screen {
         isPaused = false;
         deltaTime = 0;
         DropTimer = 0;
-
-        ////////////////////////
-        // Set up players
-        ////////////////////////
 
 
         ////////////////////////
@@ -169,11 +158,8 @@ public class GameScreen implements Screen {
 
 
         ////////////////////////
-        // Set up Map Objects
+        // Set up Entities
         ////////////////////////
-        // Creates and places the map Objects
-        Grounds = new Array<>();
-        WorldBorders = new Array<>();
         AmmoDrops = new Array<>();
         Pools = new Array<>();
     }
@@ -183,7 +169,7 @@ public class GameScreen implements Screen {
     }
 
     private void update(){
-        world.step(1 / 60f, 6, 2);
+        world.step(Gdx.graphics.getDeltaTime(), 6, 2);
         cameraUpdate();
 
         game.batch.setProjectionMatrix(camera.combined);
@@ -216,9 +202,8 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         deltaTime = Gdx.graphics.getDeltaTime();
 
-
+        // render the tiled map
         Renderer.render();
-
 
         // Pauses everything that is delta time affected.
         if(isPaused){
@@ -240,7 +225,7 @@ public class GameScreen implements Screen {
 
         game.batch.end();
 
-        box2DDebugRenderer.render(world, camera.combined.scl(16f));
+        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
 
@@ -279,7 +264,7 @@ public class GameScreen implements Screen {
             isPaused = true;
             GameAmbience.pause();
             game.batch.draw(guiMenu,MainMenuScreen.xCenter/2f+300f,MainMenuScreen.yCenter/2f+300f,400,400);
-            //exit button
+
 
             // exit
             if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 290 + 100 + 300 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 290 + 300){

@@ -16,6 +16,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 
+import static com.amithalpert.contamination.Tools.constants.PPM;
+
 public class TileMapHelper {
 
 
@@ -78,7 +80,7 @@ public class TileMapHelper {
 
         // match to the box2d world
         for(int i = 0; i < vertices.length / 2; i++){
-            Vector2 current = new Vector2(vertices[i * 2] / 16f, vertices[i * 2 + 1] / 16f);
+            Vector2 current = new Vector2(vertices[i * 2] / PPM, vertices[i * 2 + 1] / PPM);
             worldVertices[i] = current;
         }
 
