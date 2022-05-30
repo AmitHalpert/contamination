@@ -10,8 +10,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.GL20;
@@ -40,6 +42,7 @@ public class GameScreen implements Screen {
     Viewport viewport;
 
     // Graphics
+    ShapeRenderer shapeRenderer;
     Texture PressSpace;
     ObjectAnimation DrawAnimation;
     ObjectAnimation BluePlayerWinAnimation;
@@ -88,6 +91,7 @@ public class GameScreen implements Screen {
         Players = new Array<>();
         Players.add(new Player(1500,400, Player.PlayersController.Blue));
         Players.add(new Player(400,500,Player.PlayersController.Orange));
+        shapeRenderer = new ShapeRenderer();
 
 
         ////////////////////////
@@ -167,11 +171,13 @@ public class GameScreen implements Screen {
         }
 
 
+
         // spawns AmmoDrop and collision
         AmmoDropCollision(deltaTime);
 
         // removes bullet if touches something
         PlayersBulletCollisionHandling();
+
 
 
         ////////////////////////
@@ -193,7 +199,27 @@ public class GameScreen implements Screen {
         // draw gui and pauses the game
         DrawMenu();
 
+        if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(Color.CYAN);
+
+
+            for(MapObject GroundIndex : Grounds){
+                shapeRenderer.rect(GroundIndex.hitBox.x, GroundIndex.hitBox.y, GroundIndex.hitBox.width, GroundIndex.hitBox.height);
+            }
+
+            for (MapObject borders: WorldBorders) {
+                shapeRenderer.rect(borders.hitBox.x, borders.hitBox.y, borders.hitBox.width, borders.hitBox.height);
+            }
+
+            for (Player players : Players) {
+                shapeRenderer.rect(players.PlayerBounds.x, players.PlayerBounds.y, players.PlayerBounds.width, players.PlayerBounds.height);
+            }
+        }
+
         game.batch.end();
+
+        if (Gdx.input.isKeyPressed(Keys.SPACE)) shapeRenderer.end();
     }
 
 
@@ -213,11 +239,10 @@ public class GameScreen implements Screen {
 
     public void DrawPlayers(){
         for (Player players : Players) {
-            game.batch.draw(players.render(Gdx.graphics.getDeltaTime(), Grounds, WorldBorders, RadioActivePools), players.PlayerX, players.PlayerY, players.width, players.height);
+            game.batch.draw(players.render(Gdx.graphics.getDeltaTime(), Grounds, WorldBorders, RadioActivePools), players.PlayerX - 50, players.PlayerY, players.width, players.height);
         }
 
         game.batch.draw(enemy.render(Gdx.graphics.getDeltaTime(),Grounds, WorldBorders, RadioActivePools), enemy.EnemyX, enemy.EnemyY, enemy.PLAYER_WIDTH, enemy.height);
-
     }
 
     public void DrawAmmoDrops(float deltaTime){
@@ -465,7 +490,7 @@ public class GameScreen implements Screen {
         for(Player playerIndex : Players) {
             for (Iterator<AmmoDrop> Iter = AmmoDrops.iterator(); Iter.hasNext(); ) {
                 AmmoDrop AmmoDropsIndex = Iter.next();
-                if (AmmoDropsIndex.DropHitBox.overlaps(playerIndex.PlayerHitBox) && playerIndex.PlayerGunAmmo != 5 && !AmmoDropsIndex.IsExplosion) {
+                if (AmmoDropsIndex.DropHitBox.overlaps(playerIndex.PlayerBounds) && playerIndex.PlayerGunAmmo != 5 && !AmmoDropsIndex.IsExplosion) {
                     playerIndex.PlayerGunAmmo = 5;
                     Iter.remove();
                 }
@@ -477,7 +502,7 @@ public class GameScreen implements Screen {
         // kill the player if he touches the Explosion
         for(Player playerIndex : Players) {
             for (AmmoDrop DropIndex : AmmoDrops) {
-                if (playerIndex.PlayerHitBox.overlaps(DropIndex.ExplosiveHitBox) && DropIndex.IsExplosion) {
+                if (playerIndex.PlayerBounds.overlaps(DropIndex.ExplosiveHitBox) && DropIndex.IsExplosion) {
                     playerIndex.PlayerHealth = 0;
                 }
             }

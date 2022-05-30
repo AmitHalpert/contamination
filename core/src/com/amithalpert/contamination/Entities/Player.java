@@ -59,8 +59,7 @@ public class Player {
     boolean isFacingLeft;
 
     public boolean IsPlayerFrozen;
-    public Rectangle PlayerHitBox;
-    Rectangle PlayerBounds;
+    public Rectangle PlayerBounds;
 
     // gun parameters
     public int PlayerGunAmmo;
@@ -107,7 +106,7 @@ public class Player {
     public playerState state;
     public PlayersController SelectedPlayer;
 
-    public Player(float x, float y,PlayersController SelectedPlayer){
+    public Player(float x, float y, PlayersController SelectedPlayer){
         this.PlayerX = x;
         this.PlayerY = y;
         this.SelectedPlayer = SelectedPlayer;
@@ -117,7 +116,7 @@ public class Player {
         PlayerHealth = 3;
         width = PLAYER_WIDTH;
         height = PLAYER_HEIGHT;
-        PlayerBounds = new Rectangle(x, y, width, height);
+        PlayerBounds = new Rectangle(PlayerX, PlayerY, 50, 70);
 
         isFacingLeft = false;
         isPlayerHoldingGun = false;
@@ -232,12 +231,6 @@ public class Player {
         // freezes everything
         if(!GameScreen.isPaused){
 
-           if(state != playerState.dead) {
-               // the player's Hitbox for bullet collision
-               PlayerHitBox = new Rectangle(PlayerX + 66, PlayerY, width, height - 115);
-           }
-
-
             // selects the correct functions for the selected Player(color)
             switch (SelectedPlayer){
                 case Blue:
@@ -289,7 +282,7 @@ public class Player {
                 }
                 if(dead_elapsedTime >= 0.2f){
                     // teleports "removes" the PlayerHitBox if player is dead
-                    PlayerHitBox.x = 3000;
+
 
                     outputTexture = player_not_exiting;
                     this.dispose();
@@ -578,7 +571,7 @@ public class Player {
                Array<Bullet> bulletsB = GameScreen.Players.get(1).getBullets();
                for (Iterator<Bullet> iterb = bulletsB.iterator(); iterb.hasNext(); ) {
                    Bullet bB = iterb.next();
-                   if (bB.hitBox.overlaps(GameScreen.Players.get(0).PlayerHitBox)) {
+                   if (bB.hitBox.overlaps(GameScreen.Players.get(0).PlayerBounds)) {
                        GameScreen.Players.get(0).PlayerHealth--;
                        iterb.remove();
                 }
@@ -590,7 +583,7 @@ public class Player {
                  Array<Bullet> bulletsY = GameScreen.Players.get(0).getBullets();
                  for (Iterator<Bullet> iter = bulletsY.iterator(); iter.hasNext(); ) {
                      Bullet bY = iter.next();
-                     if (bY.hitBox.overlaps(GameScreen.Players.get(1).PlayerHitBox)) {
+                     if (bY.hitBox.overlaps(GameScreen.Players.get(1).PlayerBounds)) {
                          GameScreen.Players.get(1).PlayerHealth--;
                          iter.remove();
                      }
@@ -618,8 +611,6 @@ public class Player {
 
 
         // vertical & grounds  Collision
-
-
         PlayerBounds.y += Yspeed;
         for (MapObject grounds : Ground) {
             if (PlayerBounds.overlaps(grounds.hitBox)) {

@@ -44,7 +44,7 @@ public class Enemy {
 
     public boolean IsPlayerFrozen;
     public Rectangle PlayerHitBox;
-    Rectangle PlayerBounds;
+    public Rectangle PlayerBounds;
 
     // gun parameters
     float TimeBetweenShots;
