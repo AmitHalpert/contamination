@@ -625,7 +625,6 @@ public class Player {
         PlayerX += Xspeed;
         PlayerY += Yspeed;
 
-
         PlayerBounds.x = PlayerX;
         PlayerBounds.y = PlayerY;
 
@@ -637,9 +636,9 @@ public class Player {
 
         // check isFacingLeft and adjust where the bullet coming from.
         if(isFacingLeft){
-            bullet = new Bullet(PlayerX + 220, PlayerY, true);
+            bullet = new Bullet(PlayerX + 170, PlayerY, true);
         }else{
-            bullet = new Bullet(PlayerX + 50, PlayerY, false);
+            bullet = new Bullet(PlayerX, PlayerY, false);
         }
 
         bullets.add(bullet);

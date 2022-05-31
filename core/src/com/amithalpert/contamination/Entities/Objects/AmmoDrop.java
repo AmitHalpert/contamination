@@ -74,7 +74,6 @@ public class AmmoDrop {
                 }
             }
             else {
-
                 outTexture = AmmoDropOntheGroundTexture;
                 DropDeleteTimer += delta;
                 if (DropDeleteTimer >= 15f) {

@@ -1,6 +1,7 @@
 package com.amithalpert.contamination.Entities;
 
 import com.amithalpert.contamination.Entities.Objects.Bullet;
+import com.amithalpert.contamination.Screens.GameScreen;
 import com.amithalpert.contamination.Tools.MapObject;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
 import com.badlogic.gdx.Gdx;
@@ -11,9 +12,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.Iterator;
+
 public class Enemy {
 
-    public enum playerState {
+    public enum EnemyState {
         Running,
         Jumping,
         Idle,
@@ -29,22 +32,23 @@ public class Enemy {
 
     public final float ANIMATIONS_TIME = 0.5f;
     public final float SHOOT_WAIT_TIME = 0.01f;
-    public final int MOVEMENT_SPEED = 320;
+    public final int MOVEMENT_SPEED = 640;
     public final int JUMP_FORCE = 1050;
     public final float GRAVITATIONAL_FORCE = 15f;
 
     // player characteristics
     public float EnemyX;
     public float EnemyY;
-    public int PlayerHealth;
+    public int EnemyHealth;
     public int width;
     public int height;
     double velX, velY;
     boolean isFacingLeft;
 
     public boolean IsPlayerFrozen;
-    public Rectangle PlayerHitBox;
-    public Rectangle PlayerBounds;
+    public Rectangle EnemyBounds;
+    public Rectangle LeftRay;
+    public Rectangle RightRay;
 
     // gun parameters
     float TimeBetweenShots;
@@ -86,7 +90,6 @@ public class Enemy {
     ObjectAnimation flipped_player_jumping_gun_animation;
 
 
-
     public Enemy(float x, float y){
         this.EnemyX = x;
         this.EnemyY = y;
@@ -94,7 +97,9 @@ public class Enemy {
 
         width = PLAYER_WIDTH;
         height = PLAYER_HEIGHT;
-        PlayerBounds = new Rectangle(x, y, width, height);
+        EnemyBounds = new Rectangle(EnemyX, EnemyY, 50, 70);
+        LeftRay = new Rectangle(EnemyX, EnemyY, 300, 20);
+        RightRay = new Rectangle(EnemyX, EnemyY, 300, 20);
 
         isFacingLeft = false;
         isPlayerHoldingGun = false;
@@ -161,14 +166,17 @@ public class Enemy {
     public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder, Array<MapObject> RadioActivePool) {
 
 
-        if(state != Player.playerState.dead) {
-            // the player's Hitbox for bullet collision
-            PlayerHitBox = new Rectangle(EnemyX + 66, EnemyY, width, height - 115);
-        }
+        velY -= GRAVITATIONAL_FORCE * Gdx.graphics.getDeltaTime();
+
+
+        collisionHandling(delta, Ground, WorldBorder, RadioActivePool);
+
 
         updatePlayerPosition();
 
+
         velX = 0;
+
 
         switch (state) {
 
@@ -183,7 +191,6 @@ public class Enemy {
                 }
                 if(dead_elapsedTime >= 0.2f){
                     // teleports "removes" the PlayerHitBox if player is dead
-                    PlayerHitBox.x = 3000;
 
                     outputTexture = player_not_exiting;
                 }
@@ -334,15 +341,12 @@ public class Enemy {
                 break;
         }
 
-        // Returns the (Player state) animation
+        // Returns the (Enemy state) animation
         return outputTexture;
-
-
     }
 
 
     public void GetEnemyState() {
-
 
     }
 
@@ -353,9 +357,58 @@ public class Enemy {
         EnemyX += velX;
         EnemyY += velY;
 
+        LeftRay.x = EnemyX - 300;
+        LeftRay.y = EnemyY + 30;
+        RightRay.x = EnemyX + 40;
+        RightRay.y = EnemyY + 30;
+        EnemyBounds.x = EnemyX;
+        EnemyBounds.y = EnemyY;
 
-        PlayerBounds.x = EnemyX;
-        PlayerBounds.y = EnemyY;
+    }
+
+
+    public void collisionHandling(float delta, Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
+
+
+        LeftRay.x += velX;
+        LeftRay.y += velY;
+        if(GameScreen.Players.get(0).PlayerBounds.overlaps(LeftRay)){
+            velX -= MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
+        }
+
+
+        if(GameScreen.Players.get(0).PlayerBounds.overlaps(RightRay)){
+            velX += MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
+        }
+
+
+
+        // kills player if you touch RadioActivePool
+        for(MapObject Pools : RadioActivePool){
+            if(EnemyBounds.overlaps(Pools.hitBox)){
+                EnemyHealth = 0;
+            }
+        }
+
+
+        // horizontal & borders Collision
+        EnemyBounds.x += velX;
+        for (MapObject borders: WorldBorder) {
+            if (EnemyBounds.overlaps(borders.hitBox)) {
+                velX -= velX;
+            }
+        }
+
+
+        // vertical & grounds  Collision
+        EnemyBounds.y += velY;
+        for (MapObject grounds : Ground) {
+            if (EnemyBounds.overlaps(grounds.hitBox)) {
+                velY -= velY;
+            }
+        }
+
+
 
     }
 

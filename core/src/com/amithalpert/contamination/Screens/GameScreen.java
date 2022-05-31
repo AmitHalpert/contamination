@@ -106,7 +106,7 @@ public class GameScreen implements Screen {
         // Set up Graphics
         ////////////////////////
         // the map
-        background = new Texture("genesis.png");
+        background = new Texture("flatgrass.png");
 
         // paused game menu
         guiMenu = new Texture("menugui.png");
@@ -156,6 +156,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+
     }
 
     @Override
@@ -171,13 +172,11 @@ public class GameScreen implements Screen {
         }
 
 
-
         // spawns AmmoDrop and collision
         AmmoDropCollision(deltaTime);
 
         // removes bullet if touches something
         PlayersBulletCollisionHandling();
-
 
 
         ////////////////////////
@@ -199,6 +198,7 @@ public class GameScreen implements Screen {
         // draw gui and pauses the game
         DrawMenu();
 
+
         if (Gdx.input.isKeyPressed(Keys.SPACE)) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(Color.CYAN);
@@ -215,13 +215,18 @@ public class GameScreen implements Screen {
             for (Player players : Players) {
                 shapeRenderer.rect(players.PlayerBounds.x, players.PlayerBounds.y, players.PlayerBounds.width, players.PlayerBounds.height);
             }
+
+            shapeRenderer.rect(enemy.LeftRay.x, enemy.LeftRay.y, enemy.LeftRay.width, enemy.LeftRay.height);
+
+            shapeRenderer.rect(enemy.RightRay.x, enemy.RightRay.y, enemy.RightRay.width, enemy.RightRay.height);
+
+
         }
 
         game.batch.end();
 
         if (Gdx.input.isKeyPressed(Keys.SPACE)) shapeRenderer.end();
     }
-
 
 
 
@@ -232,9 +237,6 @@ public class GameScreen implements Screen {
     public void DrawMap(float deltaTime){
         // draw map
         game.batch.draw(background, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-        // Draws RadioActivePool Animation
-        game.batch.draw(RadioActivePoolAnimation.getFrame(0.3f * deltaTime), 569, 46, 284, 190);
-        game.batch.draw(RadioActivePoolAnimation.getFrame(0.3f * deltaTime), 1209, 200, 213, 190);
     }
 
     public void DrawPlayers(){
@@ -242,7 +244,7 @@ public class GameScreen implements Screen {
             game.batch.draw(players.render(Gdx.graphics.getDeltaTime(), Grounds, WorldBorders, RadioActivePools), players.PlayerX - 50, players.PlayerY, players.width, players.height);
         }
 
-        game.batch.draw(enemy.render(Gdx.graphics.getDeltaTime(),Grounds, WorldBorders, RadioActivePools), enemy.EnemyX, enemy.EnemyY, enemy.PLAYER_WIDTH, enemy.height);
+        game.batch.draw(enemy.render(Gdx.graphics.getDeltaTime(),Grounds, WorldBorders, RadioActivePools), enemy.EnemyX - 50, enemy.EnemyY, enemy.PLAYER_WIDTH, enemy.height);
     }
 
     public void DrawAmmoDrops(float deltaTime){
@@ -442,7 +444,6 @@ public class GameScreen implements Screen {
 
 
 
-
     ////////////////////////
     // Collision functions
     ////////////////////////
@@ -543,55 +544,19 @@ public class GameScreen implements Screen {
     ////////////////////////
 
     private void createRadioActivePools(){
-        RadioActivePools.add(new MapObject(1260,5,90,200));
-        RadioActivePools.add(new MapObject(610,-100,190,170));
+
     }
 
     private void createGrounds(){
         ////
         // environment Grounds
         ////
-        //left rock
-        Grounds.add(new MapObject(50,10,89,330));
-        // middle rock
-        Grounds.add(new MapObject(1067,-12,70,320));
-        // right rock
-        Grounds.add(new MapObject(1495,-12,70,320));
-        // right Ground
-        Grounds.add(new MapObject(920,-39,1200,224));
-        // left Ground
-        Grounds.add(new MapObject(50,-39,455,224));
+
+        Grounds.add(new MapObject(0,5,Gdx.graphics.getWidth(),88));
+
     }
 
     private void createMapBorders(){
-
-        ////
-        // environment bounds
-        ////
-
-        //left rock
-        WorldBorders.add(new MapObject(-435,-37,580,375));
-        // middle(left) rock
-        WorldBorders.add(new MapObject(1065,-37,75,345));
-        // inner middle left RadioActivePool
-        WorldBorders.add(new MapObject(359,-115,150,295));
-        // inner middle right RadioActivePool
-        WorldBorders.add(new MapObject(918,-115,100,295));
-        // right rock
-        WorldBorders.add(new MapObject(1495,-39,74,345));
-
-        ////
-        // WORLD BOUNDS
-        ////
-
-        // create left world border
-        WorldBorders.add(new MapObject(-650,200,580,3000));
-
-        // create right world border
-        WorldBorders.add(new MapObject(1989,200,500,1200));
-
-        // create upper world border
-        WorldBorders.add(new MapObject(-550,1200,3000,200));
 
     }
 

@@ -71,7 +71,7 @@ public class Bullet{
 
     public void FlipBulletSprite(boolean IsPlayerFacingLeft){
         width = width * -1;
-        bulletX = bulletX + width +43 * -1;
+        bulletX = bulletX + width + 43 * -1;
 
             if (IsPlayerFacingLeft) {
             hitBox.width = (hitBox.width + 43 * -1) / 1.3f;
