@@ -201,6 +201,10 @@ public class GameScreen implements Screen {
 
             shapeRenderer.rect(enemy.RightRay.x, enemy.RightRay.y, enemy.RightRay.width, enemy.RightRay.height);
 
+            shapeRenderer.rect(enemy.RightFootRay.x, enemy.RightFootRay.y, enemy.RightFootRay.width, enemy.RightFootRay.height);
+
+            shapeRenderer.rect(enemy.LeftFootRay.x, enemy.LeftFootRay.y, enemy.LeftFootRay.width, enemy.LeftFootRay.height);
+
 
         }
 

@@ -48,8 +48,12 @@ public class Enemy {
 
     public boolean IsPlayerFrozen;
     public Rectangle EnemyBounds;
+    // for detecting the player
     public Rectangle LeftRay;
     public Rectangle RightRay;
+    // for detecting map objects
+    public Rectangle LeftFootRay, RightFootRay;
+
 
     // gun parameters
     float TimeBetweenShots;
@@ -99,8 +103,10 @@ public class Enemy {
         width = PLAYER_WIDTH;
         height = PLAYER_HEIGHT;
         EnemyBounds = new Rectangle(EnemyX, EnemyY, 50, 70);
-        LeftRay = new Rectangle(EnemyX, EnemyY, 300, 20);
-        RightRay = new Rectangle(EnemyX, EnemyY, 300, 20);
+        LeftRay = new Rectangle(EnemyX, EnemyY, 300, 200);
+        RightRay = new Rectangle(EnemyX, EnemyY, 300, 200);
+        LeftFootRay = new Rectangle(EnemyX, EnemyY, 30, 20);
+        RightFootRay = new Rectangle(EnemyX, EnemyY, 30, 20);
         EnemyHealth = 5;
 
         isFacingLeft = false;
@@ -387,6 +393,12 @@ public class Enemy {
         LeftRay.y = EnemyY + 30;
         RightRay.x = EnemyX + 40;
         RightRay.y = EnemyY + 30;
+
+        LeftFootRay.x = EnemyX - 30;
+        LeftFootRay.y = EnemyY;
+        RightFootRay.x = EnemyX + 60;
+        RightFootRay.y = EnemyY;
+
         EnemyBounds.x = EnemyX;
         EnemyBounds.y = EnemyY;
 
@@ -433,7 +445,7 @@ public class Enemy {
             if (EnemyBounds.overlaps(borders.hitBox)) {
                 velX -= velX;
             }
-            if (LeftRay.overlaps(borders.hitBox) && velY == -velY){
+            if (LeftFootRay.overlaps(borders.hitBox) && velY == -velY){
                 velY += JUMP_FORCE * Gdx.graphics.getDeltaTime();
             }
         }
