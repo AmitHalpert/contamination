@@ -103,7 +103,7 @@ public class PlayerVComputerScreen implements Screen {
         // Set up Graphics
         ////////////////////////
         // the map
-        background = new Texture("flatgrass.png");
+        background = new Texture("thebigdesert.png");
 
         // paused game menu
         guiMenu = new Texture("menugui.png");
@@ -148,7 +148,6 @@ public class PlayerVComputerScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
-
     }
 
     @Override
@@ -174,7 +173,6 @@ public class PlayerVComputerScreen implements Screen {
 
         // removes bullet if touches something
         PlayersBulletCollisionHandling();
-
 
 
         if (Gdx.input.isKeyPressed(Keys.SPACE)) {
@@ -245,11 +243,9 @@ public class PlayerVComputerScreen implements Screen {
     }
 
     public void DrawPlayers(){
-
         game.batch.draw(player.render(Gdx.graphics.getDeltaTime(), Grounds, WorldBorders, RadioActivePools), player.PlayerX - 50, player.PlayerY, player.width, player.height);
-
-
         game.batch.draw(enemy.render(Gdx.graphics.getDeltaTime(),Grounds, WorldBorders, RadioActivePools), enemy.EnemyX - 50, enemy.EnemyY, enemy.PLAYER_WIDTH, enemy.height);
+
     }
 
     public void DrawAmmoDrops(float deltaTime){
@@ -423,7 +419,6 @@ public class PlayerVComputerScreen implements Screen {
         }
 
 
-
     }
 
 
@@ -540,20 +535,31 @@ public class PlayerVComputerScreen implements Screen {
 
     }
 
+
     private void createGrounds(){
         ////
         // environment Grounds
         ////
 
-        Grounds.add(new MapObject(0,5,Gdx.graphics.getWidth(),88));
+        Grounds.add(new MapObject(0,5, Gdx.graphics.getWidth(),140));
 
 
-        Grounds.add(new MapObject(30,20,300,200));
+
+        Grounds.add(new MapObject(1210,145,140,110));
+        Grounds.add(new MapObject(1780,145,140,110));
 
     }
 
     private void createMapBorders(){
-        WorldBorders.add(new MapObject(30, 20, 310, 190));
+        WorldBorders.add(new MapObject(0, 0, 2, Gdx.graphics.getHeight()));
+
+
+        WorldBorders.add(new MapObject(Gdx.graphics.getWidth(),145,2,Gdx.graphics.getHeight()));
+
+
+        WorldBorders.add(new MapObject(1210,145,140,110));
+
+        WorldBorders.add(new MapObject(1780,145,140,110));
 
     }
 

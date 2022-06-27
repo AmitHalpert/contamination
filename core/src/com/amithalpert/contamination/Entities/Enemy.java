@@ -31,7 +31,7 @@ public class Enemy {
 
     public final float ANIMATIONS_TIME = 0.5f;
     public final float SHOOT_WAIT_TIME = 1f;
-    public final int MOVEMENT_SPEED = 350;
+    public final int MOVEMENT_SPEED = 200;
     public final int JUMP_FORCE = 1050;
     public final float GRAVITATIONAL_FORCE = 15f;
 
@@ -103,7 +103,6 @@ public class Enemy {
         height = PLAYER_HEIGHT;
 
         // Ray casts
-
         EnemyBounds = new Rectangle(EnemyX, EnemyY, 50, 70);
         // for detecting player
         LeftRay = new Rectangle(EnemyX, EnemyY, 1000, 700);
@@ -195,7 +194,6 @@ public class Enemy {
             collisionHandling(delta, Ground, WorldBorder, RadioActivePool);
             updatePlayerPosition();
         }
-
 
 
         if(velY > 1050) velY = 1050;

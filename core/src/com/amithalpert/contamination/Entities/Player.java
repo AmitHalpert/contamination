@@ -40,14 +40,15 @@ public class Player {
     }
 
     // Initializing players' final Variables
-    public final int PLAYER_WIDTH = 170;
-    public final int PLAYER_HEIGHT = 170;
+    public final int PLAYER_WIDTH = 130;
+    public final int PLAYER_HEIGHT = 130;
 
     public final float ANIMATIONS_TIME = 0.5f;
     public final float SHOOT_WAIT_TIME = 0.5f;
     public final int MOVEMENT_SPEED = 320;
     public final int JUMP_FORCE = 1050;
     public final float GRAVITATIONAL_FORCE = 15f;
+
 
     // player characteristics
     public float PlayerX;
@@ -137,50 +138,7 @@ public class Player {
         ////////////////////////
         // set up the players animations
         ////////////////////////
-        // detect Player according to the PlayersController enum and apply the animations
-        switch (SelectedPlayer) {
 
-            case Orange:
-
-                player_dead_animation = new ObjectAnimation();
-                player_dead_animation.loadAnimation("Orange-Player-Death_", 5);
-                player_not_exiting = new Texture("player_dead_5.png");
-
-                // player right animations
-                player_running_animation = new ObjectAnimation();
-                player_running_animation.loadAnimation("Orange-Player-Running_", 4);
-                player_jumping_animation = new ObjectAnimation();
-                player_jumping_animation.loadAnimation("Orange-Player-Jumping_", 2);
-                player_idle_animation = new ObjectAnimation();
-                player_idle_animation.loadAnimation("Orange-Player-Idle_", 1);
-                playerTexture = new Texture(Gdx.files.internal("Orange-Player-Idle_1.png"));
-
-                // player with a gun right animations
-                player_running_gun_animation = new ObjectAnimation();
-                player_running_gun_animation.loadAnimation("Orange-Player-Running_Gun_", 4);
-                player_jumping_gun_animation = new ObjectAnimation();
-                player_jumping_gun_animation.loadAnimation("Orange-Player-Jumping_Gun_", 1);
-                player_idle_gun_animation = new ObjectAnimation();
-                player_idle_gun_animation.loadAnimation("Orange-Player-Idle-gun_", 1);
-
-                // player left animations
-                flipped_player_running_animation = new ObjectAnimation();
-                flipped_player_running_animation.loadAnimation("flipped-orange-running_", 4);
-                flipped_player_jumping_animation = new ObjectAnimation();
-                flipped_player_jumping_animation.loadAnimation("flipped-Orange-Player-Jumping_", 1);
-                flipped_player_idle_animation = new ObjectAnimation();
-                flipped_player_idle_animation.loadAnimation("flipped-Orange-Player-idle_", 1);
-                // player with a gun left animations
-                flipped_player_running_gun_animation = new ObjectAnimation();
-                flipped_player_running_gun_animation.loadAnimation("flipped-Orange-Player-Running-gun_", 4);
-                flipped_player_jumping_gun_animation = new ObjectAnimation();
-                flipped_player_jumping_gun_animation.loadAnimation("flipped-Orange-Player-Jumping-gun_", 1);
-                flipped_player_idle_gun_animation = new ObjectAnimation();
-                flipped_player_idle_gun_animation.loadAnimation("flipped-Orange-Player-idle_gun_", 1);
-                break;
-
-
-            case Blue:
 
                 player_dead_animation = new ObjectAnimation();
                 player_dead_animation.loadAnimation("player_dead_", 5);
@@ -218,7 +176,7 @@ public class Player {
                 flipped_player_jumping_gun_animation.loadAnimation("flipped_player_running_with_gun_", 1);
                 flipped_player_idle_gun_animation = new ObjectAnimation();
                 flipped_player_idle_gun_animation.loadAnimation("flipped_player_idle_gun_", 1);
-        }
+
 
 
         // it is important to set the outputTexture to not be Null
@@ -231,22 +189,12 @@ public class Player {
         // freezes everything
         if(!PlayerVComputerScreen.isPaused){
 
-            // selects the correct functions for the selected Player(color)
-            switch (SelectedPlayer){
-                case Blue:
-                    //Determine which (playerState) state the player will be.
-                    GetBluePlayerState();
-                    // keyboard input and Player movement
-                    BluePlayerInputHandling(delta);
-                    break;
 
-                case Orange:
-                    //Determine which (playerState) state the player will be.
-                    GetOrangePlayerState();
-                    // keyboard input and Player movement
-                    OrangePlayerInputHandling(delta);
-                    break;
-            }
+            //Determine which (playerState) state the player will be.
+            GetBluePlayerState();
+            // keyboard input and Player movement
+            BluePlayerInputHandling(delta);
+
 
 
             // Detects if the player touches A MapObject
