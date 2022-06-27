@@ -10,7 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
-import com.amithalpert.contamination.Screens.GameScreen;
+import com.amithalpert.contamination.Screens.PlayerVComputerScreen;
 
 import java.util.Iterator;
 
@@ -44,7 +44,7 @@ public class Player {
     public final int PLAYER_HEIGHT = 170;
 
     public final float ANIMATIONS_TIME = 0.5f;
-    public final float SHOOT_WAIT_TIME = 0.01f;
+    public final float SHOOT_WAIT_TIME = 0.5f;
     public final int MOVEMENT_SPEED = 320;
     public final int JUMP_FORCE = 1050;
     public final float GRAVITATIONAL_FORCE = 15f;
@@ -229,7 +229,7 @@ public class Player {
 
     public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder, Array<MapObject> RadioActivePool) {
         // freezes everything
-        if(!GameScreen.isPaused){
+        if(!PlayerVComputerScreen.isPaused){
 
             // selects the correct functions for the selected Player(color)
             switch (SelectedPlayer){
@@ -281,9 +281,7 @@ public class Player {
                     dead_elapsedTime += delta;
                 }
                 if(dead_elapsedTime >= 0.2f){
-                    // teleports "removes" the PlayerHitBox if player is dead
-
-
+                    // removes player
                     outputTexture = player_not_exiting;
                     this.dispose();
                 }
@@ -458,18 +456,18 @@ public class Player {
         }
 
         //Horizontal Player input
-        if ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !GameScreen.isPaused && state != playerState.dead) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !PlayerVComputerScreen.isPaused && state != playerState.dead) {
             Xspeed = -MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
             isFacingLeft = true;
         }
-        else if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !GameScreen.isPaused && state != playerState.dead) {
+        else if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT)) && !(Gdx.input.isKeyPressed(Input.Keys.LEFT)) && !PlayerVComputerScreen.isPaused && state != playerState.dead) {
             Xspeed = MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
             isFacingLeft = false;
         }
 
 
         //vertical input
-        if ((Gdx.input.isKeyJustPressed(Input.Keys.UP)) && !GameScreen.isPaused && state != playerState.dead) {
+        if ((Gdx.input.isKeyJustPressed(Input.Keys.UP)) && !PlayerVComputerScreen.isPaused && state != playerState.dead) {
 
             if (Yspeed == -Yspeed) {
                 Yspeed += JUMP_FORCE * Gdx.graphics.getDeltaTime();
@@ -510,26 +508,27 @@ public class Player {
     public void OrangePlayerInputHandling(float delta) {
         TimeBetweenShots += delta;
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) && TimeBetweenShots >= SHOOT_WAIT_TIME && PlayerGunAmmo != 0 && !GameScreen.isPaused && state != playerState.dead){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) && TimeBetweenShots >= SHOOT_WAIT_TIME && PlayerGunAmmo != 0 && !PlayerVComputerScreen.isPaused && state != playerState.dead){
             TimeBetweenShots = 0;
             PlayerGunAmmo--;
             gunshot.play(0.3f);
             ShootBullets();
         }
 
+
         //Horizontal Player input
-        if ((Gdx.input.isKeyPressed(Input.Keys.A)) && !(Gdx.input.isKeyPressed(Input.Keys.D)) && !GameScreen.isPaused && state != playerState.dead) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.A)) && !(Gdx.input.isKeyPressed(Input.Keys.D)) && !PlayerVComputerScreen.isPaused && state != playerState.dead) {
             Xspeed = -MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
             isFacingLeft = true;
         }
-        else if ((Gdx.input.isKeyPressed(Input.Keys.D)) && !(Gdx.input.isKeyPressed(Input.Keys.A)) && !GameScreen.isPaused && state != playerState.dead) {
+        else if ((Gdx.input.isKeyPressed(Input.Keys.D)) && !(Gdx.input.isKeyPressed(Input.Keys.A)) && !PlayerVComputerScreen.isPaused && state != playerState.dead) {
             Xspeed = MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
             isFacingLeft = false;
         }
 
 
         //vertical input
-        if ((Gdx.input.isKeyJustPressed(Input.Keys.W)) && !GameScreen.isPaused && state != playerState.dead) {
+        if ((Gdx.input.isKeyJustPressed(Input.Keys.W)) && !PlayerVComputerScreen.isPaused && state != playerState.dead) {
             if (Yspeed == -Yspeed) {
                 Yspeed += JUMP_FORCE * Gdx.graphics.getDeltaTime();
             }
@@ -568,11 +567,11 @@ public class Player {
         switch (SelectedPlayer) {
             case Blue:
                // Blue Player
-               Array<Bullet> bulletsB = GameScreen.Players.get(1).getBullets();
+               Array<Bullet> bulletsB = PlayerVComputerScreen.Players.get(1).getBullets();
                for (Iterator<Bullet> iterb = bulletsB.iterator(); iterb.hasNext(); ) {
                    Bullet bB = iterb.next();
-                   if (bB.hitBox.overlaps(GameScreen.Players.get(0).PlayerBounds)) {
-                       GameScreen.Players.get(0).PlayerHealth--;
+                   if (bB.hitBox.overlaps(PlayerVComputerScreen.Players.get(0).PlayerBounds)) {
+                       PlayerVComputerScreen.Players.get(0).PlayerHealth--;
                        iterb.remove();
                 }
             }
@@ -580,11 +579,11 @@ public class Player {
 
             case Orange:
                  // Orange Player
-                 Array<Bullet> bulletsY = GameScreen.Players.get(0).getBullets();
+                 Array<Bullet> bulletsY = PlayerVComputerScreen.Players.get(0).getBullets();
                  for (Iterator<Bullet> iter = bulletsY.iterator(); iter.hasNext(); ) {
                      Bullet bY = iter.next();
-                     if (bY.hitBox.overlaps(GameScreen.Players.get(1).PlayerBounds)) {
-                         GameScreen.Players.get(1).PlayerHealth--;
+                     if (bY.hitBox.overlaps(PlayerVComputerScreen.Players.get(1).PlayerBounds)) {
+                         PlayerVComputerScreen.Players.get(1).PlayerHealth--;
                          iter.remove();
                      }
             }
@@ -593,12 +592,15 @@ public class Player {
         }
 
 
-        // kills player if you touch RadioActivePool
-        for(MapObject Pools : RadioActivePool){
-            if(PlayerBounds.overlaps(Pools.hitBox)){
-                PlayerHealth = 0;
+        Array<Bullet> EnemyBullets = PlayerVComputerScreen.enemy.bullets;
+        for (Iterator<Bullet> iter = EnemyBullets.iterator(); iter.hasNext(); ) {
+            Bullet B = iter.next();
+            if (B.hitBox.overlaps(PlayerBounds)) {
+                PlayerVComputerScreen.Players.get(0).PlayerHealth--;
+                iter.remove();
             }
         }
+
 
 
         // horizontal & borders Collision

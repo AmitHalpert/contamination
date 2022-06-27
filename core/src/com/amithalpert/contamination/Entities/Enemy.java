@@ -1,11 +1,10 @@
 package com.amithalpert.contamination.Entities;
 
 import com.amithalpert.contamination.Entities.Objects.Bullet;
-import com.amithalpert.contamination.Screens.GameScreen;
+import com.amithalpert.contamination.Screens.PlayerVComputerScreen;
 import com.amithalpert.contamination.Tools.MapObject;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,15 +23,15 @@ public class Enemy {
     }
 
 
-    public Player.playerState state;
+    public EnemyState state;
 
     // Initializing players' final Variables
     public final int PLAYER_WIDTH = 170;
     public final int PLAYER_HEIGHT = 170;
 
     public final float ANIMATIONS_TIME = 0.5f;
-    public final float SHOOT_WAIT_TIME = 0.01f;
-    public final int MOVEMENT_SPEED = 640;
+    public final float SHOOT_WAIT_TIME = 1f;
+    public final int MOVEMENT_SPEED = 350;
     public final int JUMP_FORCE = 1050;
     public final float GRAVITATIONAL_FORCE = 15f;
 
@@ -53,12 +52,13 @@ public class Enemy {
     public Rectangle RightRay;
     // for detecting map objects
     public Rectangle LeftFootRay, RightFootRay;
+    public Rectangle LeftGunRay, RightGunRay;
 
 
     // gun parameters
     float TimeBetweenShots;
     boolean isPlayerHoldingGun;
-    Array<Bullet> bullets;
+    public Array<Bullet> bullets;
 
     // Animation parameters
     float dead_elapsedTime;
@@ -99,21 +99,31 @@ public class Enemy {
         this.EnemyX = x;
         this.EnemyY = y;
 
-
         width = PLAYER_WIDTH;
         height = PLAYER_HEIGHT;
+
+        // Ray casts
+
         EnemyBounds = new Rectangle(EnemyX, EnemyY, 50, 70);
-        LeftRay = new Rectangle(EnemyX, EnemyY, 300, 200);
-        RightRay = new Rectangle(EnemyX, EnemyY, 300, 200);
+        // for detecting player
+        LeftRay = new Rectangle(EnemyX, EnemyY, 1000, 700);
+        RightRay = new Rectangle(EnemyX, EnemyY, 1000, 700);
+        // for jumping
         LeftFootRay = new Rectangle(EnemyX, EnemyY, 30, 20);
         RightFootRay = new Rectangle(EnemyX, EnemyY, 30, 20);
-        EnemyHealth = 5;
+        // for detecting and shooting player
+        LeftGunRay = new Rectangle(EnemyX, EnemyY, 800, 20);
+        RightGunRay = new Rectangle(EnemyX, EnemyY, 800, 20);
 
+
+
+
+        EnemyHealth = 1;
         isFacingLeft = false;
         isPlayerHoldingGun = true;
         IsPlayerFrozen = false;
         isOnGround = false;
-        state = Player.playerState.Idle;
+        state = EnemyState.Idle;
         idle_animation_time = 0;
         dead_animation_time = 0;
         dead_elapsedTime = 0;
@@ -174,17 +184,19 @@ public class Enemy {
 
     public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder, Array<MapObject> RadioActivePool) {
 
-
         GetEnemyState();
 
         velY -= GRAVITATIONAL_FORCE * Gdx.graphics.getDeltaTime();
 
+
         velX = 0;
 
-        collisionHandling(delta, Ground, WorldBorder, RadioActivePool);
+        if (!IsPlayerFrozen) {
 
+            collisionHandling(delta, Ground, WorldBorder, RadioActivePool);
+            updatePlayerPosition();
 
-        updatePlayerPosition();
+        }
 
 
 
@@ -202,9 +214,9 @@ public class Enemy {
                     dead_elapsedTime += delta;
                 }
                 if(dead_elapsedTime >= 0.2f){
-                    // teleports "removes" the PlayerHitBox if player is dead
-
+                    // removes player
                     outputTexture = player_not_exiting;
+                    this.dispose();
                 }
 
                 player_idle_gun_animation.resetAnimation();
@@ -361,23 +373,23 @@ public class Enemy {
     public void GetEnemyState() {
         // checks if the player is moving up or down
         if (velY > 0) {
-            state = Player.playerState.Jumping;
+            state = EnemyState.Jumping;
         } else if (velY < 0) {
-            state = Player.playerState.Jumping;
+            state = EnemyState.Jumping;
         } else {
 
 
 
             if (velX != 0 && velY == 0){
-                state = Player.playerState.Running;
+                state = EnemyState.Running;
                 // check if the player is not moving
             } else if (velY == 0 && velX == 0) {
-                state = Player.playerState.Idle;
+                state = EnemyState.Idle;
             }
         }
         // checks if the player is dead
         if (EnemyHealth <= 0) {
-            state = Player.playerState.dead;
+            state = EnemyState.dead;
         }
 
     }
@@ -389,15 +401,23 @@ public class Enemy {
         EnemyX += velX;
         EnemyY += velY;
 
-        LeftRay.x = EnemyX - 300;
-        LeftRay.y = EnemyY + 30;
+        LeftRay.x = EnemyX - 1000;
+        LeftRay.y = EnemyY - 150;
         RightRay.x = EnemyX + 40;
-        RightRay.y = EnemyY + 30;
+        RightRay.y = EnemyY - 150;
+
 
         LeftFootRay.x = EnemyX - 30;
         LeftFootRay.y = EnemyY;
-        RightFootRay.x = EnemyX + 60;
+        RightFootRay.x = EnemyX + 80;
         RightFootRay.y = EnemyY;
+
+
+        RightGunRay.x = EnemyX + 30;
+        RightGunRay.y = EnemyY + 30;
+        LeftGunRay.x = EnemyX - 800;
+        LeftGunRay.y = EnemyY + 30;
+
 
         EnemyBounds.x = EnemyX;
         EnemyBounds.y = EnemyY;
@@ -410,15 +430,34 @@ public class Enemy {
 
         LeftRay.x += velX;
         LeftRay.y += velY;
-        if(GameScreen.Players.get(0).PlayerBounds.overlaps(LeftRay)){
+
+
+        TimeBetweenShots += Gdx.graphics.getDeltaTime();
+        if((PlayerVComputerScreen.Players.get(0).PlayerBounds.overlaps(LeftGunRay) || PlayerVComputerScreen.Players.get(0).PlayerBounds.overlaps(RightGunRay)) && TimeBetweenShots >= SHOOT_WAIT_TIME){
+            ShootBullets();
+            gunshot.play(0.3f);
+            TimeBetweenShots = 0;
+        }
+
+        if(PlayerVComputerScreen.Players.get(0).PlayerBounds.overlaps(LeftRay)){
             velX -= MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
             isFacingLeft = true;
         }
 
 
-        if(GameScreen.Players.get(0).PlayerBounds.overlaps(RightRay)){
+        if(PlayerVComputerScreen.Players.get(0).PlayerBounds.overlaps(RightRay)){
             velX += MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
             isFacingLeft = false;
+        }
+
+
+        Array<Bullet> bullet = PlayerVComputerScreen.Players.get(0).getBullets();
+        for (Iterator<Bullet> iter = bullet.iterator(); iter.hasNext(); ) {
+            Bullet B = iter.next();
+            if (B.hitBox.overlaps(EnemyBounds)){
+                EnemyHealth--;
+                iter.remove();
+            }
         }
 
 
@@ -429,6 +468,8 @@ public class Enemy {
                 EnemyHealth = 0;
             }
         }
+
+
 
         // vertical & grounds  Collision
         EnemyBounds.y += velY;
@@ -445,15 +486,51 @@ public class Enemy {
             if (EnemyBounds.overlaps(borders.hitBox)) {
                 velX -= velX;
             }
-            if (LeftFootRay.overlaps(borders.hitBox) && velY == -velY){
+            else if (LeftFootRay.overlaps(borders.hitBox) && velY == -velY){
+                velY += JUMP_FORCE * Gdx.graphics.getDeltaTime();
+            }
+            else if(RightFootRay.overlaps(borders.hitBox) && velY == -velY){
                 velY += JUMP_FORCE * Gdx.graphics.getDeltaTime();
             }
         }
 
 
 
+    }
 
+    public void ShootBullets() {
+        // creates a new bullet and add it to the array
+        Bullet bullet;
 
+        // check isFacingLeft and adjust where the bullet coming from.
+        if(isFacingLeft){
+            bullet = new Bullet(EnemyX + 170, EnemyY, true);
+        }else{
+            bullet = new Bullet(EnemyX, EnemyY, false);
+        }
+
+        bullets.add(bullet);
+    }
+
+    public void dispose(){
+
+        gunshot.dispose();
+        PlayerDeathSound.dispose();
+        player_dead_animation.dispose();
+        player_running_animation.dispose();
+        player_jumping_animation.dispose();
+        player_idle_animation.dispose();
+        playerTexture.dispose();
+        player_running_gun_animation.dispose();
+        player_jumping_gun_animation.dispose();
+        player_idle_gun_animation.dispose();
+
+        flipped_player_running_animation.dispose();
+        flipped_player_jumping_animation.dispose();
+        flipped_player_idle_animation.dispose();
+        flipped_player_running_gun_animation.dispose();
+        flipped_player_jumping_gun_animation.dispose();
+        flipped_player_idle_gun_animation.dispose();
     }
 
 

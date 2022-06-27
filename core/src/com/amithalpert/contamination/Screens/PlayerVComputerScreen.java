@@ -20,11 +20,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.amithalpert.contamination.Tools.ObjectAnimation;
-import java.io.*;
+
 import java.util.Iterator;
 
 
-public class GameScreen implements Screen {
+public class PlayerVComputerScreen implements Screen {
 
     final contamination game;
 
@@ -61,7 +61,7 @@ public class GameScreen implements Screen {
     // The players Array
     public static Array<Player> Players;
 
-    Enemy enemy;
+    public static Enemy enemy;
 
     //World objects
     Array<AmmoDrop> AmmoDrops;
@@ -71,8 +71,8 @@ public class GameScreen implements Screen {
 
 
 
-    public GameScreen(final contamination game){
-        this.game =  game;
+    public PlayerVComputerScreen(final contamination game){
+        this.game = game;
 
         ////////////////////////
         // Set up parameters
@@ -89,7 +89,7 @@ public class GameScreen implements Screen {
         enemy = new Enemy(1500, 400);
 
         Players = new Array<>();
-        Players.add(new Player(1500,400, Player.PlayersController.Blue));
+        Players.add(new Player(400,500, Player.PlayersController.Blue));
         Players.add(new Player(400,500,Player.PlayersController.Orange));
         shapeRenderer = new ShapeRenderer();
 
@@ -204,6 +204,10 @@ public class GameScreen implements Screen {
             shapeRenderer.rect(enemy.RightFootRay.x, enemy.RightFootRay.y, enemy.RightFootRay.width, enemy.RightFootRay.height);
 
             shapeRenderer.rect(enemy.LeftFootRay.x, enemy.LeftFootRay.y, enemy.LeftFootRay.width, enemy.LeftFootRay.height);
+
+            shapeRenderer.rect(enemy.LeftGunRay.x, enemy.LeftGunRay.y, enemy.LeftGunRay.width, enemy.LeftGunRay.height);
+
+            shapeRenderer.rect(enemy.RightGunRay.x, enemy.RightGunRay.y, enemy.RightGunRay.width, enemy.RightGunRay.height);
 
 
         }
@@ -378,7 +382,7 @@ public class GameScreen implements Screen {
             //exit button
 
             // exit
-            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 290 + 100 + 300 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 290 + 300){
+            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && PlayerVComputerScreen.WORLD_HEIGHT - Gdx.input.getY() < 290 + 100 + 300 && PlayerVComputerScreen.WORLD_HEIGHT - Gdx.input.getY() > 290 + 300){
                 if(Gdx.input.isTouched()){
 
                     GameAmbience.stop();
@@ -388,14 +392,14 @@ public class GameScreen implements Screen {
             }
 
             // resume button
-            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 500 + 100 + 300  && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 530 + 300){
+            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && PlayerVComputerScreen.WORLD_HEIGHT - Gdx.input.getY() < 500 + 100 + 300  && PlayerVComputerScreen.WORLD_HEIGHT - Gdx.input.getY() > 530 + 300){
                 if(Gdx.input.isTouched()){
                     isPaused = false;
                     IsGUI = false;
                 }
             }
             // options
-            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() < 400 + 100 + 300 && GameScreen.WORLD_HEIGHT - Gdx.input.getY() > 400+40 + 300){
+            if(Gdx.input.getX() < MainMenuScreen.xCenter+100 && Gdx.input.getX() > MainMenuScreen.xCenter-100 && PlayerVComputerScreen.WORLD_HEIGHT - Gdx.input.getY() < 400 + 100 + 300 && PlayerVComputerScreen.WORLD_HEIGHT - Gdx.input.getY() > 400+40 + 300){
                 if(Gdx.input.justTouched()){
 
                     }
@@ -416,6 +420,11 @@ public class GameScreen implements Screen {
             game.batch.draw(OrangebulletsIndex.update(deltaTime, Grounds, WorldBorders),OrangebulletsIndex.bulletX,OrangebulletsIndex.bulletY,OrangebulletsIndex.width,OrangebulletsIndex.height);
         }
 
+        // draws the orange's player bullets
+        for(Bullet EnemyBullet : enemy.bullets){
+            game.batch.draw(EnemyBullet.update(deltaTime, Grounds, WorldBorders),EnemyBullet.bulletX,EnemyBullet.bulletY,EnemyBullet.width,EnemyBullet.height);
+        }
+
     }
 
     public void DrawWinnerPlayer(float delta){
@@ -426,7 +435,7 @@ public class GameScreen implements Screen {
                 game.batch.draw(PressSpace, 1080 - 550 / 2f, 600, 300, 55);
                 // rematch the game
                 if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
-                    game.setScreen(new GameScreen(game));
+                    game.setScreen(new PlayerVComputerScreen(game));
                 }
             }
         }
@@ -565,8 +574,6 @@ public class GameScreen implements Screen {
 
     private void createMapBorders(){
         WorldBorders.add(new MapObject(30, 20, 310, 190));
-
-
 
     }
 

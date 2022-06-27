@@ -78,7 +78,7 @@ public class MainMenuScreen implements Screen {
             if(Gdx.input.isTouched()){
                 ContaminationMusic.stop();
                 dispose();
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new PlayerVComputerScreen(game));
             }
 
         } else{
