@@ -192,10 +192,8 @@ public class Enemy {
         velX = 0;
 
         if (!IsPlayerFrozen) {
-
             collisionHandling(delta, Ground, WorldBorder, RadioActivePool);
             updatePlayerPosition();
-
         }
 
 
@@ -433,25 +431,25 @@ public class Enemy {
 
 
         TimeBetweenShots += Gdx.graphics.getDeltaTime();
-        if((PlayerVComputerScreen.Players.get(0).PlayerBounds.overlaps(LeftGunRay) || PlayerVComputerScreen.Players.get(0).PlayerBounds.overlaps(RightGunRay)) && TimeBetweenShots >= SHOOT_WAIT_TIME){
+        if((PlayerVComputerScreen.player.PlayerBounds.overlaps(LeftGunRay) || PlayerVComputerScreen.player.PlayerBounds.overlaps(RightGunRay)) && TimeBetweenShots >= SHOOT_WAIT_TIME){
             ShootBullets();
             gunshot.play(0.3f);
             TimeBetweenShots = 0;
         }
 
-        if(PlayerVComputerScreen.Players.get(0).PlayerBounds.overlaps(LeftRay)){
+        if(PlayerVComputerScreen.player.PlayerBounds.overlaps(LeftRay)){
             velX -= MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
             isFacingLeft = true;
         }
 
 
-        if(PlayerVComputerScreen.Players.get(0).PlayerBounds.overlaps(RightRay)){
+        if(PlayerVComputerScreen.player.PlayerBounds.overlaps(RightRay)){
             velX += MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
             isFacingLeft = false;
         }
 
 
-        Array<Bullet> bullet = PlayerVComputerScreen.Players.get(0).getBullets();
+        Array<Bullet> bullet = PlayerVComputerScreen.player.getBullets();
         for (Iterator<Bullet> iter = bullet.iterator(); iter.hasNext(); ) {
             Bullet B = iter.next();
             if (B.hitBox.overlaps(EnemyBounds)){

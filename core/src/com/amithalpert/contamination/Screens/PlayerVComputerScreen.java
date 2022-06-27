@@ -58,9 +58,7 @@ public class PlayerVComputerScreen implements Screen {
     static final int WORLD_WIDTH = Gdx.graphics.getWidth();
     static final int WORLD_HEIGHT = Gdx.graphics.getHeight();
 
-    // The players Array
-    public static Array<Player> Players;
-
+    public static Player player;
     public static Enemy enemy;
 
     //World objects
@@ -87,10 +85,9 @@ public class PlayerVComputerScreen implements Screen {
         ////////////////////////
 
         enemy = new Enemy(1500, 400);
+        player = new Player(400,500, Player.PlayersController.Blue);
 
-        Players = new Array<>();
-        Players.add(new Player(400,500, Player.PlayersController.Blue));
-        Players.add(new Player(400,500,Player.PlayersController.Orange));
+
         shapeRenderer = new ShapeRenderer();
 
 
@@ -193,9 +190,9 @@ public class PlayerVComputerScreen implements Screen {
                 shapeRenderer.rect(borders.hitBox.x, borders.hitBox.y, borders.hitBox.width, borders.hitBox.height);
             }
 
-            for (Player players : Players) {
-                shapeRenderer.rect(players.PlayerBounds.x, players.PlayerBounds.y, players.PlayerBounds.width, players.PlayerBounds.height);
-            }
+
+            shapeRenderer.rect(player.PlayerBounds.x, player.PlayerBounds.y, player.PlayerBounds.width, player.PlayerBounds.height);
+
 
             shapeRenderer.rect(enemy.LeftRay.x, enemy.LeftRay.y, enemy.LeftRay.width, enemy.LeftRay.height);
 
@@ -248,9 +245,9 @@ public class PlayerVComputerScreen implements Screen {
     }
 
     public void DrawPlayers(){
-        for (Player players : Players) {
-            game.batch.draw(players.render(Gdx.graphics.getDeltaTime(), Grounds, WorldBorders, RadioActivePools), players.PlayerX - 50, players.PlayerY, players.width, players.height);
-        }
+
+        game.batch.draw(player.render(Gdx.graphics.getDeltaTime(), Grounds, WorldBorders, RadioActivePools), player.PlayerX - 50, player.PlayerY, player.width, player.height);
+
 
         game.batch.draw(enemy.render(Gdx.graphics.getDeltaTime(),Grounds, WorldBorders, RadioActivePools), enemy.EnemyX - 50, enemy.EnemyY, enemy.PLAYER_WIDTH, enemy.height);
     }
@@ -269,7 +266,7 @@ public class PlayerVComputerScreen implements Screen {
 
     public void DrawPlayersHealthBarHUD(){
         // blue player health bar
-        switch (Players.get(0).PlayerHealth){
+        switch (player.PlayerHealth){
             case 3:
                 game.batch.draw(RightPlayerHealthHUD.getIndexFrame(0),1520,920,430,170);
                 break;
@@ -288,10 +285,10 @@ public class PlayerVComputerScreen implements Screen {
                 game.batch.draw(RightPlayerHealthHUD.getIndexFrame(3),1520,920,430,170);
 
         }
-        game.batch.draw(Players.get(0).render(deltaTime, Grounds, WorldBorders, RadioActivePools), 1760,950,Players.get(0).width,Players.get(0).height);
+        game.batch.draw(player.render(deltaTime, Grounds, WorldBorders, RadioActivePools), 1760,950,player.width,player.height);
 
-        if(Players.get(0).PlayerHealth != 0) {
-            switch (Players.get(0).PlayerGunAmmo) {
+        if(player.PlayerHealth != 0) {
+            switch (player.PlayerGunAmmo) {
                 case 5:
                     game.batch.draw(AmmoNumbersTex.getIndexFrame(5), 1725, 1012, 30, 33);
                     break;
@@ -317,7 +314,7 @@ public class PlayerVComputerScreen implements Screen {
 
 
         // orange player health bar
-        switch (Players.get(1).PlayerHealth){
+        switch (enemy.EnemyHealth){
             case 3:
                 game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(0),-30,920,430,170);
                 break;
@@ -336,30 +333,7 @@ public class PlayerVComputerScreen implements Screen {
                 game.batch.draw(LeftPlayerHealthHUD.getIndexFrame(3),-30,920,430,170);
         }
 
-        game.batch.draw(Players.get(1).render(deltaTime, Grounds, WorldBorders, RadioActivePools), -10,950,Players.get(1).width,Players.get(1).height);
-
-        if(Players.get(1).PlayerHealth != 0) {
-            switch (Players.get(1).PlayerGunAmmo) {
-                case 5:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(5), 170, 1012, 30, 33);
-                    break;
-                case 4:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(4), 170, 1012, 30, 33);
-                    break;
-                case 3:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(3), 170, 1012, 30, 33);
-                    break;
-                case 2:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(2), 170, 1012, 30, 33);
-                    break;
-                case 1:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(1), 170, 1012, 30, 33);
-                    break;
-                case 0:
-                    game.batch.draw(AmmoNumbersTex.getIndexFrame(0), 170, 1012, 30, 33);
-                    break;
-            }
-        }
+        game.batch.draw(enemy.render(deltaTime, Grounds, WorldBorders, RadioActivePools), -10,950,enemy.width, enemy.height);
 
     }
 
@@ -410,15 +384,11 @@ public class PlayerVComputerScreen implements Screen {
     public void DrawPlayersBullets(){
 
         // draws the blue's player bullets
-        for(Bullet BluebulletsIndex : Players.get(0).getBullets()){
+        for(Bullet BluebulletsIndex : player.getBullets()){
             game.batch.draw(BluebulletsIndex.update(deltaTime, Grounds, WorldBorders), BluebulletsIndex.bulletX, BluebulletsIndex.bulletY, BluebulletsIndex.width, BluebulletsIndex.height);
         }
 
 
-        // draws the orange's player bullets
-        for(Bullet OrangebulletsIndex : Players.get(1).getBullets()){
-            game.batch.draw(OrangebulletsIndex.update(deltaTime, Grounds, WorldBorders),OrangebulletsIndex.bulletX,OrangebulletsIndex.bulletY,OrangebulletsIndex.width,OrangebulletsIndex.height);
-        }
 
         // draws the orange's player bullets
         for(Bullet EnemyBullet : enemy.bullets){
@@ -430,28 +400,29 @@ public class PlayerVComputerScreen implements Screen {
     public void DrawWinnerPlayer(float delta){
 
         // if any player dies draw PressSpace
-        for(Player playerindex : Players){
-            if(playerindex.state == Player.playerState.dead){
+
+            if(player.state == Player.playerState.dead || enemy.state == Enemy.EnemyState.dead){
                 game.batch.draw(PressSpace, 1080 - 550 / 2f, 600, 300, 55);
                 // rematch the game
                 if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
                     game.setScreen(new PlayerVComputerScreen(game));
                 }
             }
+
+        if(player.state == Player.playerState.dead && enemy.state != Enemy.EnemyState.dead) {
+            game.batch.draw(OrangePlayerWinAnimation.getFrame(Gdx.graphics.getDeltaTime()), 1080 - 900 / 2f, 800, 700, 100);
         }
 
-        // Add timer to
-
-        if(Players.get(0).state == Player.playerState.dead && Players.get(1).state != Player.playerState.dead) {
-            game.batch.draw(OrangePlayerWinAnimation.getFrame(delta), 1080 - 900 / 2f, 800, 700, 100);
-        }
-        else if(Players.get(1).state == Player.playerState.dead && Players.get(0).state != Player.playerState.dead){
+        else if(enemy.state == Enemy.EnemyState.dead && player.state != Player.playerState.dead){
             game.batch.draw(BluePlayerWinAnimation.getFrame(delta), 1080 - 900 / 2f, 800, 700, 100);
         }
-        else if(Players.get(1).state == Player.playerState.dead && Players.get(0).state == Player.playerState.dead){
+
+        else if(player.state == Player.playerState.dead && enemy.state == Enemy.EnemyState.dead){
             // Draw, draw animation (both player lose)
             game.batch.draw(DrawAnimation.getFrame(delta), 1080 - 450 / 2f, 800, 200, 100);
         }
+
+
 
     }
 
@@ -487,40 +458,41 @@ public class PlayerVComputerScreen implements Screen {
 
         // if bullet touches barrel:
         // remove the bullet and the barrel explodes
-        for(Player playerIndex : Players) {
-            for (Iterator<Bullet> BulletIter = playerIndex.getBullets().iterator(); BulletIter.hasNext(); ) {
-                Bullet TempBullets = BulletIter.next();
-                for (AmmoDrop TempAmmoDrops : AmmoDrops) {
-                    if (TempAmmoDrops.DropHitBox.overlaps(TempBullets.hitBox)) {
-                        TempAmmoDrops.freeze = true;
-                        TempAmmoDrops.IsExplosion = true;
-                        BulletIter.remove();
-                    }
+        for (Iterator<Bullet> BulletIter = player.getBullets().iterator(); BulletIter.hasNext(); ) {
+            Bullet TempBullets = BulletIter.next();
+            for (AmmoDrop TempAmmoDrops : AmmoDrops) {
+                if (TempAmmoDrops.DropHitBox.overlaps(TempBullets.hitBox)) {
+                    TempAmmoDrops.freeze = true;
+                    TempAmmoDrops.IsExplosion = true;
+                    BulletIter.remove();
                 }
             }
         }
 
+
         // removes barrel and increase PlayerGunAmmo
-        for(Player playerIndex : Players) {
-            for (Iterator<AmmoDrop> Iter = AmmoDrops.iterator(); Iter.hasNext(); ) {
-                AmmoDrop AmmoDropsIndex = Iter.next();
-                if (AmmoDropsIndex.DropHitBox.overlaps(playerIndex.PlayerBounds) && playerIndex.PlayerGunAmmo != 5 && !AmmoDropsIndex.IsExplosion) {
-                    playerIndex.PlayerGunAmmo = 5;
-                    Iter.remove();
+        for (Iterator<AmmoDrop> Iter = AmmoDrops.iterator(); Iter.hasNext(); ) {
+             AmmoDrop AmmoDropsIndex = Iter.next();
+             if (AmmoDropsIndex.DropHitBox.overlaps(player.PlayerBounds) && player.PlayerGunAmmo != 5 && !AmmoDropsIndex.IsExplosion) {
+                 player.PlayerGunAmmo = 5;
+                 Iter.remove();
                 }
-                if(AmmoDropsIndex.DeleteDrop){
-                    Iter.remove();
-                }
-            }
+             if(AmmoDropsIndex.DeleteDrop){
+                 Iter.remove();
+             }
         }
+
         // kill the player if he touches the Explosion
-        for(Player playerIndex : Players) {
-            for (AmmoDrop DropIndex : AmmoDrops) {
-                if (playerIndex.PlayerBounds.overlaps(DropIndex.ExplosiveHitBox) && DropIndex.IsExplosion) {
-                    playerIndex.PlayerHealth = 0;
-                }
+
+        for (AmmoDrop DropIndex : AmmoDrops) {
+            if (player.PlayerBounds.overlaps(DropIndex.ExplosiveHitBox) && DropIndex.IsExplosion) {
+                player.PlayerHealth = 0;
+            }
+            if(enemy.EnemyBounds.overlaps(DropIndex.ExplosiveHitBox) && DropIndex.IsExplosion){
+                enemy.EnemyHealth = 0;
             }
         }
+
         // Spawns the drop in random X position every X time sec.
         DropTimer += delta;
         if (DropTimer >= 5f) {
@@ -535,21 +507,29 @@ public class PlayerVComputerScreen implements Screen {
 
 
         // removes the bullet if it overlaps WorldBorder
-        for(Player playerIndex : Players) {
-            for (MapObject Borders : WorldBorders) {
-                Array<Bullet> Playerbullets = playerIndex.getBullets();
-                for (Iterator<Bullet> Iter = Playerbullets.iterator(); Iter.hasNext(); ) {
-                    Bullet TempBullet = Iter.next();
-                    if (TempBullet.hitBox.overlaps(Borders.hitBox)) {
+        for (MapObject Borders : WorldBorders) {
+            Array<Bullet> Playerbullets = player.getBullets();
+            for (Iterator<Bullet> Iter = Playerbullets.iterator(); Iter.hasNext(); ) {
+                Bullet TempBullet = Iter.next();
+                if (TempBullet.hitBox.overlaps(Borders.hitBox)) {
                         Iter.remove();
-                    }
+                }
+            }
+        }
+
+        for (MapObject Borders : WorldBorders) {
+            Array<Bullet> Playerbullets = enemy.bullets;
+            for (Iterator<Bullet> Iter = Playerbullets.iterator(); Iter.hasNext(); ) {
+                Bullet TempBullet = Iter.next();
+                if (TempBullet.hitBox.overlaps(Borders.hitBox)) {
+                    Iter.remove();
                 }
             }
         }
 
 
-    }
 
+    }
 
 
     ////////////////////////
@@ -601,10 +581,8 @@ public class PlayerVComputerScreen implements Screen {
 
     @Override
     public void dispose() {
-        for(Player players : Players){
-            players.dispose();
-        }
 
+        player.dispose();
         DrawAnimation.dispose();
         OrangePlayerWinAnimation.dispose();
         BluePlayerWinAnimation.dispose();

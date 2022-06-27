@@ -564,39 +564,11 @@ public class Player {
 
 
         // Bullet collision
-        switch (SelectedPlayer) {
-            case Blue:
-               // Blue Player
-               Array<Bullet> bulletsB = PlayerVComputerScreen.Players.get(1).getBullets();
-               for (Iterator<Bullet> iterb = bulletsB.iterator(); iterb.hasNext(); ) {
-                   Bullet bB = iterb.next();
-                   if (bB.hitBox.overlaps(PlayerVComputerScreen.Players.get(0).PlayerBounds)) {
-                       PlayerVComputerScreen.Players.get(0).PlayerHealth--;
-                       iterb.remove();
-                }
-            }
-            break;
-
-            case Orange:
-                 // Orange Player
-                 Array<Bullet> bulletsY = PlayerVComputerScreen.Players.get(0).getBullets();
-                 for (Iterator<Bullet> iter = bulletsY.iterator(); iter.hasNext(); ) {
-                     Bullet bY = iter.next();
-                     if (bY.hitBox.overlaps(PlayerVComputerScreen.Players.get(1).PlayerBounds)) {
-                         PlayerVComputerScreen.Players.get(1).PlayerHealth--;
-                         iter.remove();
-                     }
-            }
-            break;
-
-        }
-
-
         Array<Bullet> EnemyBullets = PlayerVComputerScreen.enemy.bullets;
         for (Iterator<Bullet> iter = EnemyBullets.iterator(); iter.hasNext(); ) {
             Bullet B = iter.next();
             if (B.hitBox.overlaps(PlayerBounds)) {
-                PlayerVComputerScreen.Players.get(0).PlayerHealth--;
+                PlayerHealth--;
                 iter.remove();
             }
         }
