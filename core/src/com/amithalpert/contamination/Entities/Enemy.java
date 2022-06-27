@@ -26,8 +26,8 @@ public class Enemy {
     public EnemyState state;
 
     // Initializing players' final Variables
-    public final int PLAYER_WIDTH = 170;
-    public final int PLAYER_HEIGHT = 170;
+    public final int PLAYER_WIDTH = 130;
+    public final int PLAYER_HEIGHT = 130;
 
     public final float ANIMATIONS_TIME = 0.5f;
     public final float SHOOT_WAIT_TIME = 1f;
@@ -194,6 +194,7 @@ public class Enemy {
             collisionHandling(delta, Ground, WorldBorder, RadioActivePool);
             updatePlayerPosition();
         }
+
 
 
         if(velY > 1050) velY = 1050;
@@ -424,9 +425,6 @@ public class Enemy {
     public void collisionHandling(float delta, Array<MapObject> Ground,Array<MapObject> WorldBorder,Array<MapObject> RadioActivePool) {
 
 
-        LeftRay.x += velX;
-        LeftRay.y += velY;
-
 
         TimeBetweenShots += Gdx.graphics.getDeltaTime();
         if((PlayerVComputerScreen.player.PlayerBounds.overlaps(LeftGunRay) || PlayerVComputerScreen.player.PlayerBounds.overlaps(RightGunRay)) && TimeBetweenShots >= SHOOT_WAIT_TIME){
@@ -458,6 +456,8 @@ public class Enemy {
 
 
 
+
+
         // kills player if you touch RadioActivePool
         for(MapObject Pools : RadioActivePool){
             if(EnemyBounds.overlaps(Pools.hitBox)){
@@ -479,10 +479,7 @@ public class Enemy {
         // horizontal & borders Collision
         EnemyBounds.x += velX;
         for (MapObject borders: WorldBorder) {
-            if (EnemyBounds.overlaps(borders.hitBox)) {
-                velX -= velX;
-            }
-            else if (LeftFootRay.overlaps(borders.hitBox) && velY == -velY){
+            if (LeftFootRay.overlaps(borders.hitBox) && velY == -velY){
                 velY += JUMP_FORCE * Gdx.graphics.getDeltaTime();
             }
             else if(RightFootRay.overlaps(borders.hitBox) && velY == -velY){

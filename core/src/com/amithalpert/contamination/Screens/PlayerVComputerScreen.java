@@ -84,8 +84,8 @@ public class PlayerVComputerScreen implements Screen {
         // Set up players
         ////////////////////////
 
-        enemy = new Enemy(1500, 400);
-        player = new Player(400,500, Player.PlayersController.Blue);
+        enemy = new Enemy(400, 500);
+        player = new Player(1500,400, Player.PlayersController.Blue);
 
 
         shapeRenderer = new ShapeRenderer();
@@ -542,7 +542,6 @@ public class PlayerVComputerScreen implements Screen {
         ////
 
         Grounds.add(new MapObject(0,5, Gdx.graphics.getWidth(),140));
-
 
 
         Grounds.add(new MapObject(1210,145,140,110));
