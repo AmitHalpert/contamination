@@ -663,7 +663,7 @@ public class Player {
         }
 
         // limit the jump force
-        if(Yspeed >= 1050) Yspeed = 1050;
+        if(Yspeed > 1050) Yspeed = 1050;
 
     }
 

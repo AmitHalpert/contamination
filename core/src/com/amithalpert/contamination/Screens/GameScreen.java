@@ -179,25 +179,6 @@ public class GameScreen implements Screen {
         PlayersBulletCollisionHandling();
 
 
-        ////////////////////////
-        // Draw hierarchy
-        ////////////////////////
-        game.batch.begin();
-        // Draws map and the map animations
-        DrawMap(deltaTime);
-        // draws the ammo drops
-        DrawAmmoDrops(deltaTime);
-        // draw all the players
-        DrawPlayers();
-        // draw every player's bullets
-        DrawPlayersBullets();
-        // draw health bars and ammo amount for the player
-        DrawPlayersHealthBarHUD();
-        // shows which player won
-        DrawWinnerPlayer(deltaTime);
-        // draw gui and pauses the game
-        DrawMenu();
-
 
         if (Gdx.input.isKeyPressed(Keys.SPACE)) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -222,6 +203,25 @@ public class GameScreen implements Screen {
 
 
         }
+
+        ////////////////////////
+        // Draw hierarchy
+        ////////////////////////
+        game.batch.begin();
+        // Draws map and the map animations
+        DrawMap(deltaTime);
+        // draws the ammo drops
+        DrawAmmoDrops(deltaTime);
+        // draw all the players
+        DrawPlayers();
+        // draw every player's bullets
+        DrawPlayersBullets();
+        // draw health bars and ammo amount for the player
+        DrawPlayersHealthBarHUD();
+        // shows which player won
+        DrawWinnerPlayer(deltaTime);
+        // draw gui and pauses the game
+        DrawMenu();
 
         game.batch.end();
 
@@ -554,9 +554,15 @@ public class GameScreen implements Screen {
 
         Grounds.add(new MapObject(0,5,Gdx.graphics.getWidth(),88));
 
+
+        Grounds.add(new MapObject(30,20,300,200));
+
     }
 
     private void createMapBorders(){
+        WorldBorders.add(new MapObject(30, 20, 310, 190));
+
+
 
     }
 

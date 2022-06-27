@@ -44,6 +44,7 @@ public class Enemy {
     public int height;
     double velX, velY;
     boolean isFacingLeft;
+    boolean isOnGround;
 
     public boolean IsPlayerFrozen;
     public Rectangle EnemyBounds;
@@ -100,10 +101,12 @@ public class Enemy {
         EnemyBounds = new Rectangle(EnemyX, EnemyY, 50, 70);
         LeftRay = new Rectangle(EnemyX, EnemyY, 300, 20);
         RightRay = new Rectangle(EnemyX, EnemyY, 300, 20);
+        EnemyHealth = 5;
 
         isFacingLeft = false;
-        isPlayerHoldingGun = false;
+        isPlayerHoldingGun = true;
         IsPlayerFrozen = false;
+        isOnGround = false;
         state = Player.playerState.Idle;
         idle_animation_time = 0;
         dead_animation_time = 0;
@@ -166,8 +169,11 @@ public class Enemy {
     public Texture render(float delta, Array<MapObject> Ground, Array<MapObject> WorldBorder, Array<MapObject> RadioActivePool) {
 
 
+        GetEnemyState();
+
         velY -= GRAVITATIONAL_FORCE * Gdx.graphics.getDeltaTime();
 
+        velX = 0;
 
         collisionHandling(delta, Ground, WorldBorder, RadioActivePool);
 
@@ -175,8 +181,8 @@ public class Enemy {
         updatePlayerPosition();
 
 
-        velX = 0;
 
+        if(velY > 1050) velY = 1050;
 
         switch (state) {
 
@@ -347,6 +353,26 @@ public class Enemy {
 
 
     public void GetEnemyState() {
+        // checks if the player is moving up or down
+        if (velY > 0) {
+            state = Player.playerState.Jumping;
+        } else if (velY < 0) {
+            state = Player.playerState.Jumping;
+        } else {
+
+
+
+            if (velX != 0 && velY == 0){
+                state = Player.playerState.Running;
+                // check if the player is not moving
+            } else if (velY == 0 && velX == 0) {
+                state = Player.playerState.Idle;
+            }
+        }
+        // checks if the player is dead
+        if (EnemyHealth <= 0) {
+            state = Player.playerState.dead;
+        }
 
     }
 
@@ -374,11 +400,13 @@ public class Enemy {
         LeftRay.y += velY;
         if(GameScreen.Players.get(0).PlayerBounds.overlaps(LeftRay)){
             velX -= MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
+            isFacingLeft = true;
         }
 
 
         if(GameScreen.Players.get(0).PlayerBounds.overlaps(RightRay)){
             velX += MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
+            isFacingLeft = false;
         }
 
 
@@ -390,16 +418,6 @@ public class Enemy {
             }
         }
 
-
-        // horizontal & borders Collision
-        EnemyBounds.x += velX;
-        for (MapObject borders: WorldBorder) {
-            if (EnemyBounds.overlaps(borders.hitBox)) {
-                velX -= velX;
-            }
-        }
-
-
         // vertical & grounds  Collision
         EnemyBounds.y += velY;
         for (MapObject grounds : Ground) {
@@ -407,6 +425,20 @@ public class Enemy {
                 velY -= velY;
             }
         }
+
+
+        // horizontal & borders Collision
+        EnemyBounds.x += velX;
+        for (MapObject borders: WorldBorder) {
+            if (EnemyBounds.overlaps(borders.hitBox)) {
+                velX -= velX;
+            }
+            if (LeftRay.overlaps(borders.hitBox) && velY == -velY){
+                velY += JUMP_FORCE * Gdx.graphics.getDeltaTime();
+            }
+        }
+
+
 
 
 
